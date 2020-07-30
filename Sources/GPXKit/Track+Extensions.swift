@@ -1,12 +1,20 @@
-import CoreLocation
 import Foundation
 
 public extension Coordinate {
-	// swiftlint:disable:next identifier_name
-	func distance(to: Coordinate) -> Double {
-		// swiftlint:disable:next line_length
-		return CLLocation(latitude: CLLocationDegrees(to.latitude), longitude: to.longitude).distance(from: CLLocation(latitude: CLLocationDegrees(latitude), longitude: CLLocationDegrees(longitude)))
-	}
+    func distance(to other: Coordinate) -> Double {
+        let R = 6_371_000.0
+        let dLat = (latitude - other.latitude) * .pi / 180.0
+        let dLon = (longitude - other.longitude) * .pi / 180.0
+        let lat1 = other.latitude * .pi / 180.0
+        let lat2 = longitude * .pi / 180.0
+
+        let a1 = sin(dLat / 2.0) * sin(dLat / 2.0)
+        let a2 = sin(dLon / 2.0) * sin(dLon / 2.0) * cos(lat1) * cos(lat2)
+        let a = a1 + a2
+        let c = 2 * atan2(a.squareRoot(), (1 - a).squareRoot())
+        let d = R * c
+        return d
+    }
 }
 
 public extension TrackGraph {

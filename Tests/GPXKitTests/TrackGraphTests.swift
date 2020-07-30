@@ -1,4 +1,3 @@
-import CoreLocation
 import XCTest
 @testable import GPXKit
 
@@ -27,7 +26,7 @@ class TrackGraphTests: XCTestCase {
     }
 
     private func expectedDistance(from: Coordinate, to: Coordinate) -> Double {
-        return CLLocation(latitude: CLLocationDegrees(to.latitude), longitude: to.longitude).distance(from: CLLocation(latitude: CLLocationDegrees(from.latitude), longitude: CLLocationDegrees(from.longitude)))
+        return from.distance(to: to)
     }
 
     // MARK: Tests
