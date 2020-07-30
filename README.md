@@ -5,15 +5,15 @@ A library for parsing gpx files.
 ```swift
 import GPXKit
 
-parser = GPXFileParser(xmlString: xml)
-    switch sut.parse() {
+let parser = GPXFileParser(xmlString: xml)
+    switch parser.parse() {
     case .success(let track):
-        result = track
+        doSomethingWith(track)
     case .failure(let error):
         parseError = error
     }
-
-func doSomethingWith(track: GPXTrack) {
+...
+func doSomethingWith(_ track: GPXTrack) {
     let formatter = MeasurementFormatter()
     formatter.unitStyle = .short
     formatter.unitOptions = .naturalScale
