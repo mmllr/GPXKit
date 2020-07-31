@@ -53,10 +53,9 @@ final public class GPXFileParser {
 	}
 
 	private func parseRoot(node: XMLNode) -> GPXTrack? {
-		guard let date = node.childFor(.metadata)?.childFor(.time)?.date,
-			let trackNode = node.childFor(.track),
+		guard let trackNode = node.childFor(.track),
 			let title = trackNode.childFor(.name)?.content else { return nil }
-		return GPXTrack(date: date, title: title, trackPoints: parseSegment(trackNode.childFor(.trackSegment)))
+		return GPXTrack(date: node.childFor(.metadata)?.childFor(.time)?.date, title: title, trackPoints: parseSegment(trackNode.childFor(.trackSegment)))
 	}
 
 	private func parseMetaData(_ node: XMLNode) -> Date? {
