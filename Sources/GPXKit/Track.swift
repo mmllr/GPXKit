@@ -13,10 +13,10 @@ public struct TrackSegment: Equatable {
 
 public struct TrackPoint: Equatable {
 	public let coordinate: Coordinate
-	public let date: Date
+	public let date: Date?
 	public let power: Measurement<UnitPower>?
 
-	public init(coordinate: Coordinate, date: Date, power: Measurement<UnitPower>? = nil) {
+	public init(coordinate: Coordinate, date: Date?, power: Measurement<UnitPower>? = nil) {
 		self.coordinate = coordinate
 		self.date = date
 		self.power = power

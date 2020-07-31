@@ -73,10 +73,9 @@ fileprivate extension TrackPoint {
 	init?(trackNode: XMLNode) {
 		guard let lat = trackNode.latitude,
 			let lon = trackNode.longitude,
-			let ele = trackNode.childFor(.elevation)?.elevation,
-			let date = trackNode.childFor(.time)?.date else { return nil }
+			let ele = trackNode.childFor(.elevation)?.elevation else { return nil }
 		self.coordinate = Coordinate(latitude: lat, longitude: lon, elevation: ele)
-		self.date = date
+		self.date = trackNode.childFor(.time)?.date
 		self.power = trackNode.childFor(.extensions)?.childFor(.power)?.power
 	}
 }
