@@ -2,9 +2,9 @@ import Foundation
 
 public struct XMLNode: Equatable {
     var name: String
-    var atttributes: [String: String]
-    var content: String
-    public var children: [XMLNode]
+    var atttributes: [String: String] = [:]
+    var content: String = ""
+    public var children: [XMLNode] = []
 }
 
 public enum BasicXMLParserError: Error {

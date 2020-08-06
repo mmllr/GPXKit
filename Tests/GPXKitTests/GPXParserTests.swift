@@ -5,11 +5,6 @@ class GPXParserTests: XCTestCase {
     private var sut: GPXFileParser!
     private var parseError: GPXParserError?
     private var result: GPXTrack?
-    private var iso8601Formatter: ISO8601DateFormatter = {
-        let formatter = ISO8601DateFormatter()
-        formatter.formatOptions = .withInternetDateTime
-        return formatter
-    }()
 
     private func parseXML(_ xml: String) {
         sut = GPXFileParser(xmlString: xml)
@@ -19,10 +14,6 @@ class GPXParserTests: XCTestCase {
         case .failure(let error):
             parseError = error
         }
-    }
-
-    private func expectedDateFor(dateString: String) -> Date {
-        return iso8601Formatter.date(from: dateString)!
     }
 
     // MARK: Tests
@@ -91,12 +82,12 @@ class GPXParserTests: XCTestCase {
 
         let expected = [
             TrackPoint(coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 114.2),
-                       date: expectedDateFor(dateString: "2020-03-18T12:39:47Z")),
+                       date: expectedDate(for: "2020-03-18T12:39:47Z")),
             TrackPoint(coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
-                       date: expectedDateFor(dateString: "2020-03-18T12:39:48Z"))
+                       date: expectedDate(for: "2020-03-18T12:39:48Z"))
         ]
 
-        XCTAssertEqual(GPXTrack(date: expectedDateFor(dateString: "2020-03-18T12:39:47Z"),
+        XCTAssertEqual(GPXTrack(date: expectedDate(for: "2020-03-18T12:39:47Z"),
                                 title: "Haus- und Seenrunde Ausdauer",
                                 trackPoints: expected), result)
     }
@@ -143,14 +134,14 @@ class GPXParserTests: XCTestCase {
 
         let expected = [
             TrackPoint(coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 114.2),
-                       date: expectedDateFor(dateString: "2020-03-18T12:39:47Z"),
+                       date: expectedDate(for: "2020-03-18T12:39:47Z"),
                        power: Measurement<UnitPower>(value: 42, unit: .watts)),
             TrackPoint(coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
-                       date: expectedDateFor(dateString: "2020-03-18T12:39:48Z"),
+                       date: expectedDate(for: "2020-03-18T12:39:48Z"),
                        power: Measurement<UnitPower>(value: 272, unit: .watts))
         ]
 
-        XCTAssertEqual(GPXTrack(date: expectedDateFor(dateString: "2020-03-18T12:39:47Z"),
+        XCTAssertEqual(GPXTrack(date: expectedDate(for: "2020-03-18T12:39:47Z"),
                                 title: "Haus- und Seenrunde Ausdauer",
                                 trackPoints: expected), result)
     }

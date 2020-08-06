@@ -11,7 +11,7 @@ public enum GPXParserError: Error {
 	case noTracksFound
 }
 
-fileprivate enum GPXTags: String {
+internal enum GPXTags: String {
 	case gpx
 	case metadata
 	case time
@@ -24,7 +24,7 @@ fileprivate enum GPXTags: String {
 	case power
 }
 
-fileprivate enum GPXAttributes: String {
+internal enum GPXAttributes: String {
 	case latitude = "lat"
 	case longitude = "lon"
 }
@@ -68,7 +68,7 @@ final public class GPXFileParser {
 	}
 }
 
-fileprivate extension TrackPoint {
+internal extension TrackPoint {
 	init?(trackNode: XMLNode) {
 		guard let lat = trackNode.latitude,
 			let lon = trackNode.longitude,
@@ -79,7 +79,7 @@ fileprivate extension TrackPoint {
 	}
 }
 
-private extension XMLNode {
+internal extension XMLNode {
 	static var iso8601Formatter: ISO8601DateFormatter = {
 		let formatter = ISO8601DateFormatter()
 		formatter.formatOptions = .withInternetDateTime
