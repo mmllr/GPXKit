@@ -110,5 +110,44 @@ final class GPXExporterTests: XCTestCase {
 
         XCTAssertEqual(expectedContent, result)
     }
-}
 
+    func testExportingACompleteTrack() {
+        sut = GPXExporter(track: testTrackWithoutTime)
+
+        let parser = GPXFileParser(xmlString: sut.xmlString)
+        switch parser.parse() {
+        case .success(let importedTrack):
+            assertTracksAreEqual(testTrackWithoutTime, importedTrack)
+        case .failure(let error):
+            XCTFail(error.localizedDescription)
+        }
+    }
+
+    func testItWillNotExportTheDatesFromTrack() {
+        let track = GPXTrack(date: Date(),
+                             title: "test track",
+                             trackPoints: [
+                                TrackPoint(coordinate: .random, date: Date()),
+                                TrackPoint(coordinate: .random, date: Date()),
+                                TrackPoint(coordinate: .random, date: Date()),
+                                TrackPoint(coordinate: .random, date: Date()),
+                             ])
+        sut = GPXExporter(track: track, shouldExportDate: false)
+
+        let expectedContent: GPXKit.XMLNode = XMLNode(
+            name: GPXTags.gpx.rawValue,
+            atttributes: expectedHeaderAttributes,
+            children: [
+                XMLNode(name: GPXTags.metadata.rawValue),
+                XMLNode(name: GPXTags.track.rawValue, children: [
+                    XMLNode(name: GPXTags.name.rawValue, content: track.title),
+                    XMLNode(name: GPXTags.trackSegment.rawValue,
+                            children: track.trackPoints.map { $0.expectedXMLNode })
+                ])
+            ])
+
+        parseResult(sut.xmlString)
+
+        XCTAssertEqual(expectedContent, result)
+    }
+}

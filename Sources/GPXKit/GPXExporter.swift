@@ -1,17 +1,18 @@
 import Foundation
 
 public final class GPXExporter {
-    lazy var iso8601Formatter: ISO8601DateFormatter = {
+    private lazy var iso8601Formatter: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = .withInternetDateTime
         return formatter
     }()
+    private let track: GPXTrack
+    private let exportDate: Bool
 
-    public init(track: GPXTrack) {
+    public init(track: GPXTrack, shouldExportDate: Bool = true) {
         self.track = track
+        self.exportDate = shouldExportDate
     }
-
-    let track: GPXTrack
 
     public var xmlString: String {
         return """
@@ -28,7 +29,7 @@ public final class GPXExporter {
     }
 
     private var metaData: String {
-        guard let date = track.date else { return "" }
+        guard exportDate, let date = track.date else { return "" }
         return GPXTags.time.embed(iso8601Formatter.string(from: date))
     }
 
