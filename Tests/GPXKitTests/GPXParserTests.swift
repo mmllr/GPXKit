@@ -120,5 +120,14 @@ class GPXParserTests: XCTestCase {
                                 title: "Haus- und Seenrunde Ausdauer",
                                 trackPoints: expected), result!)
     }
-}
 
+    func testTrackLength() throws {
+        parseXML(sampleGPX)
+
+        let distance = try XCTUnwrap(result?.graph.distance)
+        let elevation = try XCTUnwrap(result?.graph.elevationGain)
+
+        XCTAssertEqual(3100.5625, distance, accuracy: 0.001)
+        XCTAssertEqual(158.4000015258789, elevation, accuracy: 0.001)
+    }
+}

@@ -99,6 +99,37 @@ class TrackGraphTests: XCTestCase {
         ]
         XCTAssertEqual(expectedCoordinates, sut.segments.map { $0.coordinate })
     }
+
+    func testTheInitialElevationIsSubstractedFromTheElevationGain() {
+        let coordinates: [Coordinate] = [
+            Coordinate(latitude: 51.2763320, longitude: 12.3767670, elevation: 100),
+            Coordinate(latitude: 51.2763700, longitude: 12.3767550, elevation: 110),
+            Coordinate(latitude: 51.2764100, longitude: 12.3767400, elevation: 120),
+            Coordinate(latitude: 51.2764520, longitude: 12.3767260, elevation: 130),
+            Coordinate(latitude: 51.2765020, longitude: 12.3767050, elevation: 140),
+            Coordinate(latitude: 51.2765520, longitude: 12.3766820, elevation: 150),
+        ]
+
+        sut = TrackGraph(coords: coordinates)
+
+        // 10 + 95 + 268
+        XCTAssertEqual(50, sut.elevationGain)
+    }
+
+    func testElevationGainIsTheSumOfAllElevationDifferences() {
+        let coordinates: [Coordinate] = [
+            Coordinate(latitude: 51.2763320, longitude: 12.3767670, elevation: 100),
+            Coordinate(latitude: 51.2763700, longitude: 12.3767550, elevation: 130), // 30
+            Coordinate(latitude: 51.2764100, longitude: 12.3767400, elevation: 70),
+            Coordinate(latitude: 51.2764520, longitude: 12.3767260, elevation: 150), // 80
+            Coordinate(latitude: 51.2765020, longitude: 12.3767050, elevation: 140),
+            Coordinate(latitude: 51.2765520, longitude: 12.3766820, elevation: 150), // 10
+        ]
+
+        sut = TrackGraph(coords: coordinates)
+
+        XCTAssertEqual(30 + 80 + 10, sut.elevationGain)
+    }
 }
 
 

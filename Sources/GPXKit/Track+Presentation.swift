@@ -1,7 +1,6 @@
 import Foundation
 import CoreLocation
 
-
 public extension TrackGraph {
     var coreLocationCoordinates: [CLLocationCoordinate2D] {
         return segments.map {
