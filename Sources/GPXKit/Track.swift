@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Coordinate: Equatable {
+public struct Coordinate: Equatable, Hashable {
     public let latitude: Double
     public let longitude: Double
     public let elevation: Double
@@ -11,7 +11,7 @@ public struct TrackSegment: Equatable {
     public let distanceInMeters: Double
 }
 
-public struct TrackPoint: Equatable {
+public struct TrackPoint: Equatable, Hashable {
 	public let coordinate: Coordinate
 	public let date: Date?
 	public let power: Measurement<UnitPower>?

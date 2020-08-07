@@ -60,7 +60,7 @@ final class GPXExporterTests: XCTestCase {
 
         parseResult(sut.xmlString)
 
-        XCTAssertEqual(expectedContent, result)
+        assertNodesAreEqual(expectedContent, result)
     }
 
     func testExportingAnEmptyTrackWithoutDateResultsInAnEmptyGPXFileWithoutTitleAndDate() {
@@ -79,7 +79,7 @@ final class GPXExporterTests: XCTestCase {
 
         parseResult(sut.xmlString)
 
-        XCTAssertEqual(expectedContent, result)
+        assertNodesAreEqual(expectedContent, result)
     }
 
     func testExportingANonEmptyTrack() {
@@ -108,7 +108,7 @@ final class GPXExporterTests: XCTestCase {
 
         parseResult(sut.xmlString)
 
-        XCTAssertEqual(expectedContent, result)
+        assertNodesAreEqual(expectedContent, result)
     }
 
     func testExportingACompleteTrack() {
@@ -148,6 +148,6 @@ final class GPXExporterTests: XCTestCase {
 
         parseResult(sut.xmlString)
 
-        XCTAssertEqual(expectedContent, result)
+        assertNodesAreEqual(expectedContent, result)
     }
 }

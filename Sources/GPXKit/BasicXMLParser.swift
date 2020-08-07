@@ -1,6 +1,6 @@
 import Foundation
 
-public struct XMLNode: Equatable {
+public struct XMLNode: Equatable, Hashable {
     var name: String
     var atttributes: [String: String] = [:]
     var content: String = ""

@@ -66,9 +66,9 @@ class GPXParserTests: XCTestCase {
                        date: expectedDate(for: "2020-03-18T12:39:48Z"))
         ]
 
-        XCTAssertEqual(GPXTrack(date: expectedDate(for: "2020-03-18T12:39:47Z"),
+        assertTracksAreEqual(GPXTrack(date: expectedDate(for: "2020-03-18T12:39:47Z"),
                                 title: "Haus- und Seenrunde Ausdauer",
-                                trackPoints: expected), result)
+                                trackPoints: expected), result!)
     }
 
     func testParsingTrackSegmentsWithExtensions() {
@@ -83,9 +83,9 @@ class GPXParserTests: XCTestCase {
                        power: Measurement<UnitPower>(value: 272, unit: .watts))
         ]
 
-        XCTAssertEqual(GPXTrack(date: expectedDate(for: "2020-03-18T12:39:47Z"),
+        assertTracksAreEqual(GPXTrack(date: expectedDate(for: "2020-03-18T12:39:47Z"),
                                 title: "Haus- und Seenrunde Ausdauer",
-                                trackPoints: expected), result)
+                                trackPoints: expected), result!)
     }
 
     func testParsingTrackSegmentsWithoutTimeHaveANilDate() {
@@ -116,9 +116,9 @@ class GPXParserTests: XCTestCase {
                        date: nil)
         ]
 
-        XCTAssertEqual(GPXTrack(date: nil,
+        assertTracksAreEqual(GPXTrack(date: nil,
                                 title: "Haus- und Seenrunde Ausdauer",
-                                trackPoints: expected), result)
+                                trackPoints: expected), result!)
     }
 }
 

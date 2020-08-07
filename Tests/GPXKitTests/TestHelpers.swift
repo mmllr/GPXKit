@@ -2,62 +2,6 @@ import Foundation
 import XCTest
 @testable import GPXKit
 
-let testXMLData = """
-        <?xml version="1.0" encoding="UTF-8"?>
-        <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
-            <metadata>
-             <time>2020-03-18T12:39:47Z</time>
-            </metadata>
-            <trk>
-                <name>Haus- und Seenrunde Ausdauer</name>
-                <type>1</type>
-                <trkseg>
-                    <trkpt lat="51.2760600" lon="12.3769500">
-                        <ele>114.2</ele>
-                        <time>2020-03-18T12:39:47Z</time>
-                        <extensions>
-                            <power>42</power>
-                            <gpxtpx:TrackPointExtension>
-                                <gpxtpx:atemp>21</gpxtpx:atemp>
-                                <gpxtpx:hr>97</gpxtpx:hr>
-                                <gpxtpx:cad>40</gpxtpx:cad>
-                            </gpxtpx:TrackPointExtension>
-                        </extensions>
-                    </trkpt>
-                    <trkpt lat="51.2760420" lon="12.3769760">
-                        <ele>114.0</ele>
-                        <time>2020-03-18T12:39:48Z</time>
-                        <extensions>
-                            <power>272</power>
-                            <gpxtpx:TrackPointExtension>
-                                <gpxtpx:atemp>20</gpxtpx:atemp>
-                                <gpxtpx:hr>97</gpxtpx:hr>
-                                <gpxtpx:cad>40</gpxtpx:cad>
-                            </gpxtpx:TrackPointExtension>
-                        </extensions>
-                    </trkpt>
-                </trkseg>
-            </trk>
-        </gpx>
-        """
-
-let testTrack = GPXTrack(date: expectedDate(for: "2020-03-18T12:39:47Z"),
-                         title: "Haus- und Seenrunde Ausdauer",
-                         trackPoints: [
-                            TrackPoint(coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 114.2),
-                                       date: expectedDate(for: "2020-03-18T12:39:47Z")),
-                            TrackPoint(coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
-                                       date: expectedDate(for: "2020-03-18T12:39:48Z"))
-                         ])
-
-let testTrackWithoutTime = GPXTrack(date: nil,
-                         title: "Test track without time",
-                         trackPoints: [
-                            TrackPoint(coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 114.2),
-                                       date: nil),
-                            TrackPoint(coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
-                                       date: nil)
-                         ])
 
 fileprivate var iso8601Formatter: ISO8601DateFormatter = {
     let formatter = ISO8601DateFormatter()
@@ -134,49 +78,74 @@ extension XCTest {
     ) {
         assertDatesEqual(expected.date, actual.date, file: file, line: line)
         XCTAssertEqual(expected.title, actual.title, file: file, line: line)
-        XCTAssertEqual(expected.trackPoints, actual.trackPoints, file: file, line: line)
+        assertEqual(expected.trackPoints, actual.trackPoints, file: file, line: line)
+    }
+
+    /*
+     public struct XMLNode: Equatable, Hashable {
+     var name: String
+     var atttributes: [String: String] = [:]
+     var content: String = ""
+     public var children: [XMLNode] = []
+     }
+     */
+    func assertNodesAreEqual(
+        _ expected: GPXKit.XMLNode,
+        _ actual: GPXKit.XMLNode,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) {
+        XCTAssertEqual(expected.content, actual.content, file: file, line: line)
+        XCTAssertEqual(expected.content, actual.content, file: file, line: line)
+        XCTAssertEqual(expected.atttributes, actual.atttributes, file: file, line: line)
+        assertEqual(expected.children, actual.children, file: file, line: line)
+    }
+
+    func assertEqual<T: BidirectionalCollection>(
+        _ first: T,
+        _ second: T,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) where T.Element: Hashable {
+        let diff = second.difference(from: first).inferringMoves()
+        let message = diff.asTestErrorMessage()
+
+        XCTAssert(message.isEmpty, """
+    The two collections are not equal. Differences:
+    \(message)
+    """, file: file, line: line)
     }
 }
 
-let testXMLWithoutExtensions = """
-        <?xml version="1.0" encoding="UTF-8"?>
-        <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
-            <metadata>
-             <time>2020-03-18T12:39:47Z</time>
-            </metadata>
-            <trk>
-                <name>Haus- und Seenrunde Ausdauer</name>
-                <type>1</type>
-                <trkseg>
-                    <trkpt lat="51.2760600" lon="12.3769500">
-                        <ele>114.2</ele>
-                        <time>2020-03-18T12:39:47Z</time>
-                    </trkpt>
-                    <trkpt lat="51.2760420" lon="12.3769760">
-                        <ele>114.0</ele>
-                        <time>2020-03-18T12:39:48Z</time>
-                    </trkpt>
-                </trkseg>
-            </trk>
-        </gpx>
-        """
+private extension CollectionDifference {
+    func asTestErrorMessage() -> String {
+        let descriptions = compactMap(testDescription)
 
-let testXMLWithoutTime = """
-        <?xml version="1.0" encoding="UTF-8"?>
-        <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
-            <metadata>
-            </metadata>
-            <trk>
-                <name>Haus- und Seenrunde Ausdauer</name>
-                <type>1</type>
-                <trkseg>
-                    <trkpt lat="51.2760600" lon="12.3769500">
-                        <ele>114.2</ele>
-                    </trkpt>
-                    <trkpt lat="51.2760420" lon="12.3769760">
-                        <ele>114.0</ele>
-                    </trkpt>
-                </trkseg>
-            </trk>
-        </gpx>
-        """
+        guard !descriptions.isEmpty else {
+            return ""
+        }
+
+        return "- " + descriptions.joined(separator: "\n- ")
+    }
+
+    func testDescription(for change: Change) -> String? {
+        switch change {
+        case .insert(let index, let element, let association):
+            if let oldIndex = association {
+                return """
+                Element moved from index \(oldIndex) to \(index): \(element)
+                """
+            } else {
+                return "Additional element at index \(index): \(element)"
+            }
+        case .remove(let index, let element, let association):
+            // If a removal has an association, it means that
+            // it's part of a move, which we're handling above.
+            guard association == nil else {
+                return nil
+            }
+
+            return "Missing element at index \(index): \(element)"
+        }
+    }
+}
