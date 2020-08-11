@@ -1,5 +1,8 @@
 import XCTest
 @testable import GPXKit
+#if canImport(FoundationXML)
+import FoundationXML
+#endif
 
 class GPXParserTests: XCTestCase {
     private var sut: GPXFileParser!

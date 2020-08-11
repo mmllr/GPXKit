@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationXML)
+import FoundationXML
+#endif
 
 public final class GPXExporter {
     private lazy var iso8601Formatter: ISO8601DateFormatter = {

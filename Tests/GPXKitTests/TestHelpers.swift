@@ -1,7 +1,9 @@
 import Foundation
 import XCTest
 @testable import GPXKit
-
+#if canImport(FoundationXML)
+import FoundationXML
+#endif
 
 fileprivate var iso8601Formatter: ISO8601DateFormatter = {
     let formatter = ISO8601DateFormatter()

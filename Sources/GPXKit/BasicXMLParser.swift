@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(FoundationXML)
+import FoundationXML
+#endif
 
 public struct XMLNode: Equatable, Hashable {
     var name: String

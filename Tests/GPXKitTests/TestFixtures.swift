@@ -1,5 +1,8 @@
 import Foundation
 @testable import GPXKit
+#if canImport(FoundationXML)
+import FoundationXML
+#endif
 
 let testXMLWithoutTime = """
         <?xml version="1.0" encoding="UTF-8"?>

@@ -1,5 +1,8 @@
 import Foundation
 import XCTest
+#if canImport(FoundationXML)
+import FoundationXML
+#endif
 @testable import GPXKit
 
 final class GPXExporterTests: XCTestCase {

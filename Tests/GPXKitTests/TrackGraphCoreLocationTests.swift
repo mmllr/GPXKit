@@ -1,5 +1,6 @@
 import XCTest
 @testable import GPXKit
+#if canImport(CoreLocation)
 import CoreLocation
 
 extension TrackGraphTests {
@@ -29,4 +30,4 @@ extension CLLocationCoordinate2D: Equatable {
             return lhs.longitude == rhs.longitude
             }
 }
-
+#endif
