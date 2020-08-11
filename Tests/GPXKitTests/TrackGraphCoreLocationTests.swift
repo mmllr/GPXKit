@@ -1,5 +1,5 @@
 import XCTest
-@testable import GPXKit
+import GPXKit
 #if canImport(CoreLocation)
 import CoreLocation
 

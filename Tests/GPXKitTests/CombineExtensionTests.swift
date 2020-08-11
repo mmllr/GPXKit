@@ -1,6 +1,6 @@
 import XCTest
 import Foundation
-@testable import GPXKit
+import GPXKit
 #if canImport(Combine)
 import Combine
 

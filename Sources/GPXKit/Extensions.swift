@@ -1,7 +1,7 @@
 import Foundation
 
-public extension Coordinate {
-    func distance(to: Coordinate) -> Double {
+public extension GeoCoordinate {
+    func distance(to: GeoCoordinate) -> Double {
         guard let dist = try? distanceVincenty(to: to) else { return calculateSimpleDistance(to: to) }
         return dist
     }
@@ -47,7 +47,7 @@ public extension TrackGraph {
     }
 }
 
-extension GPXFileParser {
+public extension GPXFileParser {
     convenience init?(url: URL) {
         guard let xmlString = try? String(contentsOf: url) else { return nil }
         self.init(xmlString: xmlString)
