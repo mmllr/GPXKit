@@ -37,8 +37,8 @@ private let pi = Double.pi
 ///   - `ConvergenceError.notConverged` if the distance computation does not converge within `maxIter` iterations.
 // https://www.movable-type.co.uk/scripts/latlong-vincenty.html
 // https://github.com/dastrobu/vincenty/blob/master/Sources/vincenty/vincenty.swift
-extension Coordinate {
-    public func distanceVincenty(to: Coordinate,
+extension GeoCoordinate {
+    public func distanceVincenty(to: GeoCoordinate,
                                  tol: Double = 1e-12,
                                  maxIter: UInt = 200,
                                  ellipsoid: (a: Double, f: Double) = wgs84) throws -> Double {
@@ -51,7 +51,8 @@ extension Coordinate {
         assert(to.longitude.degreesToRadians >= -pi && to.longitude.degreesToRadians <= pi, "to.longitude '\(to.longitude.degreesToRadians)' outside [-π, π]")
 
         // shortcut for zero distance
-        if self == to {
+        if self.latitude == to.latitude &&
+            self.longitude == to.longitude {
             return 0.0
         }
 
@@ -128,7 +129,7 @@ extension Coordinate {
         return B * a * (sigma - delta_sigma)
     }
 
-    func calculateSimpleDistance(to: Coordinate) -> Double {
+    func calculateSimpleDistance(to: GeoCoordinate) -> Double {
         // https://www.movable-type.co.uk/scripts/latlong.html
         let R = 6371e3 // metres
         let φ1 = latitude.degreesToRadians

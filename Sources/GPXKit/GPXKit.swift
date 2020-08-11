@@ -1,6 +1,11 @@
 import Foundation
 
-public struct Coordinate: Equatable, Hashable {
+public protocol GeoCoordinate {
+    var latitude: Double { get}
+    var longitude: Double { get }
+}
+
+public struct Coordinate: Equatable, Hashable, GeoCoordinate {
     public var latitude: Double
     public var longitude: Double
     public var elevation: Double

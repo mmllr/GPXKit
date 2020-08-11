@@ -117,6 +117,40 @@ extension XCTest {
     \(message)
     """, file: file, line: line)
     }
+
+    func assertGeoCoordinateEqual(
+        _ expected: GeoCoordinate,
+        _ actual: GeoCoordinate,
+        accuracy: Double = 0.0001,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) {
+        XCTAssertEqual(expected.latitude,
+                       actual.latitude,
+                       accuracy: accuracy,
+                       "Expected latitude: \(expected.latitude), got \(actual.latitude)",
+                       file: file, line: line)
+        XCTAssertEqual(expected.longitude,
+                       actual.longitude,
+                       accuracy: accuracy,
+                       "Expected longitude: \(expected.longitude), got \(actual.longitude)",
+                       file: file,
+                       line: line)
+    }
+
+    func assertGeoCoordinatesEqual<T: BidirectionalCollection>(
+        _ expected: T,
+        _ acutal: T,
+        accuracy: Double = 0.00001,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) where T.Element: GeoCoordinate {
+        XCTAssertEqual(expected.count, acutal.count)
+        zip(expected, acutal).forEach { lhs, rhs in
+            assertGeoCoordinateEqual(lhs, rhs, accuracy: accuracy, file: file, line: line)
+        }
+    }
+
 }
 
 private extension CollectionDifference {
