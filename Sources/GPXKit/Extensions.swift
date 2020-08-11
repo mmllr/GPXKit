@@ -40,3 +40,9 @@ public extension GPXTrack {
 		TrackGraph(points: trackPoints)
 	}
 }
+
+public extension TrackGraph {
+    init(points: [TrackPoint]) {
+        self.init(coords: points.map { $0.coordinate })
+    }
+}

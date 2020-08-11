@@ -1,10 +1,5 @@
 import Foundation
 
-public struct GPXTrack: Equatable {
-	public let date: Date?
-	public let title: String
-	public let trackPoints: [TrackPoint]
-}
 
 public enum GPXParserError: Error {
 	case invalidGPX

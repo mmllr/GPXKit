@@ -1,4 +1,6 @@
 import Foundation
+#if canImport(CoreLocation)
+
 import CoreLocation
 
 public extension TrackGraph {
@@ -9,14 +11,10 @@ public extension TrackGraph {
     }
 }
 
-public extension TrackGraph {
-    init(points: [TrackPoint]) {
-		self.init(coords: points.map { $0.coordinate })
-    }
-}
-
 public extension CLLocationCoordinate2D {
     init(_ coord: Coordinate) {
 		self.init(latitude: coord.latitude, longitude: coord.longitude)
     }
 }
+
+#endif
