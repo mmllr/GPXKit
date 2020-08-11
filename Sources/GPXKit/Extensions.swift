@@ -46,3 +46,15 @@ public extension TrackGraph {
         self.init(coords: points.map { $0.coordinate })
     }
 }
+
+extension GPXFileParser {
+    convenience init?(url: URL) {
+        guard let xmlString = try? String(contentsOf: url) else { return nil }
+        self.init(xmlString: xmlString)
+    }
+
+    convenience init?(data: Data) {
+        guard let xmlString = String(data: data, encoding: .utf8) else { return nil }
+        self.init(xmlString: xmlString)
+    }
+}
