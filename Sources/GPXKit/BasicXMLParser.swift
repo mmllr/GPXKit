@@ -10,9 +10,9 @@ public struct XMLNode: Equatable, Hashable {
     public var children: [XMLNode] = []
 }
 
-public enum BasicXMLParserError: Error {
+public enum BasicXMLParserError: Error, Equatable {
     case noContent
-    case parseError(NSError)
+    case parseError(NSError, Int)
 }
 
 public class BasicXMLParser: NSObject, XMLParserDelegate {
@@ -32,7 +32,7 @@ public class BasicXMLParser: NSObject, XMLParserDelegate {
             guard let result = result else { return .failure(.noContent) }
             return .success(result)
         } else {
-            let error = BasicXMLParserError.parseError(parser.parserError! as NSError)
+            let error = BasicXMLParserError.parseError(parser.parserError! as NSError, parser.lineNumber)
             return .failure(error)
         }
     }
@@ -51,5 +51,10 @@ public class BasicXMLParser: NSObject, XMLParserDelegate {
     public func parser(_: XMLParser, foundCharacters string: String) {
 		let contentSoFar = resultStack.last?.content ?? ""
 		resultStack[resultStack.count - 1].content = contentSoFar + string.trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
+    public func parser(_ parser: XMLParser,
+                         parseErrorOccurred parseError: Error) {
+        print(parseError.localizedDescription)
     }
 }

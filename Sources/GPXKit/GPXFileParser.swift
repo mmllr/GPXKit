@@ -3,9 +3,10 @@ import Foundation
 import FoundationXML
 #endif
 
-public enum GPXParserError: Error {
+public enum GPXParserError: Error, Equatable {
 	case invalidGPX
 	case noTracksFound
+    case parseError(NSError, Int)
 }
 
 internal enum GPXTags: String {
@@ -43,8 +44,8 @@ final public class GPXFileParser {
 			switch error {
 			case .noContent:
 				return .failure(.invalidGPX)
-			case .parseError:
-				return .failure(.invalidGPX)
+			case let .parseError(error, lineNumber):
+                return .failure(.parseError(error, lineNumber))
 			}
 		}
 	}
