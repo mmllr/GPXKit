@@ -38,10 +38,10 @@ private let pi = Double.pi
 // https://www.movable-type.co.uk/scripts/latlong-vincenty.html
 // https://github.com/dastrobu/vincenty/blob/master/Sources/vincenty/vincenty.swift
 extension GeoCoordinate {
-    public func distanceVincenty(to: GeoCoordinate,
+    public func distanceVincenty(to: Self,
                                  tol: Double = 1e-12,
                                  maxIter: UInt = 200,
-                                 ellipsoid: (a: Double, f: Double) = wgs84) throws -> Double {
+                                 ellipsoid: (a: Double, f: Double) = wgs84) throws -> Double where Self.ValueType == Double {
         assert(tol > 0, "tol '\(tol)' ≤ 0")
 
         // validate lat and lon values
@@ -129,7 +129,7 @@ extension GeoCoordinate {
         return B * a * (sigma - delta_sigma)
     }
 
-    func calculateSimpleDistance(to: GeoCoordinate) -> Double {
+    func calculateSimpleDistance(to: Self) -> Double where Self.ValueType == Double {
         // https://www.movable-type.co.uk/scripts/latlong.html
         let R = 6371e3 // metres
         let φ1 = latitude.degreesToRadians

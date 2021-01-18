@@ -1,7 +1,7 @@
 import Foundation
 
 public extension GeoCoordinate {
-    func distance(to: GeoCoordinate) -> Double {
+    func distance(to: Self) -> Double where Self.ValueType == Double {
         guard let dist = try? distanceVincenty(to: to) else { return calculateSimpleDistance(to: to) }
         return dist
     }

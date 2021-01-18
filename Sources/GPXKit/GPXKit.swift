@@ -1,8 +1,9 @@
 import Foundation
 
-public protocol GeoCoordinate {
-    var latitude: Double { get}
-    var longitude: Double { get }
+public protocol GeoCoordinate: Equatable {
+    associatedtype ValueType: FloatingPoint
+    var latitude: ValueType { get}
+    var longitude: ValueType { get }
 }
 
 public struct Coordinate: Equatable, Hashable, GeoCoordinate {

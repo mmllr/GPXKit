@@ -25,7 +25,12 @@ class GPXParserTests: XCTestCase {
         parseXML("")
 
         XCTAssertNil(result)
-        XCTAssertEqual(.invalidGPX, parseError)
+        if case let .parseError(error, line) = parseError {
+            XCTAssertEqual(0, line)
+            XCTAssertEqual(1, error.code)
+        } else {
+            XCTFail("Exepcted parse error, got \(String(describing: parseError))")
+        }
     }
 
     func testParsingGPXFilesWithoutATrack() {
