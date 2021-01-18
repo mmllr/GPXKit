@@ -118,13 +118,13 @@ extension XCTest {
     """, file: file, line: line)
     }
 
-    func assertGeoCoordinateEqual<T: GeoCoordinate>(
-        _ expected: T,
-        _ actual: T,
+    func assertGeoCoordinateEqual(
+        _ expected: GeoCoordinate,
+        _ actual: GeoCoordinate,
         accuracy: Double = 0.0001,
         file: StaticString = #filePath,
         line: UInt = #line
-    ) where T.ValueType == Double {
+    ) {
         XCTAssertEqual(expected.latitude,
                        actual.latitude,
                        accuracy: accuracy,
@@ -144,7 +144,7 @@ extension XCTest {
         accuracy: Double = 0.00001,
         file: StaticString = #filePath,
         line: UInt = #line
-    ) where T.Element: GeoCoordinate, T.Element.ValueType == Double {
+    ) where T.Element: GeoCoordinate {
         XCTAssertEqual(expected.count, acutal.count)
         zip(expected, acutal).forEach { lhs, rhs in
             assertGeoCoordinateEqual(lhs, rhs, accuracy: accuracy, file: file, line: line)

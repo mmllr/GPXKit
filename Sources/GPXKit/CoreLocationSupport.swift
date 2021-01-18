@@ -12,7 +12,7 @@ public extension TrackGraph {
 }
 
 public extension CLLocationCoordinate2D {
-    init<Coord: GeoCoordinate>(_ coord: Coord) where Coord.ValueType == Double {
+    init(_ coord: GeoCoordinate) {
 		self.init(latitude: coord.latitude, longitude: coord.longitude)
     }
 }

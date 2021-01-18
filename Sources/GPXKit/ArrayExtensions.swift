@@ -4,7 +4,7 @@ import Foundation
 import MapKit
 import CoreLocation
 
-public extension Array where Element: GeoCoordinate, Element.ValueType == Double {
+public extension Array where Element: GeoCoordinate {
     var polyLine: MKPolyline {
         let coords = map(CLLocationCoordinate2D.init)
         return MKPolyline(coordinates: coords, count: coords.count)
