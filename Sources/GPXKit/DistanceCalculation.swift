@@ -146,7 +146,7 @@ extension GeoCoordinate {
     }
 
     //  one degree of latitude is always approximately 111 kilometers (69 miles)
-    func radiusInMeters(latitudeDelta: Double) -> Double {
+    public func radiusInMeters(latitudeDelta: Double) -> Double {
         let topCentralLat: Double = latitude - latitudeDelta / 2
         let topCentralLocation = Coordinate(latitude: topCentralLat, longitude: longitude, elevation: 0)
         return distance(to: topCentralLocation)
