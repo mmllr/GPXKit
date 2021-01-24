@@ -30,8 +30,8 @@ extension String {
 
 extension Coordinate {
     static var random: Coordinate {
-        Coordinate(latitude: Double.random(in: 1..<100),
-                   longitude: Double.random(in: 1..<100),
+        Coordinate(latitude: Double.random(in: -90..<90),
+                   longitude: Double.random(in: -180..<180),
                    elevation: Double.random(in: 1..<100))
     }
 }
