@@ -24,20 +24,11 @@ public extension TrackGraph {
 			}
 			return elevation
 		}
-	}
-
-	var heightMap: [(Int, Int)] {
-		var distanceSoFar: Double = 0
-		return segments.map {
-			distanceSoFar += $0.distanceInMeters
-			return (Int(distanceSoFar), Int($0.coordinate.elevation))
-		}
-	}
-}
-
-public extension GPXTrack {
-	var graph: TrackGraph {
-		TrackGraph(points: trackPoints)
+        heightMap = segments.reduce((0.0, [DistanceHeight]())) { acc, segment in
+            let distanceSoFar = acc.0 + segment.distanceInMeters
+            let heightMap = acc.1 + [DistanceHeight(distance: distanceSoFar, elevation: segment.coordinate.elevation)]
+            return (distanceSoFar, heightMap)
+        }.1
 	}
 }
 
