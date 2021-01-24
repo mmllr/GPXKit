@@ -32,6 +32,11 @@ public struct TrackGraph: Equatable {
 public struct DistanceHeight: Hashable {
     public var distance: Double
     public var elevation: Double
+
+    public init(distance: Double, elevation: Double) {
+        self.distance = distance
+        self.elevation = elevation
+    }
 }
 
 public struct GPXTrack: Equatable {
