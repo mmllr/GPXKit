@@ -1,9 +1,15 @@
 import Foundation
 import XCTest
+import Difference
+
 @testable import GPXKit
 #if canImport(FoundationXML)
 import FoundationXML
 #endif
+
+func XCTAssertEqual<T: Equatable>(_ expected: T, _ received: T, file: StaticString = #filePath, line: UInt = #line) {
+    XCTAssertTrue(expected == received, "Found difference for \n" + diff(expected, received).joined(separator: ", "), file: file, line: line)
+}
 
 fileprivate var iso8601Formatter: ISO8601DateFormatter = {
     let formatter = ISO8601DateFormatter()
@@ -17,6 +23,14 @@ func expectedDate(for dateString: String) -> Date {
 
 func expectedString(for date: Date) -> String {
     return iso8601Formatter.string(from: date)
+}
+
+func givenTrackPoints(_ count: Int) -> [TrackPoint] {
+    let date = Date()
+
+    return (1..<count).map { sec in
+        TrackPoint(coordinate: .random, date: date + TimeInterval(sec))
+    }
 }
 
 extension String {

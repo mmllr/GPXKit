@@ -8,7 +8,7 @@ public protocol GeoCoordinate {
 public struct Coordinate: Equatable, Hashable, GeoCoordinate {
     public var latitude: Double
     public var longitude: Double
-    public var elevation: Double
+    public var elevation: Double = 0
 }
 
 public struct TrackSegment: Hashable {
@@ -39,16 +39,25 @@ public struct DistanceHeight: Hashable {
     }
 }
 
+public struct GeoBounds: Hashable, Codable {
+    public var minLatitude: Double
+    public var minLongitude: Double
+    public var maxLatitude: Double
+    public var maxLongitude: Double
+}
+
 public struct GPXTrack: Equatable {
     public var date: Date?
     public var title: String
     public var trackPoints: [TrackPoint]
     public var graph: TrackGraph
+    public var bounds: GeoBounds
 
     public init(date: Date? = nil, title: String, trackPoints: [TrackPoint]) {
         self.date = date
         self.title = title
         self.trackPoints = trackPoints
         self.graph = TrackGraph(points: trackPoints)
+        self.bounds = trackPoints.bounds()
     }
 }

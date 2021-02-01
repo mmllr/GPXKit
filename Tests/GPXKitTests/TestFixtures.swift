@@ -4,6 +4,13 @@ import Foundation
 import FoundationXML
 #endif
 
+extension Coordinate {
+    static let kreisel = Coordinate(latitude: 51.3322855, longitude: 12.3620086)
+    static let dehner = Coordinate(latitude: 51.271591, longitude: 12.3736913)
+    static let leipzig = Coordinate(latitude: 51.323331, longitude: 12.368279)
+    static let postPlatz = Coordinate(latitude: 51.0507224, longitude: 13.7315993)
+}
+
 let testXMLWithoutTime = """
         <?xml version="1.0" encoding="UTF-8"?>
         <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">

@@ -14,6 +14,7 @@ let package = Package(
             targets: ["GPXKit"]),
     ],
     dependencies: [
+        .package(name: "Difference", url: "https://github.com/krzysztofzablocki/Difference.git", .branch("master")),
     ],
     targets: [
         .target(
@@ -21,6 +22,8 @@ let package = Package(
             dependencies: []),
         .testTarget(
             name: "GPXKitTests",
-            dependencies: ["GPXKit"]),
+            dependencies: [
+                "GPXKit", "Difference"
+            ]),
     ]
 )

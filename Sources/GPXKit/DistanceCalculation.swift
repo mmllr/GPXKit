@@ -151,4 +151,47 @@ extension GeoCoordinate {
         let topCentralLocation = Coordinate(latitude: topCentralLat, longitude: longitude, elevation: 0)
         return distance(to: topCentralLocation)
     }
+
+    // http://janmatuschek.de/LatitudeLongitudeBoundingCoordinates#Latitude
+    public func bounds(distanceInMeters: Double) -> GeoBounds? {
+        guard distanceInMeters >= 0.0 else { return nil }
+
+        // angular distance is radians on a great circle
+        let earthRadius = 6371e3 // metres
+        let radDist = distanceInMeters / earthRadius
+        let radLatitude = latitude.degreesToRadians
+        let radLongitude = longitude.degreesToRadians
+
+        let MinLatitude = -90.degreesToRadians // -PI/2
+        let MaxLatitude = 90.degreesToRadians  // PI/2
+        let MinLongitude = -180.degreesToRadians   // -PI
+        let MaxLongitude = 180.degreesToRadians    // PI
+
+        var minLat: Double = radLatitude - radDist
+        var maxLat: Double = radLatitude + radDist
+
+        var minLon: Double, maxLon: Double
+
+        if minLat > MinLatitude && maxLat < MaxLatitude {
+            let deltaLon = asin(sin(radDist) / cos(radLatitude))
+            minLon = radLongitude - deltaLon
+
+            if minLon < MinLongitude { minLon += 2 * .pi }
+            maxLon = radLongitude + deltaLon
+            if maxLon > MaxLongitude { maxLon -= 2 * .pi }
+        }
+        else {
+            minLat = max(minLat, MinLatitude)
+            maxLat = min(maxLat, MaxLatitude)
+            minLon = MinLongitude
+            maxLon = MaxLongitude
+        }
+
+        return GeoBounds(
+            minLatitude: minLat.radiansToDegrees,
+            minLongitude: minLon.radiansToDegrees,
+            maxLatitude: maxLat.radiansToDegrees,
+            maxLongitude: maxLon.radiansToDegrees
+        )
+    }
 }

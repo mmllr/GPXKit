@@ -5,6 +5,14 @@ public extension GeoCoordinate {
         guard let dist = try? distanceVincenty(to: to) else { return calculateSimpleDistance(to: to) }
         return dist
     }
+
+    static var validLatitudeRange: ClosedRange<Double> { -90...90 }
+    static var validLongitudeRange: ClosedRange<Double> { -180...180 }
+}
+
+extension TrackPoint: GeoCoordinate {
+    public var latitude: Double { coordinate.latitude }
+    public var longitude: Double { coordinate.longitude }
 }
 
 public extension TrackGraph {
@@ -47,5 +55,37 @@ public extension GPXFileParser {
     convenience init?(data: Data) {
         guard let xmlString = String(data: data, encoding: .utf8) else { return nil }
         self.init(xmlString: xmlString)
+    }
+}
+
+public extension GeoBounds {
+    static let empty = GeoBounds(
+        minLatitude: Coordinate.validLatitudeRange.upperBound,
+        minLongitude: Coordinate.validLongitudeRange.upperBound,
+        maxLatitude: Coordinate.validLatitudeRange.lowerBound,
+        maxLongitude: Coordinate.validLongitudeRange.lowerBound
+    )
+
+    func intersects(_ rhs: GeoBounds) -> Bool {
+        return (minLatitude...maxLatitude).overlaps(rhs.minLatitude...rhs.maxLatitude) &&
+            (minLongitude...maxLongitude).overlaps(rhs.minLongitude...rhs.maxLongitude)
+    }
+
+    func contains(_ coordinate: GeoCoordinate) -> Bool {
+        return (minLatitude...maxLatitude).contains(coordinate.latitude) &&
+            (minLongitude...maxLongitude).contains(coordinate.longitude)
+    }
+}
+
+public extension Collection where Element: GeoCoordinate {
+    func bounds() -> GeoBounds {
+        reduce(GeoBounds.empty) { bounds, coord in
+            GeoBounds(
+                minLatitude: Swift.min(bounds.minLatitude, coord.latitude),
+                minLongitude: Swift.min(bounds.minLongitude, coord.longitude),
+                maxLatitude: Swift.max(bounds.maxLatitude, coord.latitude),
+                maxLongitude: Swift.max(bounds.maxLongitude, coord.longitude)
+            )
+        }
     }
 }

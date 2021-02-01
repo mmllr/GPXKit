@@ -34,14 +34,6 @@ final class GPXExporterTests: XCTestCase {
         }
     }
 
-    func givenTrackPoints(_ count: Int) -> [TrackPoint] {
-        let date = Date()
-
-        return (1..<count).map { sec in
-            TrackPoint(coordinate: .random, date: date + TimeInterval(sec))
-        }
-    }
-
     // MARK: Tests
 
     func testExportingAnEmptyTrackWithDateAndTitleResultsInAnEmptyGPXFile() {
