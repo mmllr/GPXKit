@@ -44,6 +44,13 @@ public struct GeoBounds: Hashable, Codable {
     public var minLongitude: Double
     public var maxLatitude: Double
     public var maxLongitude: Double
+
+    public init(minLatitude: Double, minLongitude: Double, maxLatitude: Double, maxLongitude: Double) {
+        self.minLatitude = minLatitude
+        self.minLongitude = minLongitude
+        self.maxLatitude = maxLatitude
+        self.maxLongitude = maxLongitude
+    }
 }
 
 public struct GPXTrack: Equatable {
