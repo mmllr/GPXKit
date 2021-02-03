@@ -157,7 +157,7 @@ extension GeoCoordinate {
         guard distanceInMeters >= 0.0 else { return nil }
 
         // angular distance is radians on a great circle
-        let earthRadius = 6371e3 // metres
+        let earthRadius = 6_378_137.0 // meters
         let radDist = distanceInMeters / earthRadius
         let radLatitude = latitude.degreesToRadians
         let radLongitude = longitude.degreesToRadians
