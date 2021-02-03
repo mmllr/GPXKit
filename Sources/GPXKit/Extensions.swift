@@ -22,32 +22,6 @@ public extension GeoCoordinate {
     }
 }
 
-public extension Array where Element: GeoCoordinate {
-    func path(normalized: Bool = true) -> CGPath {
-        var min = CGPoint(x: CGFloat.greatestFiniteMagnitude, y: CGFloat.greatestFiniteMagnitude)
-        var max = CGPoint(x: -CGFloat.greatestFiniteMagnitude, y: -CGFloat.greatestFiniteMagnitude)
-        var points: [CGPoint] = []
-        points.reserveCapacity(count)
-        for coord in self {
-            let proj = coord.mercatorProjectionToDegrees()
-            points.append(CGPoint(x: proj.x, y: proj.y))
-            min.x = Swift.min(min.x, CGFloat(proj.x))
-            min.y = Swift.min(min.y, CGFloat(proj.y))
-            max.x = Swift.max(max.x, CGFloat(proj.x))
-            max.y = Swift.max(max.y, CGFloat(proj.y))
-        }
-        let width = max.x - min.x
-        let height = max.y - min.y
-        let downScale: CGFloat = 1.0 / Swift.max(width, height)
-        let scaleTransform = normalized ? CGAffineTransform(scaleX: downScale, y: downScale) : .identity
-        let positionTransform = CGAffineTransform(translationX: -min.x, y: -min.y)
-        let combined = positionTransform.concatenating(scaleTransform)
-        let path = CGMutablePath()
-        path.addLines(between: points, transform: combined)
-        return path
-    }
-}
-
 extension TrackPoint: GeoCoordinate {
     public var latitude: Double { coordinate.latitude }
     public var longitude: Double { coordinate.longitude }
