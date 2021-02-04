@@ -101,3 +101,21 @@ public extension Collection where Element: GeoCoordinate {
         }
     }
 }
+
+public extension Coordinate {
+    // https://gis.stackexchange.com/questions/2951/algorithm-for-offsetting-a-latitude-longitude-by-some-amount-of-meters
+    func offset(north: Double = 0, east: Double = 0) -> Coordinate {
+        // Earth’s radius, sphere
+        let radius: Double = 6_378_137
+
+        // Coordinate offsets in radians
+        let dLat = north / radius
+        let dLon = east / (radius * cos(.pi * latitude / 180))
+
+        // OffsetPosition, decimal degrees
+        return Coordinate(
+            latitude: latitude + dLat * 180 / .pi,
+            longitude: longitude + dLon * 180 / .pi
+        )
+    }
+}

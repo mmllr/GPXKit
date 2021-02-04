@@ -4,7 +4,7 @@ import Foundation
 import MapKit
 import CoreLocation
 
-public extension Array where Element: GeoCoordinate {
+public extension Collection where Element: GeoCoordinate {
     var polyLine: MKPolyline {
         let coords = map(CLLocationCoordinate2D.init)
         return MKPolyline(coordinates: coords, count: coords.count)
@@ -21,7 +21,7 @@ public extension Array where Element: GeoCoordinate {
 #if canImport(CoreGraphics)
 import CoreGraphics
 
-public extension Array where Element: GeoCoordinate {
+public extension Collection where Element: GeoCoordinate {
     func path(normalized: Bool = true) -> CGPath {
         var min = CGPoint(x: CGFloat.greatestFiniteMagnitude, y: CGFloat.greatestFiniteMagnitude)
         var max = CGPoint(x: -CGFloat.greatestFiniteMagnitude, y: -CGFloat.greatestFiniteMagnitude)
@@ -47,3 +47,16 @@ public extension Array where Element: GeoCoordinate {
     }
 }
 #endif
+
+public extension Collection where Element: GeoCoordinate {
+    func removeIf(closerThan meters: Double) -> [Coordinate] {
+        guard count > 2 else { return map { Coordinate(latitude: $0.latitude, longitude: $0.longitude) } }
+
+        return reduce([Coordinate(latitude: self[startIndex].latitude, longitude: self[startIndex].longitude)]) { coords, coord in
+            if coords.last!.distance(to: coord) > meters {
+                return coords + [Coordinate(latitude: coord.latitude, longitude: coord.longitude)]
+            }
+            return coords
+        }
+    }
+}
