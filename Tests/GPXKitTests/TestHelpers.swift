@@ -51,7 +51,7 @@ extension Coordinate {
 }
 
 extension TrackPoint {
-    var expectedXMLNode: GPXKit.XMLNode {
+    func expectedXMLNode(withDate: Bool = false) -> GPXKit.XMLNode {
         XMLNode(name: GPXTags.trackPoint.rawValue,
                 atttributes: [
                     GPXAttributes.latitude.rawValue: "\(coordinate.latitude)",
@@ -59,8 +59,13 @@ extension TrackPoint {
                 ],
                 children: [
                     XMLNode(name: GPXTags.elevation.rawValue,
-                            content: String(format:"%.2f", coordinate.elevation))
-                ])
+                            content: String(format:"%.2f", coordinate.elevation)),
+                    withDate ? date.flatMap {
+                        XMLNode(name: GPXTags.time.rawValue,
+                        content: expectedString(for: $0) )
+                    } : nil
+                ].compactMap {$0 }
+        )
     }
 }
 

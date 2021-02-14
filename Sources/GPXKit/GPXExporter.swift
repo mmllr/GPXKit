@@ -44,8 +44,14 @@ public final class GPXExporter {
                     GPXAttributes.latitude.assign("\"\(point.coordinate.latitude)\""),
                     GPXAttributes.longitude.assign("\"\(point.coordinate.longitude)\"")
                 ].joined(separator: " ")
-                return GPXTags.trackPoint.embed(attributes: attributes,
-                                                GPXTags.elevation.embed(String(format:"%.2f", point.coordinate.elevation))
+                let childs = [GPXTags.elevation.embed(String(format:"%.2f", point.coordinate.elevation)),
+                              exportDate ? point.date.flatMap {
+                                GPXTags.time.embed(iso8601Formatter.string(from: $0))
+                              } : nil
+                ].compactMap { $0 }.joined(separator: "\n")
+                return GPXTags.trackPoint.embed(
+                        attributes: attributes,
+                    childs
                 )
             }.joined(separator: "\n")
         )
@@ -60,7 +66,10 @@ public final class GPXExporter {
 
 extension GPXTags {
     func embed(attributes: String = "", _ content: String) -> String {
-        "<\(rawValue) \(attributes)>\n\(content)\n</\(rawValue)>"
+        let openTag = ["\(rawValue)", attributes]
+            .joined(separator: " ")
+            .trimmingCharacters(in: .whitespaces)
+        return "<\(openTag)>\n\(content)\n</\(rawValue)>"
     }
 }
 

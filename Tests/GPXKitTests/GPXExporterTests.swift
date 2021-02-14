@@ -77,7 +77,7 @@ final class GPXExporterTests: XCTestCase {
         assertNodesAreEqual(expectedContent, result)
     }
 
-    func testExportingANonEmptyTrack() {
+    func testExportingANonEmptyTrackWithDates() {
         let date = Date()
         let track: GPXTrack = GPXTrack(
             date: date,
@@ -97,7 +97,7 @@ final class GPXExporterTests: XCTestCase {
                 XMLNode(name: GPXTags.track.rawValue, children: [
                     XMLNode(name: GPXTags.name.rawValue, content: track.title),
                     XMLNode(name: GPXTags.trackSegment.rawValue,
-                            children: track.trackPoints.map { $0.expectedXMLNode })
+                            children: track.trackPoints.map { $0.expectedXMLNode(withDate: true) })
                 ])
             ])
 
@@ -137,7 +137,7 @@ final class GPXExporterTests: XCTestCase {
                 XMLNode(name: GPXTags.track.rawValue, children: [
                     XMLNode(name: GPXTags.name.rawValue, content: track.title),
                     XMLNode(name: GPXTags.trackSegment.rawValue,
-                            children: track.trackPoints.map { $0.expectedXMLNode })
+                            children: track.trackPoints.map { $0.expectedXMLNode(withDate: false) })
                 ])
             ])
 
