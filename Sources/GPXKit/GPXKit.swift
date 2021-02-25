@@ -9,17 +9,34 @@ public struct Coordinate: Equatable, Hashable, GeoCoordinate {
     public var latitude: Double
     public var longitude: Double
     public var elevation: Double = 0
+
+    public init(latitude: Double, longitude: Double, elevation: Double = 0) {
+        self.latitude = latitude
+        self.longitude = longitude
+        self.elevation = elevation
+    }
 }
 
 public struct TrackSegment: Hashable {
     public var coordinate: Coordinate
     public var distanceInMeters: Double
+
+    public init(coordinate: Coordinate, distanceInMeters: Double) {
+        self.coordinate = coordinate
+        self.distanceInMeters = distanceInMeters
+    }
 }
 
 public struct TrackPoint: Hashable {
     public var coordinate: Coordinate
     public var date: Date?
     public var power: Measurement<UnitPower>?
+
+    public init(coordinate: Coordinate, date: Date? = nil, power: Measurement<UnitPower>? = nil) {
+        self.coordinate = coordinate
+        self.date = date
+        self.power = power
+    }
 }
 
 public struct TrackGraph: Equatable {
@@ -27,6 +44,13 @@ public struct TrackGraph: Equatable {
     public var distance: Double
     public var elevationGain: Double
     public var heightMap: [DistanceHeight]
+
+    public init(segments: [TrackSegment], distance: Double, elevationGain: Double, heightMap: [DistanceHeight]) {
+        self.segments = segments
+        self.distance = distance
+        self.elevationGain = elevationGain
+        self.heightMap = heightMap
+    }
 }
 
 public struct DistanceHeight: Hashable {
