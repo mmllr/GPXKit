@@ -5,8 +5,7 @@ public extension GeoCoordinate {
     static var validLongitudeRange: ClosedRange<Double> { -180...180 }
 
     func distance(to: GeoCoordinate) -> Double {
-        guard let dist = try? distanceVincenty(to: to) else { return calculateSimpleDistance(to: to) }
-        return dist
+        return calculateSimpleDistance(to: to)
     }
 
     // https://wiki.openstreetmap.org/wiki/Mercator
