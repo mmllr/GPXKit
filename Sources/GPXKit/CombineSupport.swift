@@ -16,6 +16,7 @@ extension GPXFileParser {
     /// Helper for loading a gpx track from an url.
     /// - Parameter url: The url of the GPX file. See [GPX specification for details](https://www.topografix.com/gpx.asp).
     /// - Returns: An AnyPublisher with Output `GPXTrack` and Failure of `GPXParserError`.
+    ///
     /// ```swift
     /// let data = xmlString.data(using: .utf8)
     /// GPXFileParser
@@ -35,6 +36,7 @@ extension GPXFileParser {
     // Helper for loading a gpx track from data.
     /// - Parameter data: The data containing the GPX as xml. See [GPX specification for details](https://www.topografix.com/gpx.asp).
     /// - Returns: An AnyPublisher with Output `GPXTrack` and Failure of `GPXParserError`.
+    ///
     /// ```swift
     /// let data = xmlString.data(using: .utf8)
     /// GPXFileParser

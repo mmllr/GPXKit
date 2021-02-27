@@ -152,6 +152,7 @@ public extension GeoCoordinate {
     ///   - north: The offset in meters in _vertical_ direction as seen on a map. Use negative values to go _upwards_ on a globe, positive values for moving downwards.
     ///   - east: The offset in meters in _horizontal_ direction as seen on a map. Use negative values to go to the _west_ on a globe, positive values for moving in the _eastern_ direction.
     /// - Returns: A new `Coordinate` value, offset by north and east values in meters.
+    ///
     /// ```swift
     /// let position = Coordinate(latitude: 51.323331, longitude: 12.368279)
     /// position.offset(east: 60),
@@ -159,6 +160,7 @@ public extension GeoCoordinate {
     /// position.offset(north: 120),
     /// position.offset(north: -160),
     /// ```
+    /// 
     /// See [here](https://gis.stackexchange.com/questions/2951/algorithm-for-offsetting-a-latitude-longitude-by-some-amount-of-meters) for more details.
     func offset(north: Double = 0, east: Double = 0) -> Coordinate {
         // Earth’s radius, sphere
