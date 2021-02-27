@@ -12,7 +12,7 @@ A library for parsing and exporting gpx files with no dependencies besides Found
 To use the `GPXKit` library in a SwiftPM project, add the following line to the dependencies in your `Package.swift` file:
 
 ```swift
-.package(url: "https://github.com/mmllr/GPXKit", from: "1.2.5"),
+.package(url: "https://github.com/mmllr/GPXKit", from: "1.2.6"),
 ```
 ## Usage examples
 ### Importing a track
@@ -61,6 +61,13 @@ GPXFileParser.load(from: url)
    }
 ```
 See tests for more usage examples.
+### Documentation
+Run the following commands from the projects root to generate the documentation:
+```
+[sudo] gem install jazzy
+jazzy
+```
+Browse the documention under the doc folder.
 ## Contributing
 Contributions to this project will be more than welcomed. Feel free to add a pull request or open an issue.
 If you require a feature that has yet to be available, do open an issue, describing why and what the feature could bring and how it would help you!
