@@ -3,9 +3,13 @@ import Foundation
 import FoundationXML
 #endif
 
+/// Error descringing export erros
 public enum GPXParserError: Error, Equatable {
+    /// The provided xml contains no valid GPX.
 	case invalidGPX
+    // No tracks where found in the provided GPX xml.
 	case noTracksFound
+    /// The provided xml could not be parsed. Contains the underlying NSError from the XMLParser along with the xml files line number where the error occured.
     case parseError(NSError, Int)
 }
 
@@ -27,13 +31,18 @@ internal enum GPXAttributes: String {
 	case longitude = "lon"
 }
 
+/// Class for importing a GPX xml to an `GPXTrack` value.
 final public class GPXFileParser {
 	private let xml: String
 
+    /// Initializer
+    /// - Parameter xmlString: The GPX xml string. See [GPX specification for details](https://www.topografix.com/gpx.asp).
 	public init(xmlString: String) {
 		self.xml = xmlString
 	}
 
+    /// Parses the GPX xml.
+    /// - Returns: A `Result` of the `GPXTrack` in the success or an `GPXParserError` in the failure case.
 	public func parse() -> Result<GPXTrack, GPXParserError> {
 		let parser = BasicXMLParser(xml: xml)
 		switch parser.parse() {

@@ -19,25 +19,26 @@ public let wgs84 = (a: 6_378_137.0, f: 1 / 298.257223563)
 /// π (for convenience)
 private let pi = Double.pi
 
-///
-/// Compute the distance between two points on an ellipsoid.
-/// The ellipsoid parameters default to the WGS-84 parameters.
-///
-/// - Parameters:
-///   - x: first point with latitude and longitude in radiant.
-///   - y: second point with latitude and longitude in radiant.
-///   - tol: tolerance for the computed distance (in meters)
-///   - maxIter: maximal number of iterations
-///   - a: first ellipsoid parameter in meters (defaults to WGS-84 parameter)
-///   - f: second ellipsoid parameter in meters (defaults to WGS-84 parameter)
-///
-/// - Returns: distance between `x` and `y` in meters.
-///
-/// - Throws:
-///   - `ConvergenceError.notConverged` if the distance computation does not converge within `maxIter` iterations.
-// https://www.movable-type.co.uk/scripts/latlong-vincenty.html
-// https://github.com/dastrobu/vincenty/blob/master/Sources/vincenty/vincenty.swift
 extension GeoCoordinate {
+    ///
+    /// Compute the distance between two points on an ellipsoid.
+    ///
+    /// - Parameters:
+    ///   - x: first point with latitude and longitude in radiant.
+    ///   - y: second point with latitude and longitude in radiant.
+    ///   - tol: tolerance for the computed distance (in meters)
+    ///   - maxIter: maximal number of iterations
+    ///   - a: first ellipsoid parameter in meters (defaults to WGS-84 parameter)
+    ///   - f: second ellipsoid parameter in meters (defaults to WGS-84 parameter)
+    ///
+    /// - Returns: distance between `x` and `y` in meters.
+    ///
+    /// - Throws:
+    ///   - `ConvergenceError.notConverged` if the distance computation does not converge within `maxIter` iterations.
+    ///
+    /// The ellipsoid parameters default to the WGS-84 parameters.
+    /// [Details](https://www.movable-type.co.uk/scripts/latlong-vincenty.html).
+    /// [Sample implementation in Swift](https://github.com/dastrobu/vincenty/blob/master/Sources/vincenty/vincenty.swift).
     public func distanceVincenty(to: GeoCoordinate,
                                  tol: Double = 1e-12,
                                  maxIter: UInt = 200,
@@ -129,8 +130,12 @@ extension GeoCoordinate {
         return B * a * (sigma - delta_sigma)
     }
 
-    func calculateSimpleDistance(to: GeoCoordinate) -> Double {
-        // https://www.movable-type.co.uk/scripts/latlong.html
+    /// Calculates the distance in meters to a coordinate using the **haversine** formula.
+    /// - Parameter to: The coordinate to which the distance should be calculated.
+    /// - Returns: Distance in meters
+    ///
+    /// [Details](https://www.movable-type.co.uk/scripts/latlong.html)
+    func calculateHaversineDistance(to: GeoCoordinate) -> Double {
         let R = 6371e3 // metres
         let φ1 = latitude.degreesToRadians
         let φ2 = to.latitude.degreesToRadians
@@ -145,14 +150,22 @@ extension GeoCoordinate {
         return d
     }
 
-    //  one degree of latitude is always approximately 111 kilometers (69 miles)
+    /// Calculates the radius in meters around a coordinate for a latitude delta.
+    ///
+    /// One degree of latitude is always approximately 111 kilometers (69 miles). So the radius can derived from the delta (the coordinates latitude minus latitudeDelta/2).
+    /// - Parameter latitudeDelta: The latitude delta.
+    /// - Returns: The radius in meters.
     public func radiusInMeters(latitudeDelta: Double) -> Double {
         let topCentralLat: Double = latitude - latitudeDelta / 2
         let topCentralLocation = Coordinate(latitude: topCentralLat, longitude: longitude, elevation: 0)
         return distance(to: topCentralLocation)
     }
 
-    // http://janmatuschek.de/LatitudeLongitudeBoundingCoordinates#Latitude
+    /// Calculates the `GeoBounds` for a `GeoCoordinate` around a given radius in meters.
+    ///
+    /// [Details on Jan Philip Matuscheks website](http://janmatuschek.de/LatitudeLongitudeBoundingCoordinates#Latitude)
+    /// - Parameter distanceInMeters: Distance in meters around the coordinate.
+    /// - Returns: A `GeoBounds` value or nil if no bounds could be calulcated (if distanceInMeters is below zero).
     public func bounds(distanceInMeters: Double) -> GeoBounds? {
         guard distanceInMeters >= 0.0 else { return nil }
 

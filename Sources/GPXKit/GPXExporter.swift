@@ -3,6 +3,7 @@ import Foundation
 import FoundationXML
 #endif
 
+/// A class for exporting a `GPXTrack` to an xml string.
 public final class GPXExporter {
     private lazy var iso8601Formatter: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
@@ -12,11 +13,18 @@ public final class GPXExporter {
     private let track: GPXTrack
     private let exportDate: Bool
 
+    /// Initializes a GPXExporter
+    /// - Parameters:
+    ///   - track: The `GPXTrack` to export.
+    ///   - shouldExportDate: Flag indicating whether it should export the timestamps in the track. Set it to false if you want to omit the valus. This would decrease the exported xml's file size and protects privacy. Defaults to true.
+    ///
+    /// If the track cannot be exported, the resulting `xmlString` property of the exporter is an empty GPX track xml.
     public init(track: GPXTrack, shouldExportDate: Bool = true) {
         self.track = track
         self.exportDate = shouldExportDate
     }
 
+    /// The exported GPX xml string. If a track cannot be exportet, the resulting string. If the track cannot be exported, its value is an empty GPX track xml.
     public var xmlString: String {
         return """
         <?xml version="1.0" encoding="UTF-8"?>

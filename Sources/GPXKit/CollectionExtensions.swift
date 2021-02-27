@@ -5,11 +5,17 @@ import MapKit
 import CoreLocation
 
 public extension Collection where Element: GeoCoordinate {
+    /// Creates a `MKPolyline` form a collection of `GeoCoordinates`
+    ///
+    /// Important: Only available on iOS and macOS targets.
     var polyLine: MKPolyline {
         let coords = map(CLLocationCoordinate2D.init)
         return MKPolyline(coordinates: coords, count: coords.count)
     }
 
+    /// Creates a `CGPath` form a collection of `GeoCoordinates` using an MKMPolylineRenderer. Nil if no path could be created.
+    /// 
+    /// Important: Only available on iOS and macOS targets.
     var path: CGPath? {
         let renderer = MKPolylineRenderer(polyline: polyLine)
         return renderer.path
@@ -22,6 +28,10 @@ public extension Collection where Element: GeoCoordinate {
 import CoreGraphics
 
 public extension Collection where Element: GeoCoordinate {
+
+    /// Creates a path from the collection of `GeoCoordinate`s. Useful if you want to draw a 2D image of a track.
+    /// - Parameter normalized: Flag indicating if the paths values should be normalized into the range 0...1. If true, the resulting values in the path are mapped to value in 0...1 coordinates space, otherwise the values from the geo coordinates. Defaults to true.
+    /// - Returns: A CGPath containg a projected 2D-representation of the geo coordinates.
     func path(normalized: Bool = true) -> CGPath {
         var min = CGPoint(x: CGFloat.greatestFiniteMagnitude, y: CGFloat.greatestFiniteMagnitude)
         var max = CGPoint(x: -CGFloat.greatestFiniteMagnitude, y: -CGFloat.greatestFiniteMagnitude)
@@ -49,6 +59,12 @@ public extension Collection where Element: GeoCoordinate {
 #endif
 
 public extension Collection where Element: GeoCoordinate {
+
+    /// Helper for removing points from a collection if the are closer than a specified threshold.
+    /// - Parameter meters: The threshold predicate in meters for removing points. A point is removed if it ist closer to its predecessor than this value.
+    /// - Returns: An array of `Coordinate` values, each having a minimum distance to their predecessors of least closerThan meters.
+    ///
+    /// Important: The elevation value of the returned `Coordinate` array is always zero.
     func removeIf(closerThan meters: Double) -> [Coordinate] {
         guard count > 2 else { return map { Coordinate(latitude: $0.latitude, longitude: $0.longitude) } }
 
