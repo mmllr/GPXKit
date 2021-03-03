@@ -249,9 +249,9 @@
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Helper for loading a gpx track from an url.</p>
-<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">data</span> <span class="o">=</span> <span class="n">xmlString</span><span class="o">.</span><span class="nf">data</span><span class="p">(</span><span class="nv">using</span><span class="p">:</span> <span class="o">.</span><span class="n">utf8</span><span class="p">)</span>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">url</span> <span class="o">=</span> <span class="c1">// ... url with GPX file</span>
 <span class="kt">GPXFileParser</span>
-   <span class="o">.</span><span class="nf">load</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="n">data</span><span class="p">)</span>
+   <span class="o">.</span><span class="nf">load</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span>
    <span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">track</span> <span class="k">in</span>
         <span class="c1">// do something with track</span>
    <span class="p">}</span>

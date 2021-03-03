@@ -18,9 +18,9 @@ extension GPXFileParser {
     /// - Returns: An AnyPublisher with Output `GPXTrack` and Failure of `GPXParserError`.
     ///
     /// ```swift
-    /// let data = xmlString.data(using: .utf8)
+    /// let url = // ... url with GPX file
     /// GPXFileParser
-    ///    .load(from: data)
+    ///    .load(from: url)
     ///    .map { track in
     ///         // do something with track
     ///    }
