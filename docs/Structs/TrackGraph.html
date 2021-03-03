@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>TrackGraph Structure Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Struct/TrackGraph" class="dashAnchor"></a>
+    <a title="TrackGraph Structure Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html"> Docs</a> (86% documented)</p>
+        <p class="header-right">
+          <form role="search" action="../search.json">
+            <input type="text" placeholder="Search documentation" data-typeahead>
+          </form>
+        </p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html"> Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        TrackGraph Structure Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/BasicXMLParser.html">BasicXMLParser</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GPXExporter.html">GPXExporter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GPXFileParser.html">GPXFileParser</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Global%20Variables.html">Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Global%20Variables.html#/s:6GPXKit5wgs84Sd1a_Sd1ftvp">wgs84</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/BasicXMLParserError.html">BasicXMLParserError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ConvergenceError.html">ConvergenceError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/GPXParserError.html">GPXParserError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/CLLocationCoordinate2D.html">CLLocationCoordinate2D</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Collection.html">Collection</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/GeoCoordinate.html">GeoCoordinate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/Coordinate.html">Coordinate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/DistanceHeight.html">DistanceHeight</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/GPXTrack.html">GPXTrack</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/GeoBounds.html">GeoBounds</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TrackGraph.html">TrackGraph</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TrackPoint.html">TrackPoint</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TrackSegment.html">TrackSegment</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/XMLNode.html">XMLNode</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>TrackGraph</h1>
+              <div class="declaration">
+                <div class="language">
+                  
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">TrackGraph</span> <span class="p">:</span> <span class="kt">Equatable</span></code></pre>
+
+                </div>
+              </div>
+            <p>A value describing a graph of a track. Contains metadata such as a <code><a href="../Structs/GPXTrack.html">GPXTrack</a></code>s distance, elevation and a heightmap.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit10TrackGraphV8segmentsSayAA0B7SegmentVGvp"></a>
+                    <a name="//apple_ref/swift/Property/segments" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit10TrackGraphV8segmentsSayAA0B7SegmentVGvp">segments</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Array of <code><a href="../Structs/TrackSegment.html">TrackSegment</a></code>s. The segments describe a tracks position along with its relative distance to its predecessor.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">segments</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/TrackSegment.html">TrackSegment</a></span><span class="p">]</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit10TrackGraphV8distanceSdvp"></a>
+                    <a name="//apple_ref/swift/Property/distance" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit10TrackGraphV8distanceSdvp">distance</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The overall distance of a track in meters.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">distance</span><span class="p">:</span> <span class="kt">Double</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit10TrackGraphV13elevationGainSdvp"></a>
+                    <a name="//apple_ref/swift/Property/elevationGain" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit10TrackGraphV13elevationGainSdvp">elevationGain</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The overall elevation gain of a track in meters.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">elevationGain</span><span class="p">:</span> <span class="kt">Double</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit10TrackGraphV9heightMapSayAA14DistanceHeightVGvp"></a>
+                    <a name="//apple_ref/swift/Property/heightMap" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit10TrackGraphV9heightMapSayAA14DistanceHeightVGvp">heightMap</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A heightmap, which is an array of <code><a href="../Structs/DistanceHeight.html">DistanceHeight</a></code> values. Each value in the heightMap has the total distance in meters up to that point (imagine it as the values along the x-axis in a 2D-coordinate graph) paired with the elevation in meters above sea level at that point (the y-value in the afforementioned 2D-graph).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">heightMap</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/DistanceHeight.html">DistanceHeight</a></span><span class="p">]</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit10TrackGraphV8segments8distance13elevationGain9heightMapACSayAA0B7SegmentVG_S2dSayAA14DistanceHeightVGtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(segments:distance:elevationGain:heightMap:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit10TrackGraphV8segments8distance13elevationGain9heightMapACSayAA0B7SegmentVG_S2dSayAA14DistanceHeightVGtcfc">init(segments:<wbr>distance:<wbr>elevationGain:<wbr>heightMap:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializer
+You don&rsquo;t need to construct this value by yourself, as it is done by GXPKits track parsing logic.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">segments</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/TrackSegment.html">TrackSegment</a></span><span class="p">],</span> <span class="nv">distance</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span> <span class="nv">elevationGain</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span> <span class="nv">heightMap</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/DistanceHeight.html">DistanceHeight</a></span><span class="p">])</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>segments</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An array of <code><a href="../Structs/TrackSegment.html">TrackSegment</a></code>s.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>distance</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The total distance in meters.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>elevationGain</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The total elevation gain.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>heightMap</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The heightmap</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit10TrackGraphV23coreLocationCoordinatesSaySo22CLLocationCoordinate2DVGvp"></a>
+                    <a name="//apple_ref/swift/Property/coreLocationCoordinates" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit10TrackGraphV23coreLocationCoordinatesSaySo22CLLocationCoordinate2DVGvp">coreLocationCoordinates</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Array of <code>CLLocationCoordinate2D</code> values from the <code>TrackGraph</code>s segments.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">coreLocationCoordinates</span><span class="p">:</span> <span class="p">[</span><span class="kt">CLLocationCoordinate2D</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit10TrackGraphV6coordsACSayAA10CoordinateVG_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(coords:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit10TrackGraphV6coordsACSayAA10CoordinateVG_tcfc">init(coords:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Convenience initialize for creating a <code>TrackGraph</code>  from <code><a href="../Structs/Coordinate.html">Coordinate</a></code>s.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="nf">init</span><span class="p">(</span><span class="nv">coords</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/Coordinate.html">Coordinate</a></span><span class="p">])</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>coords</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Array of <code><a href="../Structs/Coordinate.html">Coordinate</a></code> values.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit10TrackGraphV6pointsACSayAA0B5PointVG_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(points:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit10TrackGraphV6pointsACSayAA0B5PointVG_tcfc">init(points:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Convenience initialize for creating a <code>TrackGraph</code>  from <code><a href="../Structs/TrackPoint.html">TrackPoint</a></code>s.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="nf">init</span><span class="p">(</span><span class="nv">points</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/TrackPoint.html">TrackPoint</a></span><span class="p">])</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>points</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Array of <code><a href="../Structs/TrackPoint.html">TrackPoint</a></code> values.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2021 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2021-02-27)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
