@@ -16,6 +16,7 @@ To use the `GPXKit` library in a SwiftPM project, add the following line to the 
 ```swift
 .package(url: "https://github.com/mmllr/GPXKit", from: "1.2.6"),
 ```
+
 ## Usage examples
 ### Importing a track
 
@@ -51,7 +52,6 @@ let track: GPXTrack = ...
 let exporter = GPXExporter(track: track, shouldExportDate: false)
 print(exporter.xmlString)
 ```
-
 ### Combine integration
 ```swift
 import Combine
@@ -66,7 +66,7 @@ GPXFileParser.load(from: url)
 ```
 See tests for more usage examples.
 
-### Documentation
+## Documentation
 Project documentation is available at [GitHub Pages](https://mmllr.github.io/GPXKit/)
 
 Run the following commands from the projects root to generate the documentation:
@@ -75,6 +75,7 @@ Run the following commands from the projects root to generate the documentation:
 jazzy
 ```
 Browse the documention under the doc folder.
+
 ## Contributing
 Contributions to this project will be more than welcomed. Feel free to add a pull request or open an issue.
 If you require a feature that has yet to be available, do open an issue, describing why and what the feature could bring and how it would help you!
