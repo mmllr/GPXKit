@@ -2,7 +2,7 @@ import Foundation
 @testable import GPXKit
 import XCTest
 
-#if canImport(MapKit) && canImport(CoreLocation)
+#if canImport(MapKit) && canImport(CoreLocation) && !os(watchOS)
 import MapKit
 import CoreLocation
 
