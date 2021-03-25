@@ -177,3 +177,24 @@ public extension GeoCoordinate {
         )
     }
 }
+
+public extension GeoCoordinate {
+
+    /// Calculates the bearing of the coordinate to a second
+    /// - Parameter target: The second coordinate
+    /// - Returns: The bearing to `target`in degrees
+    func bearing(target: Coordinate) -> Double {
+        let lat1 = latitude.degreesToRadians
+        let lon1 = longitude.degreesToRadians
+        let lat2 = target.latitude.degreesToRadians
+        let lon2 = target.longitude.degreesToRadians
+
+        let dLon = lon2 - lon1
+
+        let y = sin(dLon) * cos(lat2)
+        let x = cos(lat1) * sin(lat2) - sin(lat1) * cos(lat2) * cos(dLon)
+        let radiansBearing = atan2(y, x)
+
+        return radiansBearing.radiansToDegrees
+    }
+}
