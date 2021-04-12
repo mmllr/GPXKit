@@ -28,7 +28,10 @@ public class BasicXMLParser: NSObject, XMLParserDelegate {
 
     public func parse() -> Result<XMLNode, BasicXMLParserError> {
         parser.delegate = self
-        if parser.parse() {
+        let parseResult = autoreleasepool {
+            self.parser.parse()
+        }
+        if parseResult {
             guard let result = result else { return .failure(.noContent) }
             return .success(result)
         } else {
