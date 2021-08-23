@@ -12,7 +12,7 @@ public protocol GeoCoordinate {
 }
 
 /// Basic type for storing a geo location.
-public struct Coordinate: Equatable, Hashable, GeoCoordinate {
+public struct Coordinate: Hashable, GeoCoordinate {
     /// Latitude value in degrees
     public var latitude: Double
     /// Longitude value in degrees
@@ -166,4 +166,18 @@ public struct GPXTrack: Equatable {
         self.graph = TrackGraph(points: trackPoints)
         self.bounds = trackPoints.bounds()
     }
+}
+
+/// Describes a climb section within a track.
+public struct Climb: Hashable {
+    /// The distance in meters from the climbs start to the `GPXTrack`s origin.
+    public var start: Double
+    /// The distance of the end climb in meters from the `GPXTrack`s origin.
+    public var end: Double
+    /// The elevation in meters of the climbs bottom.
+    public var bottom: Double
+    /// The elevation in meters of the climbs top.
+    public var top: Double
+    /// The grade of the climb in percent in the range {0,1}.
+    public var grade: Double
 }

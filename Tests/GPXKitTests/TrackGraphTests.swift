@@ -22,11 +22,15 @@ class TrackGraphTests: XCTestCase {
     }
 
     private func givenAPoint(latitude: Double, longitude: Double, elevation: Double) -> TrackPoint {
-		return TrackPoint(coordinate: Coordinate(latitude: latitude, longitude: longitude, elevation: elevation), date: Date())
+        return TrackPoint(coordinate: Coordinate(latitude: latitude, longitude: longitude, elevation: elevation), date: Date())
     }
 
     private func expectedDistance(from: Coordinate, to: Coordinate) -> Double {
         return from.distance(to: to)
+    }
+
+    func expectedGrade(for start: DistanceHeight, end: DistanceHeight) -> Double {
+        (end.elevation - start.elevation) / (end.distance - start.distance).magnitude
     }
 
     // MARK: Tests
@@ -130,6 +134,109 @@ class TrackGraphTests: XCTestCase {
 
         XCTAssertEqual(30 + 80 + 10, sut.elevationGain)
     }
+
+    func testEmptyTrackGraphHasNoClimbs() {
+        sut = TrackGraph(coords: [])
+
+        XCTAssertEqual([], sut.climbs())
+    }
+
+    func testClimbsWithOnePointInTrackisEmpty() {
+        sut = TrackGraph(coords: [.leipzig])
+
+        XCTAssertEqual([], sut.climbs())
+    }
+
+    func testATrackWithTwoPointsHasOneClimb() {
+        sut = TrackGraph(coords: [.leipzig, .leipzig.offset(east: 1000, elevation: 50)])
+
+        let expected = Climb(
+            start: sut.heightMap.first!.distance,
+            end: sut.heightMap.last!.distance,
+            bottom: sut.heightMap.first!.elevation,
+            top: sut.heightMap.last!.elevation,
+            grade: expectedGrade(for: sut.heightMap.first!, end: sut.heightMap.last!)
+        )
+
+        XCTAssertEqual([expected], sut.climbs())
+    }
+
+    func testDownhillSectionsWillNotBeInTheClimbs() {
+        sut = TrackGraph(coords: [.leipzig, .leipzig.offset(north: 1000, elevation: -50)])
+
+        XCTAssertEqual([], sut.climbs())
+    }
+
+    func testMultipleClimbSegmentsWithDifferentGrades() {
+        sut = TrackGraph(coords: [
+            .leipzig,
+            .leipzig.offset(east: 2_000, elevation: 50),
+            .leipzig.offset(east: 3_000, elevation: 100)
+        ])
+
+        let expectedA = Climb(
+            start: sut.heightMap[0].distance,
+            end: sut.heightMap[1].distance,
+            bottom: sut.heightMap[0].elevation,
+            top: sut.heightMap[1].elevation,
+            grade: expectedGrade(for: sut.heightMap[0], end: sut.heightMap[1])
+        )
+
+        let expectedB = Climb(
+            start: sut.heightMap[1].distance,
+            end: sut.heightMap[2].distance,
+            bottom: sut.heightMap[1].elevation,
+            top: sut.heightMap[2].elevation,
+            grade: expectedGrade(for: sut.heightMap[1], end: sut.heightMap[2])
+        )
+
+        XCTAssertEqual([expectedA, expectedB], sut.climbs())
+    }
+
+    func testItJoinsAdjacentSegmentsWithTheSameGrade() {
+        sut = TrackGraph(coords: (1...10).map {
+            .kreisel.offset(north: Double($0) * 1000, elevation: Double($0) * 100)
+        })
+
+        XCTAssertEqual([
+            Climb(
+                start: sut.heightMap.first!.distance,
+                end: sut.heightMap.last!.distance,
+                bottom: sut.heightMap.first!.elevation,
+                top: sut.heightMap.last!.elevation,
+                grade: expectedGrade(for: sut.heightMap.first!, end: sut.heightMap.last!)
+            )
+        ], sut.climbs())
+    }
+
+    func testFlatSectionsBetweenClimbsWillBeOmitted() {
+        sut = TrackGraph(coords: [
+            // 1st climb
+            .dehner,
+            .dehner.offset(east: 2_000, elevation: 100),
+            // descent & flat section
+            .dehner.offset(east: 2100, elevation: 70),
+            .dehner.offset(east: 3000, elevation: 70),
+            // 2nd climb
+            .leipzig.offset(east: 5_000, elevation: 200)
+        ])
+
+        let expectedA = Climb(
+            start: sut.heightMap[0].distance,
+            end: sut.heightMap[1].distance,
+            bottom: sut.heightMap[0].elevation,
+            top: sut.heightMap[1].elevation,
+            grade: expectedGrade(for: sut.heightMap[0], end: sut.heightMap[1])
+        )
+
+        let expectedB = Climb(
+            start: sut.heightMap[3].distance,
+            end: sut.heightMap[4].distance,
+            bottom: sut.heightMap[3].elevation,
+            top: sut.heightMap[4].elevation,
+            grade: expectedGrade(for: sut.heightMap[3], end: sut.heightMap[4])
+        )
+
+        XCTAssertEqual([expectedA, expectedB], sut.climbs())
+    }
 }
-
-

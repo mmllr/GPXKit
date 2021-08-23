@@ -75,6 +75,26 @@ public extension TrackGraph {
     }
 }
 
+public extension TrackGraph {
+    func climbs(epsilon: Double = 1) -> [Climb] {
+        guard
+            heightMap.count > 1
+        else {
+            return []
+        }
+        let simplified = heightMap.simplify(tolerance: epsilon)
+        return zip(simplified, simplified.dropFirst()).compactMap { start, end in
+            guard end.elevation > start.elevation else { return nil }
+            return Climb(
+                start: start.distance,
+                end: end.distance,
+                bottom: start.elevation, top: end.elevation,
+                grade: (end.elevation - start.elevation) / (end.distance - start.distance)
+            )
+        }
+    }
+}
+
 public extension GPXFileParser {
     /// Convenience initialize for loading a GPX file from an url. Fails if the track cannot be parsed.
     /// - Parameter url: The url containing the GPX file. See [GPX specification for details](https://www.topografix.com/gpx.asp).
@@ -196,5 +216,78 @@ public extension GeoCoordinate {
         let radiansBearing = atan2(y, x)
 
         return radiansBearing.radiansToDegrees
+    }
+}
+
+// MARK: - Private implementation -
+
+fileprivate extension DistanceHeight {
+    func squaredDistanceToSegment(_ p1: Self, _ p2: Self) -> Double {
+        var theX = p1.distance
+        var theY = p1.elevation
+        var dx = p2.distance - theX
+        var dy = p2.elevation - theY
+
+        if dx != 0 || dy != 0 {
+            let deltaSquared = (dx * dx + dy * dy)
+            let t = ((distance - p1.distance) * dx + (elevation - p1.elevation) * dy) / deltaSquared
+            if t > 1 {
+                theX = p2.distance
+                theY = p2.elevation
+            } else if t > 0 {
+                theX += dx * t
+                theY += dy * t
+            }
+        }
+
+        dx = distance - theX
+        dy = elevation - theY
+
+        return dx * dx + dy * dy
+    }
+}
+
+fileprivate extension Array where Element == DistanceHeight {
+    func simplify(tolerance: Double) -> [Element] {
+        return simplifyDouglasPeucker(self, sqTolerance: tolerance * tolerance)
+    }
+
+    private func simplifyDPStep(_ points: [Element], first: Int, last: Int, sqTolerance: Double, simplified: inout [Element]) {
+        guard last > first else {
+            return
+        }
+        var maxSqDistance = sqTolerance
+        var index = 0
+
+        for currentIndex in first+1..<last {
+            let sqDistance = points[currentIndex].squaredDistanceToSegment(points[first], points[last])
+            if sqDistance > maxSqDistance {
+                maxSqDistance = sqDistance
+                index = currentIndex
+            }
+        }
+
+        if maxSqDistance > sqTolerance {
+            if (index - first) > 1 {
+                simplifyDPStep(points, first: first, last: index, sqTolerance: sqTolerance, simplified: &simplified)
+            }
+            simplified.append(points[index])
+            if (last - index) > 1 {
+                simplifyDPStep(points, first: index, last: last, sqTolerance: sqTolerance, simplified: &simplified)
+            }
+        }
+    }
+
+    private func simplifyDouglasPeucker(_ points: [Element], sqTolerance: Double) -> [Element] {
+        guard points.count > 1 else {
+            return []
+        }
+
+        let last = (points.count - 1)
+        var simplied = [points.first!]
+        simplifyDPStep(points, first: 0, last: last, sqTolerance: sqTolerance, simplified: &simplied)
+        simplied.append(points.last!)
+
+        return simplied
     }
 }

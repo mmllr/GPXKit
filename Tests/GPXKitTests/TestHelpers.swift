@@ -55,6 +55,12 @@ extension Coordinate {
                    longitude: Double.random(in: -180..<180),
                    elevation: Double.random(in: 1..<100))
     }
+
+    func offset(north: Double = 0, east: Double = 0, elevation: Double) -> Self {
+        var offset = self.offset(north: north, east: east)
+        offset.elevation = self.elevation + elevation
+        return offset
+    }
 }
 
 extension TrackPoint {
