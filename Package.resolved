@@ -5,9 +5,9 @@
         "package": "Difference",
         "repositoryURL": "https://github.com/krzysztofzablocki/Difference.git",
         "state": {
-          "branch": "master",
-          "revision": "686d09062680d880aa46610d0724256edf66a795",
-          "version": null
+          "branch": null,
+          "revision": "e8d023826efc3aef58cf21cc2f6483ad3a067f5b",
+          "version": "1.0.0"
         }
       }
     ]

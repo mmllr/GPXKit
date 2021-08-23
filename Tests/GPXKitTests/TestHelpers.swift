@@ -7,8 +7,15 @@ import Difference
 import FoundationXML
 #endif
 
-func XCTAssertEqual<T: Equatable>(_ expected: T, _ received: T, file: StaticString = #filePath, line: UInt = #line) {
-    XCTAssertTrue(expected == received, "Found difference for \n" + diff(expected, received).joined(separator: ", "), file: file, line: line)
+public func XCTAssertEqual<T: Equatable>(_ expected: @autoclosure () throws -> T, _ received: @autoclosure () throws -> T, file: StaticString = #filePath, line: UInt = #line) {
+    do {
+        let expected = try expected()
+        let received = try received()
+        XCTAssertTrue(expected == received, "Found difference for \n" + diff(expected, received).joined(separator: ", "), file: file, line: line)
+    }
+    catch {
+        XCTFail("Caught error while testing: \(error)", file: file, line: line)
+    }
 }
 
 fileprivate var iso8601Formatter: ISO8601DateFormatter = {
@@ -99,7 +106,7 @@ extension XCTest {
     ) {
         assertDatesEqual(expected.date, actual.date, file: file, line: line)
         XCTAssertEqual(expected.title, actual.title, file: file, line: line)
-        assertEqual(expected.trackPoints, actual.trackPoints, file: file, line: line)
+        XCTAssertEqual(expected.trackPoints, actual.trackPoints, file: file, line: line)
     }
 
     /*
@@ -119,22 +126,7 @@ extension XCTest {
         XCTAssertEqual(expected.content, actual.content, file: file, line: line)
         XCTAssertEqual(expected.content, actual.content, file: file, line: line)
         XCTAssertEqual(expected.atttributes, actual.atttributes, file: file, line: line)
-        assertEqual(expected.children, actual.children, file: file, line: line)
-    }
-
-    func assertEqual<T: BidirectionalCollection>(
-        _ first: T,
-        _ second: T,
-        file: StaticString = #filePath,
-        line: UInt = #line
-    ) where T.Element: Hashable {
-        let diff = second.difference(from: first).inferringMoves()
-        let message = diff.asTestErrorMessage()
-
-        XCTAssert(message.isEmpty, """
-    The two collections are not equal. Differences:
-    \(message)
-    """, file: file, line: line)
+        XCTAssertEqual(expected.children, actual.children, file: file, line: line)
     }
 
     func assertGeoCoordinateEqual(
@@ -170,37 +162,4 @@ extension XCTest {
         }
     }
 
-}
-
-private extension CollectionDifference {
-    func asTestErrorMessage() -> String {
-        let descriptions = compactMap(testDescription)
-
-        guard !descriptions.isEmpty else {
-            return ""
-        }
-
-        return "- " + descriptions.joined(separator: "\n- ")
-    }
-
-    func testDescription(for change: Change) -> String? {
-        switch change {
-        case .insert(let index, let element, let association):
-            if let oldIndex = association {
-                return """
-                Element moved from index \(oldIndex) to \(index): \(element)
-                """
-            } else {
-                return "Additional element at index \(index): \(element)"
-            }
-        case .remove(let index, let element, let association):
-            // If a removal has an association, it means that
-            // it's part of a move, which we're handling above.
-            guard association == nil else {
-                return nil
-            }
-
-            return "Missing element at index \(index): \(element)"
-        }
-    }
 }

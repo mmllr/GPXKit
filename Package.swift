@@ -15,7 +15,7 @@ let package = Package(
             targets: ["GPXKit"]),
     ],
     dependencies: [
-        .package(name: "Difference", url: "https://github.com/krzysztofzablocki/Difference.git", .branch("master")),
+        .package(name: "Difference", url: "https://github.com/krzysztofzablocki/Difference.git", .upToNextMajor(from: "1.0.0")),
     ],
     targets: [
         .target(
