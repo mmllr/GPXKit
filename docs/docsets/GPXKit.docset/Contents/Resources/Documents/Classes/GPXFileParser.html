@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>GPXFileParser Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/GPXFileParser" class="dashAnchor"></a>
+    <a title="GPXFileParser Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">GPXKit Docs</a> (88% documented)</p>
+        <p class="header-right">
+          <form role="search" action="../search.json">
+            <input type="text" placeholder="Search documentation" data-typeahead>
+          </form>
+        </p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">GPXKit Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        GPXFileParser Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/BasicXMLParser.html">BasicXMLParser</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GPXExporter.html">GPXExporter</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/GPXFileParser.html">GPXFileParser</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Global%20Variables.html">Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Global%20Variables.html#/s:6GPXKit5wgs84Sd1a_Sd1ftvp">wgs84</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/BasicXMLParserError.html">BasicXMLParserError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ConvergenceError.html">ConvergenceError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/GPXParserError.html">GPXParserError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/CLLocationCoordinate2D.html">CLLocationCoordinate2D</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Collection.html">Collection</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/GeoCoordinate.html">GeoCoordinate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/Climb.html">Climb</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Coordinate.html">Coordinate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/DistanceHeight.html">DistanceHeight</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/GPXTrack.html">GPXTrack</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/GeoBounds.html">GeoBounds</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TrackGraph.html">TrackGraph</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TrackPoint.html">TrackPoint</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TrackSegment.html">TrackSegment</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/XMLNode.html">XMLNode</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>GPXFileParser</h1>
+              <div class="declaration">
+                <div class="language">
+                  
+                  <pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">GPXFileParser</span></code></pre>
+
+                </div>
+              </div>
+            <p>Class for importing a GPX xml to an <code><a href="../Structs/GPXTrack.html">GPXTrack</a></code> value.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit13GPXFileParserC9xmlStringACSS_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(xmlString:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit13GPXFileParserC9xmlStringACSS_tcfc">init(xmlString:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializer</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">xmlString</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>xmlString</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The GPX xml string. See <a href="https://www.topografix.com/gpx.asp">GPX specification for details</a>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit13GPXFileParserC5parses6ResultOyAA8GPXTrackVAA14GPXParserErrorOGyF"></a>
+                    <a name="//apple_ref/swift/Method/parse()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit13GPXFileParserC5parses6ResultOyAA8GPXTrackVAA14GPXParserErrorOGyF">parse()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Parses the GPX xml.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">parse</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Result</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/GPXTrack.html">GPXTrack</a></span><span class="p">,</span> <span class="kt"><a href="../Enums/GPXParserError.html">GPXParserError</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A <code>Result</code> of the <code><a href="../Structs/GPXTrack.html">GPXTrack</a></code> in the success or an <code><a href="../Enums/GPXParserError.html">GPXParserError</a></code> in the failure case.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit13GPXFileParserC9publisher7Combine12AnyPublisherVyAA8GPXTrackVAA14GPXParserErrorOGvp"></a>
+                    <a name="//apple_ref/swift/Property/publisher" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit13GPXFileParserC9publisher7Combine12AnyPublisherVyAA8GPXTrackVAA14GPXParserErrorOGvp">publisher</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Publisher for bridging into Combine.</p>
+
+<p>An AnyPublisher with Output <code><a href="../Structs/GPXTrack.html">GPXTrack</a></code> and Failure of <code><a href="../Enums/GPXParserError.html">GPXParserError</a></code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">publisher</span><span class="p">:</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/GPXTrack.html">GPXTrack</a></span><span class="p">,</span> <span class="kt"><a href="../Enums/GPXParserError.html">GPXParserError</a></span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit13GPXFileParserC4load4from7Combine12AnyPublisherVyAA8GPXTrackVAA14GPXParserErrorOG10Foundation3URLV_tFZ"></a>
+                    <a name="//apple_ref/swift/Method/load(from:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit13GPXFileParserC4load4from7Combine12AnyPublisherVyAA8GPXTrackVAA14GPXParserErrorOG10Foundation3URLV_tFZ">load(from:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Helper for loading a gpx track from an url.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">url</span> <span class="o">=</span> <span class="c1">// ... url with GPX file</span>
+<span class="kt">GPXFileParser</span>
+   <span class="o">.</span><span class="nf">load</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span>
+   <span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">track</span> <span class="k">in</span>
+        <span class="c1">// do something with track</span>
+   <span class="p">}</span>
+   <span class="o">.</span><span class="k">catch</span> <span class="p">{</span>
+       <span class="c1">/// handle parsing error</span>
+   <span class="p">}</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">load</span><span class="p">(</span><span class="n">from</span> <span class="nv">url</span><span class="p">:</span> <span class="kt">URL</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/GPXTrack.html">GPXTrack</a></span><span class="p">,</span> <span class="kt"><a href="../Enums/GPXParserError.html">GPXParserError</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>url</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The url of the GPX file. See <a href="https://www.topografix.com/gpx.asp">GPX specification for details</a>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An AnyPublisher with Output <code><a href="../Structs/GPXTrack.html">GPXTrack</a></code> and Failure of <code><a href="../Enums/GPXParserError.html">GPXParserError</a></code>.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit13GPXFileParserC4load4from7Combine12AnyPublisherVyAA8GPXTrackVAA14GPXParserErrorOG10Foundation4DataV_tFZ"></a>
+                    <a name="//apple_ref/swift/Method/load(from:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit13GPXFileParserC4load4from7Combine12AnyPublisherVyAA8GPXTrackVAA14GPXParserErrorOG10Foundation4DataV_tFZ">load(from:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">data</span> <span class="o">=</span> <span class="n">xmlString</span><span class="o">.</span><span class="nf">data</span><span class="p">(</span><span class="nv">using</span><span class="p">:</span> <span class="o">.</span><span class="n">utf8</span><span class="p">)</span>
+<span class="kt">GPXFileParser</span>
+   <span class="o">.</span><span class="nf">load</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="n">data</span><span class="p">)</span>
+   <span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">track</span> <span class="k">in</span>
+        <span class="c1">// do something with track</span>
+   <span class="p">}</span>
+   <span class="o">.</span><span class="k">catch</span> <span class="p">{</span>
+       <span class="c1">/// handle parsing error</span>
+   <span class="p">}</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">load</span><span class="p">(</span><span class="n">from</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/GPXTrack.html">GPXTrack</a></span><span class="p">,</span> <span class="kt"><a href="../Enums/GPXParserError.html">GPXParserError</a></span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>data</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The data containing the GPX as xml. See <a href="https://www.topografix.com/gpx.asp">GPX specification for details</a>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An AnyPublisher with Output <code><a href="../Structs/GPXTrack.html">GPXTrack</a></code> and Failure of <code><a href="../Enums/GPXParserError.html">GPXParserError</a></code>.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit13GPXFileParserC3urlACSg10Foundation3URLV_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(url:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit13GPXFileParserC3urlACSg10Foundation3URLV_tcfc">init(url:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Convenience initialize for loading a GPX file from an url. Fails if the track cannot be parsed.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">convenience</span> <span class="nf">init</span><span class="p">?(</span><span class="nv">url</span><span class="p">:</span> <span class="kt">URL</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>url</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The url containing the GPX file. See <a href="https://www.topografix.com/gpx.asp">GPX specification for details</a>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An <code>GPXFileParser</code> instance or nil if the track cannot be parsed.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit13GPXFileParserC4dataACSg10Foundation4DataV_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(data:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit13GPXFileParserC4dataACSg10Foundation4DataV_tcfc">init(data:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Convenience initialize for loading a GPX file from a data. Returns nil if the track cannot be parsed.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">convenience</span> <span class="nf">init</span><span class="p">?(</span><span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>data</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Data containing the GPX file as encoded xml string. See <a href="https://www.topografix.com/gpx.asp">GPX specification for details</a>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>An <code>GPXFileParser</code> instance or nil if the track cannot be parsed.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2021 <a class="link" href="" target="_blank" rel="noopener" rel="external"></a>. All rights reserved. (Last updated: 2021-08-24)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="noopener" rel="external">jazzy ♪♫ v0.14.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="noopener" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

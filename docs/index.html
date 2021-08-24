@@ -17,6 +17,7 @@
     <header>
       <div class="content-wrapper">
         <p><a href="index.html"> Docs</a> (88% documented)</p>
+        <p class="header-right"><a href="https://github.com/mmllr/GPXKit"><img src="img/gh.png"/>View on GitHub</a></p>
         <p class="header-right">
           <form role="search" action="search.json">
             <input type="text" placeholder="Search documentation" data-typeahead>
@@ -140,11 +141,12 @@
 <li>[x] Combine support</li>
 <li>[x] Heightmap, geobounds, distance and elevation information for an imported track</li>
 <li>[x] Test coverage</li>
+<li>[x] Climb detection</li>
 </ul>
 <h2 id='installation' class='heading'>Installation</h2>
 
 <p>To use the <code>GPXKit</code> library in a SwiftPM project, add the following line to the dependencies in your <code>Package.swift</code> file:</p>
-<pre class="highlight swift"><code><span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/mmllr/GPXKit"</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="s">"1.2.6"</span><span class="p">),</span>
+<pre class="highlight swift"><code><span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/mmllr/GPXKit"</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="s">"1.3.0"</span><span class="p">),</span>
 </code></pre>
 <h2 id='usage-examples' class='heading'>Usage examples</h2>
 <h3 id='importing-a-track' class='heading'>Importing a track</h3>
@@ -191,6 +193,13 @@
 </code></pre>
 
 <p>See tests for more usage examples.</p>
+<h3 id='climb-detection' class='heading'>Climb detection</h3>
+
+<p>To detect climbs in a track, use the <code><a href="Structs/TrackGraph.html">TrackGraph</a></code>s <code>climb(epsilon:minimumGrade:maxJoinDistance:)</code> method which returns an array of <code><a href="Structs/Climb.html">Climb</a></code> values for given filter parameters.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">track</span><span class="p">:</span> <span class="kt">GPXTrack</span> <span class="o">=</span> <span class="o">...</span>
+<span class="k">let</span> <span class="nv">climbs</span> <span class="o">=</span> <span class="n">track</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="nf">climbs</span><span class="p">(</span><span class="nv">epsilon</span><span class="p">:</span> <span class="mf">4.0</span><span class="p">,</span> <span class="nv">minimumGrade</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="nv">maxJoinDistance</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">)</span>
+<span class="c1">// climbs is an array of `Climb` values, describing each climb (start, end, elevation, grade, FIETS score and so on...).</span>
+</code></pre>
 <h2 id='documentation' class='heading'>Documentation</h2>
 
 <p>Project documentation is available at <a href="https://mmllr.github.io/GPXKit/">GitHub Pages</a></p>
