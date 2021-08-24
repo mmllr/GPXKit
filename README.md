@@ -9,6 +9,7 @@ A library for parsing and exporting gpx files with no dependencies besides Found
 - [x] Combine support
 - [x] Heightmap, geobounds, distance and elevation information for an imported track
 - [x] Test coverage
+- [x] Climb detection
 
 ## Installation
 To use the `GPXKit` library in a SwiftPM project, add the following line to the dependencies in your `Package.swift` file:
@@ -16,7 +17,6 @@ To use the `GPXKit` library in a SwiftPM project, add the following line to the 
 ```swift
 .package(url: "https://github.com/mmllr/GPXKit", from: "1.2.6"),
 ```
-
 ## Usage examples
 ### Importing a track
 
@@ -46,6 +46,7 @@ func doSomethingWith(_ track: GPXTrack) {
 }
 ```
 ### Exporting a track
+
 ```swift
 import GPXKit
 let track: GPXTrack = ...
@@ -53,6 +54,7 @@ let exporter = GPXExporter(track: track, shouldExportDate: false)
 print(exporter.xmlString)
 ```
 ### Combine integration
+
 ```swift
 import Combine
 import GPXKit
@@ -65,6 +67,14 @@ GPXFileParser.load(from: url)
    }
 ```
 See tests for more usage examples.
+### Climb detection
+To detect climbs in a track, use the `TrackGraph`s `climb(epsilon:minimumGrade:maxJoinDistance:)` method which returns an array of `Climb` values for given filter parameters.
+
+```swift
+let track: GPXTrack = ...
+let climbs = track.graph.climbs(epsilon: 4.0, minimumGrade: 3.0, maxJoinDistance: 0.0)
+// climbs is an array of `Climb` values, describing each climb (start, end, elevation, grade, FIETS score and so on...).
+```
 
 ## Documentation
 Project documentation is available at [GitHub Pages](https://mmllr.github.io/GPXKit/)
