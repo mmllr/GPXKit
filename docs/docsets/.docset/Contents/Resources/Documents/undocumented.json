@@ -9,6 +9,13 @@
     },
     {
       "file": "/Users/markus/coding/Projekte/GPXKit/Sources/GPXKit/BasicXMLParser.swift",
+      "line": 10,
+      "symbol": "XMLNode.children",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/markus/coding/Projekte/GPXKit/Sources/GPXKit/BasicXMLParser.swift",
       "line": 13,
       "symbol": "BasicXMLParserError",
       "symbol_kind": "source.lang.swift.decl.enum",
@@ -16,9 +23,65 @@
     },
     {
       "file": "/Users/markus/coding/Projekte/GPXKit/Sources/GPXKit/BasicXMLParser.swift",
+      "line": 14,
+      "symbol": "BasicXMLParserError.noContent",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/markus/coding/Projekte/GPXKit/Sources/GPXKit/BasicXMLParser.swift",
+      "line": 15,
+      "symbol": "BasicXMLParserError.parseError(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/markus/coding/Projekte/GPXKit/Sources/GPXKit/BasicXMLParser.swift",
       "line": 18,
       "symbol": "BasicXMLParser",
       "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/markus/coding/Projekte/GPXKit/Sources/GPXKit/BasicXMLParser.swift",
+      "line": 25,
+      "symbol": "BasicXMLParser.init(xml:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/markus/coding/Projekte/GPXKit/Sources/GPXKit/BasicXMLParser.swift",
+      "line": 29,
+      "symbol": "BasicXMLParser.parse()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/markus/coding/Projekte/GPXKit/Sources/GPXKit/BasicXMLParser.swift",
+      "line": 44,
+      "symbol": "BasicXMLParser.parser(_:didStartElement:namespaceURI:qualifiedName:attributes:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/markus/coding/Projekte/GPXKit/Sources/GPXKit/BasicXMLParser.swift",
+      "line": 49,
+      "symbol": "BasicXMLParser.parser(_:didEndElement:namespaceURI:qualifiedName:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/markus/coding/Projekte/GPXKit/Sources/GPXKit/BasicXMLParser.swift",
+      "line": 54,
+      "symbol": "BasicXMLParser.parser(_:foundCharacters:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/markus/coding/Projekte/GPXKit/Sources/GPXKit/BasicXMLParser.swift",
+      "line": 59,
+      "symbol": "BasicXMLParser.parser(_:parseErrorOccurred:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
