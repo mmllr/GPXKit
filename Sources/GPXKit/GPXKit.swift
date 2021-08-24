@@ -180,4 +180,21 @@ public struct Climb: Hashable {
     public var top: Double
     /// The grade of the climb in percent in the range {0,1}.
     public var grade: Double
+    /// The FIETS score of the climb
+    /// 
+    /// One way to determine the difficulty of a climb is to use the FIETS formula to calculate a numeric value for the climb. This forumula was developed by the Dutch cycling magazine Fiets. The formula is shown below:
+    ///
+    /// ```
+    /// FIETS Score = (H * H / D * 10) + (T - 1000) / 1000
+    /// ```
+    /// Where:
+
+    /// * **H** is the height of the climb (meters),
+    /// * **D** is the climb length or distance (meters)
+    /// * **T** is the altitude at the top (meters).
+
+    /// The second term in the formula is only added when it is positive, thay is, for climbs whose top is above 1000m.
+    /// **NOTE** In GPXKit, the "(T - 1000)/1000" term of the FIETS formula is not added to the climb segments, so climbs can be joined together.
+    public var score: Double
+}
 }

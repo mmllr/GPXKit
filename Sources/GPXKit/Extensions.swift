@@ -85,11 +85,14 @@ public extension TrackGraph {
         let simplified = heightMap.simplify(tolerance: epsilon)
         return zip(simplified, simplified.dropFirst()).compactMap { start, end in
             guard end.elevation > start.elevation else { return nil }
+            let elevation = end.elevation - start.elevation
+            let distance = end.distance - start.distance
             return Climb(
                 start: start.distance,
                 end: end.distance,
                 bottom: start.elevation, top: end.elevation,
-                grade: (end.elevation - start.elevation) / (end.distance - start.distance)
+                grade: elevation / distance,
+                score: (elevation * elevation) / (distance * 10)
             )
         }
     }
@@ -223,25 +226,25 @@ public extension GeoCoordinate {
 
 fileprivate extension DistanceHeight {
     func squaredDistanceToSegment(_ p1: Self, _ p2: Self) -> Double {
-        var theX = p1.distance
-        var theY = p1.elevation
-        var dx = p2.distance - theX
-        var dy = p2.elevation - theY
+        var x = p1.distance
+        var y = p1.elevation
+        var dx = p2.distance - x
+        var dy = p2.elevation - y
 
         if dx != 0 || dy != 0 {
             let deltaSquared = (dx * dx + dy * dy)
             let t = ((distance - p1.distance) * dx + (elevation - p1.elevation) * dy) / deltaSquared
             if t > 1 {
-                theX = p2.distance
-                theY = p2.elevation
+                x = p2.distance
+                y = p2.elevation
             } else if t > 0 {
-                theX += dx * t
-                theY += dy * t
+                x += dx * t
+                y += dy * t
             }
         }
 
-        dx = distance - theX
-        dy = elevation - theY
+        dx = distance - x
+        dy = elevation - y
 
         return dx * dx + dy * dy
     }
