@@ -76,7 +76,7 @@ public extension TrackGraph {
 }
 
 public extension TrackGraph {
-    func climbs(epsilon: Double = 1) -> [Climb] {
+    func climbs(epsilon: Double = 1, minimumGrade: Double = 0.03) -> [Climb] {
         guard
             heightMap.count > 1
         else {
@@ -87,11 +87,13 @@ public extension TrackGraph {
             guard end.elevation > start.elevation else { return nil }
             let elevation = end.elevation - start.elevation
             let distance = end.distance - start.distance
+            let grade = elevation / distance
+            guard grade >= minimumGrade else { return nil }
             return Climb(
                 start: start.distance,
                 end: end.distance,
                 bottom: start.elevation, top: end.elevation,
-                grade: elevation / distance,
+                grade: grade,
                 score: (elevation * elevation) / (distance * 10)
             )
         }

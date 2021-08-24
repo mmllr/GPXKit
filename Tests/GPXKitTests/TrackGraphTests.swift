@@ -181,8 +181,8 @@ class TrackGraphTests: XCTestCase {
     func testMultipleClimbSegmentsWithDifferentGrades() {
         sut = TrackGraph(coords: [
             .leipzig,
-            .leipzig.offset(east: 2_000, elevation: 50),
-            .leipzig.offset(east: 3_000, elevation: 100)
+            .leipzig.offset(distance: 2_000, grade: 0.05),
+            .leipzig.offset(distance: 3_000, grade: 0.06)
         ])
 
         let expectedA = Climb(
@@ -227,12 +227,12 @@ class TrackGraphTests: XCTestCase {
         sut = TrackGraph(coords: [
             // 1st climb
             .dehner,
-            .dehner.offset(east: 2_000, elevation: 100),
+            .dehner.offset(distance: 2_000, grade: 0.055),
             // descent & flat section
             .dehner.offset(east: 2100, elevation: 70),
             .dehner.offset(east: 3000, elevation: 70),
             // 2nd climb
-            .leipzig.offset(east: 5_000, elevation: 200)
+            .leipzig.offset(distance: 5_000, grade: 0.055)
         ])
 
         let expectedA = Climb(
@@ -254,5 +254,24 @@ class TrackGraphTests: XCTestCase {
         )
 
         XCTAssertEqual([expectedA, expectedB], sut.climbs())
+    }
+
+    func testItFiltersOutClimbsWithGradeLessThanMinimumGrade() {
+        sut = TrackGraph(coords: [
+            .leipzig,
+            .leipzig.offset(distance: 3_000, grade: 0.05),
+            .leipzig.offset(distance: 6_000, grade: 0.049)
+        ])
+
+        let expected = Climb(
+            start: sut.heightMap[0].distance,
+            end: sut.heightMap[1].distance,
+            bottom: sut.heightMap[0].elevation,
+            top: sut.heightMap[1].elevation,
+            grade: expectedGrade(for: sut.heightMap[0], end: sut.heightMap[1]),
+            score: expectedScore(start: sut.heightMap[0], end: sut.heightMap[1])
+        )
+
+        XCTAssertEqual([expected], sut.climbs(minimumGrade: 0.05))
     }
 }

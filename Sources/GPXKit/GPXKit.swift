@@ -178,7 +178,7 @@ public struct Climb: Hashable {
     public var bottom: Double
     /// The elevation in meters of the climbs top.
     public var top: Double
-    /// The grade of the climb in percent in the range {0,1}.
+    /// The average grade of the climb in percent in the range {0,1}.
     public var grade: Double
     /// The FIETS score of the climb
     /// 
@@ -197,4 +197,15 @@ public struct Climb: Hashable {
     /// **NOTE** In GPXKit, the "(T - 1000)/1000" term of the FIETS formula is not added to the climb segments, so climbs can be joined together.
     public var score: Double
 }
+
+public extension Climb {
+    /// The lenght in meters of the climb.
+    var distance: Double {
+        end - start
+    }
+
+    /// The elevation gain in meters of the climb
+    var elevation: Double {
+        top - bottom
+    }
 }

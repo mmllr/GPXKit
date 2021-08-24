@@ -61,6 +61,16 @@ extension Coordinate {
         offset.elevation = self.elevation + elevation
         return offset
     }
+
+    func offset(distance: Double, grade: Double) -> Self {
+        // elevation = grade * distance
+        return offset(east: distance, elevation: distance * grade)
+    }
+
+    func offset(elevation: Double, grade: Double) -> Self {
+        // distance = elevation / grade
+        return offset(east: elevation / grade, elevation: elevation)
+    }
 }
 
 extension TrackPoint {
