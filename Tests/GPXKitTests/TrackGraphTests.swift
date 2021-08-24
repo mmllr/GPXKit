@@ -288,4 +288,50 @@ class TrackGraphTests: XCTestCase {
 
         XCTAssertEqual([expected], sut.climbs(minimumGrade: 0.05))
     }
+
+    func testJoiningClimbsWithinMaxJoinDistance() {
+        sut = TrackGraph(coords: [
+            .leipzig,
+            .leipzig.offset(east: 2_000, elevation: 100),
+            .leipzig.offset(east: 2_100, elevation: 80),
+            .leipzig.offset(east: 300, elevation: 300),
+        ])
+
+        let expectedTotalElevation = 100.0 + (300.0 - 80.0)
+        let expected = Climb(
+            start: sut.heightMap[0].distance,
+            end: sut.heightMap.last!.distance,
+            bottom: sut.heightMap[0].elevation,
+            top: sut.heightMap.last!.elevation,
+            totalElevation: expectedTotalElevation,
+            grade: expectedGrade(elevation: expectedTotalElevation, distance: sut.distance),
+            maxGrade: expectedGrade(for: sut.heightMap[2], end: sut.heightMap[3]),
+            score: expectedScore(start: sut.heightMap[0], end: sut.heightMap[1]) + expectedScore(start: sut.heightMap[2], end: sut.heightMap[3])
+        )
+
+        XCTAssertEqual([expected], sut.climbs(minimumGrade: 0.05, maxJoinDistance: 200.0))
+
+        XCTAssertEqual([
+            Climb(
+                start: sut.heightMap[0].distance,
+                end: sut.heightMap[1].distance,
+                bottom: sut.heightMap[0].elevation,
+                top: sut.heightMap[1].elevation,
+                totalElevation: sut.heightMap[1].elevation - sut.heightMap[0].elevation,
+                grade: expectedGrade(for: sut.heightMap[0], end: sut.heightMap[1]),
+                maxGrade: expectedGrade(for: sut.heightMap[0], end: sut.heightMap[1]),
+                score: expectedScore(start: sut.heightMap[0], end: sut.heightMap[1])
+            ),
+            Climb(
+                start: sut.heightMap[2].distance,
+                end: sut.heightMap[3].distance,
+                bottom: sut.heightMap[2].elevation,
+                top: sut.heightMap[3].elevation,
+                totalElevation: sut.heightMap[3].elevation - sut.heightMap[2].elevation,
+                grade: expectedGrade(for: sut.heightMap[2], end: sut.heightMap[3]),
+                maxGrade: expectedGrade(for: sut.heightMap[2], end: sut.heightMap[3]),
+                score: expectedScore(start: sut.heightMap[2], end: sut.heightMap[3])
+            )
+        ], sut.climbs(minimumGrade: 0.05, maxJoinDistance: 50))
+    }
 }
