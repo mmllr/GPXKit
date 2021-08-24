@@ -30,12 +30,18 @@ class TrackGraphTests: XCTestCase {
     }
 
     func expectedGrade(for start: DistanceHeight, end: DistanceHeight) -> Double {
-        (end.elevation - start.elevation) / (end.distance - start.distance).magnitude
+        expectedGrade(elevation: end.elevation - start.elevation, distance: end.distance - start.distance)
+    }
+
+    func expectedGrade(elevation: Double, distance: Double) -> Double {
+        elevation / distance.magnitude
     }
 
     func expectedScore(start: DistanceHeight, end: DistanceHeight) -> Double {
-        let distance = end.distance - start.distance
-        let height = end.elevation - start.elevation
+        expectedScore(distance: end.distance - start.distance, height: end.elevation - start.elevation)
+    }
+
+    func expectedScore(distance: Double, height: Double) -> Double {
         // FIETS Score = (H * H / (D * 10)) + (T - 1000) / 1000 Note: The last part (+ (T - 1000) / 1000) will be omitted
         return height * height / (distance * 10.0)
     }
@@ -162,7 +168,9 @@ class TrackGraphTests: XCTestCase {
             end: sut.heightMap.last!.distance,
             bottom: sut.heightMap.first!.elevation,
             top: sut.heightMap.last!.elevation,
+            totalElevation: sut.heightMap.last!.elevation - sut.heightMap.first!.elevation,
             grade: expectedGrade(for: sut.heightMap.first!, end: sut.heightMap.last!),
+            maxGrade: expectedGrade(for: sut.heightMap.first!, end: sut.heightMap.last!),
             score: expectedScore(
                 start: sut.heightMap.first!,
                 end:sut.heightMap.last!
@@ -178,32 +186,30 @@ class TrackGraphTests: XCTestCase {
         XCTAssertEqual([], sut.climbs())
     }
 
-    func testMultipleClimbSegmentsWithDifferentGrades() {
+    func testMultipleAdjacentClimbSegmentsWithDifferentGradesWillBeJoinedTogether() {
         sut = TrackGraph(coords: [
             .leipzig,
             .leipzig.offset(distance: 2_000, grade: 0.05),
-            .leipzig.offset(distance: 3_000, grade: 0.06)
+            .leipzig.offset(distance: 3_000, grade: 0.06),
+            .leipzig.offset(distance: 5_000, grade: 0.07)
         ])
 
-        let expectedA = Climb(
+        let expectedDistance = sut.heightMap.last!.distance
+        let expectedTotalElevation = sut.heightMap.last!.elevation - sut.heightMap.first!.elevation
+        let expected = Climb(
             start: sut.heightMap[0].distance,
-            end: sut.heightMap[1].distance,
-            bottom: sut.heightMap[0].elevation,
-            top: sut.heightMap[1].elevation,
-            grade: expectedGrade(for: sut.heightMap[0], end: sut.heightMap[1]),
-            score: expectedScore(start: sut.heightMap[0], end: sut.heightMap[1])
+            end: sut.heightMap.last!.distance,
+            bottom: sut.heightMap.first!.elevation,
+            top: sut.heightMap.last!.elevation,
+            totalElevation: expectedTotalElevation,
+            grade: expectedGrade(elevation: expectedTotalElevation, distance: expectedDistance),
+            maxGrade: expectedGrade(for: sut.heightMap[2], end: sut.heightMap[3]),
+            score: expectedScore(start: sut.heightMap[0], end: sut.heightMap[1]) +
+            expectedScore(start: sut.heightMap[1], end: sut.heightMap[2]) +
+            expectedScore(start: sut.heightMap[2], end: sut.heightMap[3]) 
         )
 
-        let expectedB = Climb(
-            start: sut.heightMap[1].distance,
-            end: sut.heightMap[2].distance,
-            bottom: sut.heightMap[1].elevation,
-            top: sut.heightMap[2].elevation,
-            grade: expectedGrade(for: sut.heightMap[1], end: sut.heightMap[2]),
-            score: expectedScore(start: sut.heightMap[1], end: sut.heightMap[2])
-        )
-
-        XCTAssertEqual([expectedA, expectedB], sut.climbs())
+        XCTAssertEqual([expected], sut.climbs())
     }
 
     func testItJoinsAdjacentSegmentsWithTheSameGrade() {
@@ -217,7 +223,9 @@ class TrackGraphTests: XCTestCase {
                 end: sut.heightMap.last!.distance,
                 bottom: sut.heightMap.first!.elevation,
                 top: sut.heightMap.last!.elevation,
+                totalElevation: sut.heightMap.last!.elevation - sut.heightMap.first!.elevation,
                 grade: expectedGrade(for: sut.heightMap.first!, end: sut.heightMap.last!),
+                maxGrade: expectedGrade(for: sut.heightMap.first!, end: sut.heightMap.last!),
                 score: expectedScore(start: sut.heightMap.first!, end: sut.heightMap.last!)
             )
         ], sut.climbs())
@@ -240,7 +248,9 @@ class TrackGraphTests: XCTestCase {
             end: sut.heightMap[1].distance,
             bottom: sut.heightMap[0].elevation,
             top: sut.heightMap[1].elevation,
+            totalElevation: sut.heightMap[1].elevation - sut.heightMap[0].elevation,
             grade: expectedGrade(for: sut.heightMap[0], end: sut.heightMap[1]),
+            maxGrade: expectedGrade(for: sut.heightMap[0], end: sut.heightMap[1]),
             score: expectedScore(start: sut.heightMap[0], end: sut.heightMap[1])
         )
 
@@ -249,7 +259,9 @@ class TrackGraphTests: XCTestCase {
             end: sut.heightMap[4].distance,
             bottom: sut.heightMap[3].elevation,
             top: sut.heightMap[4].elevation,
+            totalElevation: sut.heightMap[4].elevation - sut.heightMap[3].elevation,
             grade: expectedGrade(for: sut.heightMap[3], end: sut.heightMap[4]),
+            maxGrade: expectedGrade(for: sut.heightMap[3], end: sut.heightMap[4]),
             score: expectedScore(start: sut.heightMap[3], end: sut.heightMap[4])
         )
 
@@ -268,7 +280,9 @@ class TrackGraphTests: XCTestCase {
             end: sut.heightMap[1].distance,
             bottom: sut.heightMap[0].elevation,
             top: sut.heightMap[1].elevation,
+            totalElevation: sut.heightMap[1].elevation - sut.heightMap[0].elevation,
             grade: expectedGrade(for: sut.heightMap[0], end: sut.heightMap[1]),
+            maxGrade: expectedGrade(for: sut.heightMap[0], end: sut.heightMap[1]),
             score: expectedScore(start: sut.heightMap[0], end: sut.heightMap[1])
         )
 

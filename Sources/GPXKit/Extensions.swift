@@ -83,7 +83,7 @@ public extension TrackGraph {
             return []
         }
         let simplified = heightMap.simplify(tolerance: epsilon)
-        return zip(simplified, simplified.dropFirst()).compactMap { start, end in
+        let climbs: [Climb] = zip(simplified, simplified.dropFirst()).compactMap { start, end in
             guard end.elevation > start.elevation else { return nil }
             let elevation = end.elevation - start.elevation
             let distance = end.distance - start.distance
@@ -92,10 +92,36 @@ public extension TrackGraph {
             return Climb(
                 start: start.distance,
                 end: end.distance,
-                bottom: start.elevation, top: end.elevation,
+                bottom: start.elevation,
+                top: end.elevation,
+                totalElevation: end.elevation - start.elevation,
                 grade: grade,
+                maxGrade: grade,
                 score: (elevation * elevation) / (distance * 10)
             )
+        }
+        return climbs.reduce(into: []) { joinedClimbs, climb in
+            guard let last = joinedClimbs.last else {
+                joinedClimbs.append(climb)
+                return
+            }
+            if last.end == climb.start {
+                let distance = climb.end - last.start
+                let totalElevation = last.totalElevation + climb.totalElevation
+                let joined = Climb(
+                    start: last.start,
+                    end: climb.end,
+                    bottom: last.bottom,
+                    top: climb.top,
+                    totalElevation: totalElevation,
+                    grade: totalElevation / distance,
+                    maxGrade: max(last.maxGrade, climb.maxGrade),
+                    score: last.score + climb.score
+                )
+                joinedClimbs[joinedClimbs.count - 1] = joined
+            } else {
+                joinedClimbs.append(climb)
+            }
         }
     }
 }

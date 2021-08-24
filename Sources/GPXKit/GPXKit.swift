@@ -178,8 +178,12 @@ public struct Climb: Hashable {
     public var bottom: Double
     /// The elevation in meters of the climbs top.
     public var top: Double
-    /// The average grade of the climb in percent in the range {0,1}.
+    /// The total elevation gain in meters of the climb. It may be higher than `top` - `bottom` when a climb has flat or descending sections.
+    public var totalElevation: Double
+    /// The average grade (elevation over distance) of the climb in percent in the range {0,1}.
     public var grade: Double
+    /// The maximum grade (elevation over distance) of the climb in percent in the range {0,1}. If the climb was constructed from multiple adjacent climbs it has their maximum grade, otherwise `maxGrade` is equal to `grade`.
+    public var maxGrade: Double
     /// The FIETS score of the climb
     /// 
     /// One way to determine the difficulty of a climb is to use the FIETS formula to calculate a numeric value for the climb. This forumula was developed by the Dutch cycling magazine Fiets. The formula is shown below:
@@ -202,10 +206,5 @@ public extension Climb {
     /// The lenght in meters of the climb.
     var distance: Double {
         end - start
-    }
-
-    /// The elevation gain in meters of the climb
-    var elevation: Double {
-        top - bottom
     }
 }
