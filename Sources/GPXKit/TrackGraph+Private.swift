@@ -57,47 +57,62 @@ extension TrackGraph {
     }
 }
 
+protocol Simplifiable {
+    var x: Double { get }
+    var y: Double { get }
+}
+
+extension DistanceHeight: Simplifiable {
+    var x: Double { distance }
+    var y: Double { elevation }
+}
+
+extension Coordinate: Simplifiable {
+    var x: Double { latitude }
+    var y: Double { longitude }
+}
+
 // MARK: - Private implementation -
 
-fileprivate extension DistanceHeight {
+fileprivate extension Simplifiable {
     func squaredDistanceToSegment(_ p1: Self, _ p2: Self) -> Double {
-        var x = p1.distance
-        var y = p1.elevation
-        var dx = p2.distance - x
-        var dy = p2.elevation - y
+        var x = p1.x
+        var y = p1.y
+        var dx = p2.x - x
+        var dy = p2.y - y
 
         if dx != 0 || dy != 0 {
             let deltaSquared = (dx * dx + dy * dy)
-            let t = ((distance - p1.distance) * dx + (elevation - p1.elevation) * dy) / deltaSquared
+            let t = ((self.x - p1.x) * dx + (self.y - p1.y) * dy) / deltaSquared
             if t > 1 {
-                x = p2.distance
-                y = p2.elevation
+                x = p2.x
+                y = p2.y
             } else if t > 0 {
                 x += dx * t
                 y += dy * t
             }
         }
 
-        dx = distance - x
-        dy = elevation - y
+        dx = self.x - x
+        dy = self.y - y
 
         return dx * dx + dy * dy
     }
 }
 
-fileprivate extension Array where Element == DistanceHeight {
-    func simplify(tolerance: Double) -> [Element] {
+extension Array where Element: Simplifiable {
+    func simplify(tolerance: Double) -> Self {
         return simplifyDouglasPeucker(self, sqTolerance: tolerance * tolerance)
     }
 
-    private func simplifyDPStep(_ points: [Element], first: Int, last: Int, sqTolerance: Double, simplified: inout [Element]) {
+    private func simplifyDPStep(_ points: Self, first: Self.Index, last: Self.Index, sqTolerance: Double, simplified: inout Self) {
         guard last > first else {
             return
         }
         var maxSqDistance = sqTolerance
-        var index = 0
+        var index = startIndex
 
-        for currentIndex in first+1..<last {
+        for currentIndex: Self.Index in first+1..<last {
             let sqDistance = points[currentIndex].squaredDistanceToSegment(points[first], points[last])
             if sqDistance > maxSqDistance {
                 maxSqDistance = sqDistance

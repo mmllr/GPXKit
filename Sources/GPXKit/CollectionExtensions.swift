@@ -76,3 +76,12 @@ public extension Collection where Element: GeoCoordinate {
         }
     }
 }
+
+public extension Array where Element == Coordinate {
+    /// Helper for simplifying points from a collection if the are closer than a specified threshold.
+    /// - Parameter threshold: The threshold predicate in for removing points. A point is removed if it ist closer to its neighboring segment accoridng to the [Ramer-Douglas-Peucker algorithm](https://en.wikipedia.org/wiki/Ramer–Douglas–Peucker_algorithm).
+    /// - Returns: An array of `Coordinate` values.
+    func simplifyRDP(threshold epsilon: Double) -> [Coordinate] {
+        simplify(tolerance: epsilon)
+    }
+}
