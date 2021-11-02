@@ -71,12 +71,28 @@ final public class GPXFileParser {
 	}
 
 	private func parseSegment(_ segmentNode: XMLNode?) -> [TrackPoint] {
+		guard let node = segmentNode else { return [] }
+        var trackPoints = node.childrenOfType(.trackPoint).compactMap(TrackPoint.init)
+        checkForInvalidElevationAtStartAndEnd(trackPoints: &trackPoints)
+        return correctElevationGaps(trackPoints: trackPoints)
+            .map { .init(coordinate: .init(latitude: $0.latitude, longitude: $0.longitude, elevation: $0.coordinate.elevation == .greatestFiniteMagnitude ? 0 : $0.coordinate.elevation), date: $0.date, power: $0.power)}
+	}
+
+    private func checkForInvalidElevationAtStartAndEnd(trackPoints: inout [TrackPoint]) {
+        if trackPoints.first?.coordinate.elevation == .greatestFiniteMagnitude, let firstValidElevation = trackPoints.first(where: { $0.coordinate.elevation != .greatestFiniteMagnitude })?.coordinate.elevation {
+            trackPoints[0].coordinate.elevation = firstValidElevation
+        }
+        if trackPoints.last?.coordinate.elevation == .greatestFiniteMagnitude, let lastValidElevation = trackPoints.last(where: { $0.coordinate.elevation != .greatestFiniteMagnitude })?.coordinate.elevation {
+            trackPoints[trackPoints.count-1].coordinate.elevation = lastValidElevation
+        }
+    }
+
+    private func correctElevationGaps(trackPoints: [TrackPoint]) -> [TrackPoint] {
         struct Grade {
             var start: Coordinate
             var grade: Double
         }
-		guard let node = segmentNode else { return [] }
-		let trackPoints = node.childrenOfType(.trackPoint).compactMap(TrackPoint.init)
+
         let chunks = trackPoints.chunked(on: { $0.coordinate.elevation == .greatestFiniteMagnitude })
         let grades: [Grade] = chunks.filter { $0.0 == false }.adjacentPairs().compactMap { seq1, seq2 in
             guard let start = seq1.1.last,
@@ -99,8 +115,8 @@ final public class GPXFileParser {
                 result.append(contentsOf: chunk.1)
             }
         }
-        return result.map { .init(coordinate: .init(latitude: $0.latitude, longitude: $0.longitude, elevation: $0.coordinate.elevation == .greatestFiniteMagnitude ? 0 : $0.coordinate.elevation), date: $0.date, power: $0.power)}
-	}
+        return result
+    }
 }
 
 internal extension TrackPoint {

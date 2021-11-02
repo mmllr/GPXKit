@@ -205,4 +205,53 @@ class GPXParserTests: XCTestCase {
         let result = try XCTUnwrap(result).flatMap { $0.trackPoints.map { $0.coordinate } }
         XCTAssertEqual(expected, result)
     }
+
+    func testItTakesTheFirstElevationWhenTheTrackStartsWithNoElevation() throws {
+        let start = TestGPXPoint.leipzig.with { $0.elevation = nil }
+        let points: [TestGPXPoint] = [
+            start,
+            start.offset(east: 250).with { $0.elevation = nil },
+            start.offset(east: 400).with { $0.elevation = nil },
+            start.offset(east: 500).with { $0.elevation = 120 }
+        ]
+        parseXML(given(points: points))
+
+        let expected: [Coordinate] = [
+            Coordinate(points[0].with { $0.elevation = 120 }),
+            Coordinate(points[1].with { $0.elevation = 120 }),
+            Coordinate(points[2].with { $0.elevation = 120 }),
+            Coordinate(points[3])
+        ]
+
+        let result = try XCTUnwrap(result).flatMap { $0.trackPoints.map { $0.coordinate } }
+        XCTAssertEqual(expected, result)
+    }
+
+    func testItTakesTheLastElevationWhenTheTrackEndsWithNoElevation() throws {
+        let start = TestGPXPoint.leipzig.with { $0.elevation = 170 }
+        let points: [TestGPXPoint] = [
+            start,
+            start.offset(east: 250).with { $0.elevation = nil },
+            start.offset(east: 400),
+            start.offset(east: 500).with { $0.elevation = nil }
+        ]
+        parseXML(given(points: points))
+
+        let expected: [Coordinate] = [
+            Coordinate(points[0]),
+            Coordinate(points[1].with { $0.elevation = expectedElevation(start: points[0], end: points[2], distanceFromStart: points[0].distance(to: points[1])) }),
+            Coordinate(points[2]),
+            Coordinate(points[3].with { $0.elevation = 170 })
+        ]
+
+        let result = try XCTUnwrap(result).flatMap { $0.trackPoints.map { $0.coordinate } }
+        XCTAssertEqual(expected, result)
+    }
+
+    func testEmptySegmentIsEmptyTrackPoints() throws {
+        parseXML(given(points: []))
+
+        let result = try XCTUnwrap(result)
+        XCTAssertEqual([], result.trackPoints)
+    }
 }
