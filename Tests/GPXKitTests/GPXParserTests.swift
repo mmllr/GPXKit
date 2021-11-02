@@ -168,4 +168,41 @@ class GPXParserTests: XCTestCase {
         XCTAssertEqual(3100.5625, distance, accuracy: 10)
         XCTAssertEqual(158.4000015258789, elevation, accuracy: 0.001)
     }
+
+    func testTracksWithoutElevationInTheGPXHaveAnElevationOfZero() throws {
+        parseXML(given(points: [.leipzig, .postPlatz, .dehner]))
+
+        let elevation = try XCTUnwrap(result?.graph.elevationGain)
+        XCTAssertEqual(0, elevation)
+    }
+
+    func testItInterpolatesElevationGapsWithElevationAtStartEndEndOfTheTrack() throws {
+        // 0m: 100, 250m: nil, 500m: 120
+        let start = TestGPXPoint.leipzig.with { $0.elevation = 100 }
+        let points: [TestGPXPoint] = [
+            start,
+            start.offset(east: 250).with { $0.elevation = nil },
+            start.offset(east: 400).with { $0.elevation = nil },
+            start.offset(east: 450).with { $0.elevation = nil },
+            start.offset(east: 500).with { $0.elevation = 120 },
+            start.offset(east: 600).with { $0.elevation = nil },
+            start.offset(east: 700).with { $0.elevation = nil },
+            start.offset(east: 800).with { $0.elevation = 300 }
+        ]
+        parseXML(given(points: points))
+
+        let expected: [Coordinate] = [
+            Coordinate(points[0]),
+            Coordinate(points[1].with { $0.elevation = expectedElevation(start: points[0], end: points[4], distanceFromStart: points[0].distance(to: points[1])) }),
+            Coordinate(points[2].with { $0.elevation = expectedElevation(start: points[0], end: points[4], distanceFromStart: points[0].distance(to: points[2])) }),
+            Coordinate(points[3].with { $0.elevation = expectedElevation(start: points[0], end: points[4], distanceFromStart: points[0].distance(to: points[3])) }),
+            Coordinate(points[4]),
+            Coordinate(points[5].with { $0.elevation = expectedElevation(start: points[4], end: points[7], distanceFromStart: points[4].distance(to: points[5])) }),
+            Coordinate(points[6].with { $0.elevation = expectedElevation(start: points[4], end: points[7], distanceFromStart: points[4].distance(to: points[6])) }),
+            Coordinate(points[7])
+        ]
+
+        let result = try XCTUnwrap(result).flatMap { $0.trackPoints.map { $0.coordinate } }
+        XCTAssertEqual(expected, result)
+    }
 }

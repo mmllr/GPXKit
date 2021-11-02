@@ -16,11 +16,14 @@ let package = Package(
     ],
     dependencies: [
         .package(name: "Difference", url: "https://github.com/krzysztofzablocki/Difference.git", .upToNextMajor(from: "1.0.0")),
+        .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
     ],
     targets: [
         .target(
             name: "GPXKit",
-            dependencies: []),
+            dependencies: [
+                .product(name: "Algorithms", package: "swift-algorithms"),
+            ]),
         .testTarget(
             name: "GPXKitTests",
             dependencies: [

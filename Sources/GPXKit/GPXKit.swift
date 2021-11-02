@@ -12,7 +12,7 @@ public protocol GeoCoordinate {
 }
 
 /// Basic type for storing a geo location.
-public struct Coordinate: Hashable, GeoCoordinate {
+public struct Coordinate: GeoCoordinate, Hashable {
     /// Latitude value in degrees
     public var latitude: Double
     /// Longitude value in degrees
@@ -29,6 +29,12 @@ public struct Coordinate: Hashable, GeoCoordinate {
         self.latitude = latitude
         self.longitude = longitude
         self.elevation = elevation
+    }
+
+    public static func == (lhs: Coordinate, rhs: Coordinate) -> Bool {
+        return lhs.latitude == rhs.latitude &&
+        lhs.longitude == rhs.longitude &&
+        (lhs.elevation - rhs.elevation).magnitude < 0.00001
     }
 }
 

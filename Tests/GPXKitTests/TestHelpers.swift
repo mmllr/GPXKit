@@ -7,6 +7,19 @@ import Difference
 import FoundationXML
 #endif
 
+struct TestGPXPoint: Hashable, GeoCoordinate {
+    var latitude: Double
+    var longitude: Double
+    var elevation: Double?
+
+    @inlinable
+    func with(_ block: (inout Self) throws -> Void) rethrows -> Self {
+        var copy = self
+        try block(&copy)
+        return copy
+    }
+}
+
 public func XCTAssertEqual<T: Equatable>(_ expected: @autoclosure () throws -> T, _ received: @autoclosure () throws -> T, file: StaticString = #filePath, line: UInt = #line) {
     do {
         let expected = try expected()
@@ -71,7 +84,38 @@ extension Coordinate {
         // distance = elevation / grade
         return offset(east: elevation / grade, elevation: elevation)
     }
+
+    init(_ testPoint: TestGPXPoint) {
+        self.init(latitude: testPoint.latitude, longitude: testPoint.longitude, elevation: testPoint.elevation ?? 0)
+    }
 }
+
+extension TestGPXPoint {
+    static var random: TestGPXPoint {
+        TestGPXPoint(
+            latitude: Double.random(in: -90..<90),
+            longitude: Double.random(in: -180..<180),
+            elevation: Bool.random() ? Double.random(in: 1..<100) : nil
+        )
+    }
+
+    func offset(north: Double = 0, east: Double = 0) -> Self {
+        // Earth’s radius, sphere
+        let radius: Double = 6_378_137
+
+        // Coordinate offsets in radians
+        let dLat = north / radius
+        let dLon = east / (radius * cos(.pi * latitude / 180))
+
+        // OffsetPosition, decimal degrees
+        return .init(
+            latitude: latitude + dLat * 180 / .pi,
+            longitude: longitude + dLon * 180 / .pi,
+            elevation: elevation
+        )
+    }
+}
+
 
 extension TrackPoint {
     func expectedXMLNode(withDate: Bool = false) -> GPXKit.XMLNode {
@@ -85,7 +129,7 @@ extension TrackPoint {
                             content: String(format:"%.2f", coordinate.elevation)),
                     withDate ? date.flatMap {
                         XMLNode(name: GPXTags.time.rawValue,
-                        content: expectedString(for: $0) )
+                                content: expectedString(for: $0) )
                     } : nil
                 ].compactMap {$0 }
         )
@@ -178,4 +222,34 @@ extension XCTest {
         }
     }
 
+}
+
+func given(title: String = "track title", points: [TestGPXPoint]) -> String {
+    let pointXML = points.map {
+        let ele = $0.elevation.flatMap { "<ele>\($0)</ele>" } ?? ""
+        return "<trkpt lat=\"\($0.latitude)\" lon=\"\($0.longitude)\">\(ele)</trkpt>"
+    }.joined(separator: "\n")
+    let xml =
+    """
+    <?xml version="1.0" encoding="UTF-8"?>
+    <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
+        <metadata>
+        </metadata>
+        <trk>
+            <name>\(title)</name>
+            <type>1</type>
+            <trkseg>
+                \(pointXML)
+            </trkseg>
+        </trk>
+    </gpx>
+    """
+    return xml
+}
+
+
+func expectedElevation(start: TestGPXPoint, end: TestGPXPoint, distanceFromStart: Double) -> Double? {
+    guard let startElevation = start.elevation, let endElevation = end.elevation else { return nil }
+    let deltaHeight = endElevation - startElevation
+    return startElevation + deltaHeight * (distanceFromStart / start.distance(to: end))
 }

@@ -1,4 +1,5 @@
 import Foundation
+import Algorithms
 #if canImport(FoundationXML)
 import FoundationXML
 #endif
@@ -70,8 +71,35 @@ final public class GPXFileParser {
 	}
 
 	private func parseSegment(_ segmentNode: XMLNode?) -> [TrackPoint] {
+        struct Grade {
+            var start: Coordinate
+            var grade: Double
+        }
 		guard let node = segmentNode else { return [] }
-		return node.childrenOfType(.trackPoint).compactMap(TrackPoint.init)
+		let trackPoints = node.childrenOfType(.trackPoint).compactMap(TrackPoint.init)
+        let chunks = trackPoints.chunked(on: { $0.coordinate.elevation == .greatestFiniteMagnitude })
+        let grades: [Grade] = chunks.filter { $0.0 == false }.adjacentPairs().compactMap { seq1, seq2 in
+            guard let start = seq1.1.last,
+                  let end = seq2.1.first else { return nil }
+            let dist = start.coordinate.distance(to: end.coordinate)
+            let elevationDelta = end.coordinate.elevation - start.coordinate.elevation
+            return Grade(start: start.coordinate, grade: elevationDelta / dist)
+        }
+        var corrected: [[TrackPoint]] = zip(chunks.filter { $0.0 }, grades).map { chunk, grade in
+            return chunk.1.map {
+                TrackPoint(coordinate: .init(latitude: $0.latitude, longitude: $0.longitude, elevation: grade.start.elevation + grade.start.distance(to: $0.coordinate) * grade.grade), date: $0.date, power: $0.power)
+            }
+        }
+
+        var result: [TrackPoint] = []
+        for chunk in chunks {
+            if !corrected.isEmpty, chunk.0 {
+                result.append(contentsOf: corrected.removeFirst())
+            } else {
+                result.append(contentsOf: chunk.1)
+            }
+        }
+        return result.map { .init(coordinate: .init(latitude: $0.latitude, longitude: $0.longitude, elevation: $0.coordinate.elevation == .greatestFiniteMagnitude ? 0 : $0.coordinate.elevation), date: $0.date, power: $0.power)}
 	}
 }
 
@@ -83,7 +111,7 @@ internal extension TrackPoint {
         self.coordinate = Coordinate(
             latitude: lat,
             longitude: lon,
-            elevation: trackNode.childFor(.elevation)?.elevation ?? .zero
+            elevation: trackNode.childFor(.elevation)?.elevation ?? .greatestFiniteMagnitude
         )
 		self.date = trackNode.childFor(.time)?.date
 		self.power = trackNode.childFor(.extensions)?.childFor(.power)?.power
