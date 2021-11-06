@@ -32,8 +32,8 @@ public struct Coordinate: GeoCoordinate, Hashable {
     }
 
     public static func == (lhs: Coordinate, rhs: Coordinate) -> Bool {
-        return lhs.latitude == rhs.latitude &&
-        lhs.longitude == rhs.longitude &&
+        (lhs.latitude - rhs.latitude).magnitude < 0.000001 &&
+        (lhs.longitude - rhs.longitude).magnitude < 0.000001 &&
         (lhs.elevation - rhs.elevation).magnitude < 0.00001
     }
 }
