@@ -69,6 +69,7 @@ let testXMLData = """
             </metadata>
             <trk>
                 <name>Haus- und Seenrunde Ausdauer</name>
+                <desc>Track description</desc>
                 <type>1</type>
                 <trkseg>
                     <trkpt lat="51.2760600" lon="12.3769500">

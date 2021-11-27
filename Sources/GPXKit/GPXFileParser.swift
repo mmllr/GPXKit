@@ -25,6 +25,7 @@ internal enum GPXTags: String {
 	case elevation = "ele"
 	case extensions
 	case power
+    case description = "desc"
 }
 
 internal enum GPXAttributes: String {
@@ -63,7 +64,12 @@ final public class GPXFileParser {
 	private func parseRoot(node: XMLNode) -> GPXTrack? {
 		guard let trackNode = node.childFor(.track),
 			let title = trackNode.childFor(.name)?.content else { return nil }
-		return GPXTrack(date: node.childFor(.metadata)?.childFor(.time)?.date, title: title, trackPoints: parseSegment(trackNode.childFor(.trackSegment)))
+        return GPXTrack(
+            date: node.childFor(.metadata)?.childFor(.time)?.date,
+            title: title,
+            description: trackNode.childFor(.description)?.content,
+            trackPoints: parseSegment(trackNode.childFor(.trackSegment))
+        )
 	}
 
 	private func parseMetaData(_ node: XMLNode) -> Date? {

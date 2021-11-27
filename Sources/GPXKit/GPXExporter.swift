@@ -33,6 +33,7 @@ public final class GPXExporter {
                                 GPXTags.metadata.embed(metaData),
                                 GPXTags.track.embed([
                                     GPXTags.name.embed(track.title),
+                                    GPXTags.description.embed(track.description ?? ""),
                                     trackXML
                                 ].joined(separator: "\n"))
                             ].joined(separator: "\n")))

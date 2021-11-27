@@ -153,6 +153,8 @@ public struct GPXTrack: Equatable {
     public var date: Date?
     /// Title of the gpx track
     public var title: String
+    /// Description of the gpx track
+    public var description: String?
     /// Array of latitude/longitutde/elevation stream values
     public var trackPoints: [TrackPoint]
     /// `TrackGraph` containg elevation gain, overall distance and the height map of a track.
@@ -165,9 +167,10 @@ public struct GPXTrack: Equatable {
     ///   - date: The date stamp of the track. Defaults to nil.
     ///   - title: String describing the track.
     ///   - trackPoints: Array of `TrackPoint`s describing the route.
-    public init(date: Date? = nil, title: String, trackPoints: [TrackPoint]) {
+    public init(date: Date? = nil, title: String, description: String? = nil, trackPoints: [TrackPoint]) {
         self.date = date
         self.title = title
+        self.description = description
         self.trackPoints = trackPoints
         self.graph = TrackGraph(points: trackPoints)
         self.bounds = trackPoints.bounds()

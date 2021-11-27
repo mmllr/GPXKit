@@ -38,7 +38,7 @@ final class GPXExporterTests: XCTestCase {
 
     func testExportingAnEmptyTrackWithDateAndTitleResultsInAnEmptyGPXFile() {
         let date = Date()
-        let track: GPXTrack = GPXTrack(date: date, title: "Track title", trackPoints: [])
+        let track: GPXTrack = GPXTrack(date: date, title: "Track title", description: "Track description", trackPoints: [])
         sut = GPXExporter(track: track)
 
         let expectedContent: GPXKit.XMLNode = XMLNode(
@@ -49,7 +49,8 @@ final class GPXExporterTests: XCTestCase {
                     XMLNode(name: GPXTags.time.rawValue, content: expectedString(for: date))
                 ]),
                 XMLNode(name: GPXTags.track.rawValue, children: [
-                    XMLNode(name: GPXTags.name.rawValue, content: track.title)
+                    XMLNode(name: GPXTags.name.rawValue, content: track.title),
+                    XMLNode(name: GPXTags.description.rawValue, content: "Track description")
                 ])
             ])
 
@@ -59,7 +60,7 @@ final class GPXExporterTests: XCTestCase {
     }
 
     func testExportingAnEmptyTrackWithoutDateResultsInAnEmptyGPXFileWithoutTitleAndDate() {
-        let track: GPXTrack = GPXTrack(date: nil, title: "Track title", trackPoints: [])
+        let track: GPXTrack = GPXTrack(date: nil, title: "Track title", description: "Description", trackPoints: [])
         sut = GPXExporter(track: track)
 
         let expectedContent: GPXKit.XMLNode = XMLNode(
@@ -68,7 +69,8 @@ final class GPXExporterTests: XCTestCase {
             children: [
                 XMLNode(name: GPXTags.metadata.rawValue),
                 XMLNode(name: GPXTags.track.rawValue, children: [
-                    XMLNode(name: GPXTags.name.rawValue, content: track.title)
+                    XMLNode(name: GPXTags.name.rawValue, content: track.title),
+                    XMLNode(name: GPXTags.description.rawValue, content: "Description")
                 ])
             ])
 
@@ -82,6 +84,7 @@ final class GPXExporterTests: XCTestCase {
         let track: GPXTrack = GPXTrack(
             date: date,
             title: "Track title",
+            description: "Non empty track",
             trackPoints: givenTrackPoints(10))
         sut = GPXExporter(track: track)
 
@@ -96,6 +99,7 @@ final class GPXExporterTests: XCTestCase {
                 ]),
                 XMLNode(name: GPXTags.track.rawValue, children: [
                     XMLNode(name: GPXTags.name.rawValue, content: track.title),
+                    XMLNode(name: GPXTags.description.rawValue, content: "Non empty track"),
                     XMLNode(name: GPXTags.trackSegment.rawValue,
                             children: track.trackPoints.map { $0.expectedXMLNode(withDate: true) })
                 ])
@@ -136,6 +140,7 @@ final class GPXExporterTests: XCTestCase {
                 XMLNode(name: GPXTags.metadata.rawValue),
                 XMLNode(name: GPXTags.track.rawValue, children: [
                     XMLNode(name: GPXTags.name.rawValue, content: track.title),
+                    XMLNode(name: GPXTags.description.rawValue, content: ""),
                     XMLNode(name: GPXTags.trackSegment.rawValue,
                             children: track.trackPoints.map { $0.expectedXMLNode(withDate: false) })
                 ])
