@@ -161,19 +161,22 @@ public struct GPXTrack: Equatable {
     public var graph: TrackGraph
     /// The bounding box enclosing the track
     public var bounds: GeoBounds
+    /// Keywords describing a gpx track
+    public var keywords: [String]
 
     /// Initializes a GPXTrack. You don't need to construct this value by yourself, as it is done by GXPKits track parsing logic.
     /// - Parameters:
     ///   - date: The date stamp of the track. Defaults to nil.
     ///   - title: String describing the track.
     ///   - trackPoints: Array of `TrackPoint`s describing the route.
-    public init(date: Date? = nil, title: String, description: String? = nil, trackPoints: [TrackPoint]) {
+    public init(date: Date? = nil, title: String, description: String? = nil, trackPoints: [TrackPoint], keywords: [String] = []) {
         self.date = date
         self.title = title
         self.description = description
         self.trackPoints = trackPoints
         self.graph = TrackGraph(points: trackPoints)
         self.bounds = trackPoints.bounds()
+        self.keywords = keywords
     }
 }
 

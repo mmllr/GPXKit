@@ -257,4 +257,30 @@ class GPXParserTests: XCTestCase {
         let result = try XCTUnwrap(result)
         XCTAssertEqual([], result.trackPoints)
     }
+
+    func testParsingKeywords() throws {
+        parseXML("""
+                 <?xml version="1.0" encoding="UTF-8"?>
+                 <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
+                     <metadata>
+                     <keywords>one    two three  \n  \t  four   </keywords>
+                     </metadata>
+                     <trk>
+                         <name>Haus- und Seenrunde Ausdauer</name>
+                         <type>1</type>
+                         <trkseg>
+                             <trkpt lat="51.2760600" lon="12.3769500">
+                                 <ele>114.2</ele>
+                             </trkpt>
+                             <trkpt lat="51.2760420" lon="12.3769760">
+                                 <ele>114.0</ele>
+                             </trkpt>
+                         </trkseg>
+                     </trk>
+                 </gpx>
+                 """)
+
+        let sut = try XCTUnwrap(self.result)
+        XCTAssertEqual(["one", "two", "three", "four"], sut.keywords)
+    }
 }
