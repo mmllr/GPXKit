@@ -30,7 +30,10 @@ public final class GPXExporter {
         <?xml version="1.0" encoding="UTF-8"?>
         \(GPXTags.gpx.embed(attributes: headerAttributes,
                             [
-                                GPXTags.metadata.embed(metaData),
+                                GPXTags.metadata.embed([
+                                    metaDataTime,
+                                    track.keywords.isEmpty ? "" : GPXTags.keywords.embed(track.keywords.joined(separator: " "))
+                                ].joined(separator: "\n")),
                                 GPXTags.track.embed([
                                     GPXTags.name.embed(track.title),
                                     GPXTags.description.embed(track.description ?? ""),
@@ -40,7 +43,7 @@ public final class GPXExporter {
         """
     }
 
-    private var metaData: String {
+    private var metaDataTime: String {
         guard exportDate, let date = track.date else { return "" }
         return GPXTags.time.embed(iso8601Formatter.string(from: date))
     }

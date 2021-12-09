@@ -42,17 +42,17 @@ final class GPXExporterTests: XCTestCase {
         sut = GPXExporter(track: track)
 
         let expectedContent: GPXKit.XMLNode = XMLNode(
-            name: GPXTags.gpx.rawValue,
-            atttributes: expectedHeaderAttributes,
-            children: [
-                XMLNode(name: GPXTags.metadata.rawValue, children: [
-                    XMLNode(name: GPXTags.time.rawValue, content: expectedString(for: date))
-                ]),
-                XMLNode(name: GPXTags.track.rawValue, children: [
-                    XMLNode(name: GPXTags.name.rawValue, content: track.title),
-                    XMLNode(name: GPXTags.description.rawValue, content: "Track description")
+                name: GPXTags.gpx.rawValue,
+                atttributes: expectedHeaderAttributes,
+                children: [
+                    XMLNode(name: GPXTags.metadata.rawValue, children: [
+                        XMLNode(name: GPXTags.time.rawValue, content: expectedString(for: date))
+                    ]),
+                    XMLNode(name: GPXTags.track.rawValue, children: [
+                        XMLNode(name: GPXTags.name.rawValue, content: track.title),
+                        XMLNode(name: GPXTags.description.rawValue, content: "Track description")
+                    ])
                 ])
-            ])
 
         parseResult(sut.xmlString)
 
@@ -60,19 +60,21 @@ final class GPXExporterTests: XCTestCase {
     }
 
     func testExportingAnEmptyTrackWithoutDateResultsInAnEmptyGPXFileWithoutTitleAndDate() {
-        let track: GPXTrack = GPXTrack(date: nil, title: "Track title", description: "Description", trackPoints: [])
+        let track: GPXTrack = GPXTrack(date: nil, title: "Track title", description: "Description", trackPoints: [], keywords: ["one", "two"])
         sut = GPXExporter(track: track)
 
         let expectedContent: GPXKit.XMLNode = XMLNode(
-            name: GPXTags.gpx.rawValue,
-            atttributes: expectedHeaderAttributes,
-            children: [
-                XMLNode(name: GPXTags.metadata.rawValue),
-                XMLNode(name: GPXTags.track.rawValue, children: [
-                    XMLNode(name: GPXTags.name.rawValue, content: track.title),
-                    XMLNode(name: GPXTags.description.rawValue, content: "Description")
+                name: GPXTags.gpx.rawValue,
+                atttributes: expectedHeaderAttributes,
+                children: [
+                    XMLNode(name: GPXTags.metadata.rawValue, children: [
+                        XMLNode(name: GPXTags.keywords.rawValue, content: "one two")
+                    ]),
+                    XMLNode(name: GPXTags.track.rawValue, children: [
+                        XMLNode(name: GPXTags.name.rawValue, content: track.title),
+                        XMLNode(name: GPXTags.description.rawValue, content: "Description")
+                    ])
                 ])
-            ])
 
         parseResult(sut.xmlString)
 
@@ -82,28 +84,32 @@ final class GPXExporterTests: XCTestCase {
     func testExportingANonEmptyTrackWithDates() {
         let date = Date()
         let track: GPXTrack = GPXTrack(
-            date: date,
-            title: "Track title",
-            description: "Non empty track",
-            trackPoints: givenTrackPoints(10))
+                date: date,
+                title: "Track title",
+                description: "Non empty track",
+                trackPoints: givenTrackPoints(10),
+                keywords: ["keyword1", "keyword2", "keyword3"])
         sut = GPXExporter(track: track)
 
         parseResult(sut.xmlString)
 
         let expectedContent: GPXKit.XMLNode = XMLNode(
-            name: GPXTags.gpx.rawValue,
-            atttributes: expectedHeaderAttributes,
-            children: [
-                XMLNode(name: GPXTags.metadata.rawValue, children: [
-                    XMLNode(name: GPXTags.time.rawValue, content: expectedString(for: date))
-                ]),
-                XMLNode(name: GPXTags.track.rawValue, children: [
-                    XMLNode(name: GPXTags.name.rawValue, content: track.title),
-                    XMLNode(name: GPXTags.description.rawValue, content: "Non empty track"),
-                    XMLNode(name: GPXTags.trackSegment.rawValue,
-                            children: track.trackPoints.map { $0.expectedXMLNode(withDate: true) })
+                name: GPXTags.gpx.rawValue,
+                atttributes: expectedHeaderAttributes,
+                children: [
+                    XMLNode(name: GPXTags.metadata.rawValue, children: [
+                        XMLNode(name: GPXTags.time.rawValue, content: expectedString(for: date)),
+                        XMLNode(name: GPXTags.keywords.rawValue, content: "keyword1 keyword2 keyword3")
+                    ]),
+                    XMLNode(name: GPXTags.track.rawValue, children: [
+                        XMLNode(name: GPXTags.name.rawValue, content: track.title),
+                        XMLNode(name: GPXTags.description.rawValue, content: "Non empty track"),
+                        XMLNode(name: GPXTags.trackSegment.rawValue,
+                                children: track.trackPoints.map {
+                                    $0.expectedXMLNode(withDate: true)
+                                })
+                    ])
                 ])
-            ])
 
         parseResult(sut.xmlString)
 
@@ -124,27 +130,29 @@ final class GPXExporterTests: XCTestCase {
 
     func testItWillNotExportTheDatesFromTrack() {
         let track = GPXTrack(date: Date(),
-                             title: "test track",
-                             trackPoints: [
-                                TrackPoint(coordinate: .random, date: Date()),
-                                TrackPoint(coordinate: .random, date: Date()),
-                                TrackPoint(coordinate: .random, date: Date()),
-                                TrackPoint(coordinate: .random, date: Date()),
-                             ])
+                title: "test track",
+                trackPoints: [
+                    TrackPoint(coordinate: .random, date: Date()),
+                    TrackPoint(coordinate: .random, date: Date()),
+                    TrackPoint(coordinate: .random, date: Date()),
+                    TrackPoint(coordinate: .random, date: Date()),
+                ])
         sut = GPXExporter(track: track, shouldExportDate: false)
 
         let expectedContent: GPXKit.XMLNode = XMLNode(
-            name: GPXTags.gpx.rawValue,
-            atttributes: expectedHeaderAttributes,
-            children: [
-                XMLNode(name: GPXTags.metadata.rawValue),
-                XMLNode(name: GPXTags.track.rawValue, children: [
-                    XMLNode(name: GPXTags.name.rawValue, content: track.title),
-                    XMLNode(name: GPXTags.description.rawValue, content: ""),
-                    XMLNode(name: GPXTags.trackSegment.rawValue,
-                            children: track.trackPoints.map { $0.expectedXMLNode(withDate: false) })
+                name: GPXTags.gpx.rawValue,
+                atttributes: expectedHeaderAttributes,
+                children: [
+                    XMLNode(name: GPXTags.metadata.rawValue),
+                    XMLNode(name: GPXTags.track.rawValue, children: [
+                        XMLNode(name: GPXTags.name.rawValue, content: track.title),
+                        XMLNode(name: GPXTags.description.rawValue, content: ""),
+                        XMLNode(name: GPXTags.trackSegment.rawValue,
+                                children: track.trackPoints.map {
+                                    $0.expectedXMLNode(withDate: false)
+                                })
+                    ])
                 ])
-            ])
 
         parseResult(sut.xmlString)
 
