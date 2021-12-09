@@ -31,7 +31,7 @@ public extension Collection where Element: GeoCoordinate {
 
     /// Creates a path from the collection of `GeoCoordinate`s. Useful if you want to draw a 2D image of a track.
     /// - Parameter normalized: Flag indicating if the paths values should be normalized into the range 0...1. If true, the resulting values in the path are mapped to value in 0...1 coordinates space, otherwise the values from the geo coordinates. Defaults to true.
-    /// - Returns: A CGPath containg a projected 2D-representation of the geo coordinates.
+    /// - Returns: A CGPath containing a projected 2D-representation of the geo coordinates.
     func path(normalized: Bool = true) -> CGPath {
         var min = CGPoint(x: CGFloat.greatestFiniteMagnitude, y: CGFloat.greatestFiniteMagnitude)
         var max = CGPoint(x: -CGFloat.greatestFiniteMagnitude, y: -CGFloat.greatestFiniteMagnitude)
@@ -61,7 +61,7 @@ public extension Collection where Element: GeoCoordinate {
 public extension Collection where Element: GeoCoordinate {
 
     /// Helper for removing points from a collection if the are closer than a specified threshold.
-    /// - Parameter meters: The threshold predicate in meters for removing points. A point is removed if it ist closer to its predecessor than this value.
+    /// - Parameter meters: The threshold predicate in meters for removing points. A point is removed if it is closer to its predecessor than this value.
     /// - Returns: An array of `Coordinate` values, each having a minimum distance to their predecessors of least closerThan meters.
     ///
     /// Important: The elevation value of the returned `Coordinate` array is always zero.
@@ -79,7 +79,7 @@ public extension Collection where Element: GeoCoordinate {
 
 public extension Array where Element == Coordinate {
     /// Helper for simplifying points from a collection if the are closer than a specified threshold.
-    /// - Parameter threshold: The threshold predicate in for removing points. A point is removed if it ist closer to its neighboring segment accoridng to the [Ramer-Douglas-Peucker algorithm](https://en.wikipedia.org/wiki/Ramer–Douglas–Peucker_algorithm).
+    /// - Parameter threshold: The threshold predicate in for removing points. A point is removed if it is closer to its neighboring segment according to the [Ramer-Douglas-Peucker algorithm](https://en.wikipedia.org/wiki/Ramer–Douglas–Peucker_algorithm).
     /// - Returns: An array of `Coordinate` values.
     func simplifyRDP(threshold epsilon: Double) -> [Coordinate] {
         simplify(tolerance: epsilon)

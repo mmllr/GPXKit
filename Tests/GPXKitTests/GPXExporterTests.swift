@@ -43,7 +43,7 @@ final class GPXExporterTests: XCTestCase {
 
         let expectedContent: GPXKit.XMLNode = XMLNode(
                 name: GPXTags.gpx.rawValue,
-                atttributes: expectedHeaderAttributes,
+                attributes: expectedHeaderAttributes,
                 children: [
                     XMLNode(name: GPXTags.metadata.rawValue, children: [
                         XMLNode(name: GPXTags.time.rawValue, content: expectedString(for: date))
@@ -65,7 +65,7 @@ final class GPXExporterTests: XCTestCase {
 
         let expectedContent: GPXKit.XMLNode = XMLNode(
                 name: GPXTags.gpx.rawValue,
-                atttributes: expectedHeaderAttributes,
+                attributes: expectedHeaderAttributes,
                 children: [
                     XMLNode(name: GPXTags.metadata.rawValue, children: [
                         XMLNode(name: GPXTags.keywords.rawValue, content: "one two")
@@ -95,7 +95,7 @@ final class GPXExporterTests: XCTestCase {
 
         let expectedContent: GPXKit.XMLNode = XMLNode(
                 name: GPXTags.gpx.rawValue,
-                atttributes: expectedHeaderAttributes,
+                attributes: expectedHeaderAttributes,
                 children: [
                     XMLNode(name: GPXTags.metadata.rawValue, children: [
                         XMLNode(name: GPXTags.time.rawValue, content: expectedString(for: date)),
@@ -141,7 +141,7 @@ final class GPXExporterTests: XCTestCase {
 
         let expectedContent: GPXKit.XMLNode = XMLNode(
                 name: GPXTags.gpx.rawValue,
-                atttributes: expectedHeaderAttributes,
+                attributes: expectedHeaderAttributes,
                 children: [
                     XMLNode(name: GPXTags.metadata.rawValue),
                     XMLNode(name: GPXTags.track.rawValue, children: [

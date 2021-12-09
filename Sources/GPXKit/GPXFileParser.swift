@@ -4,13 +4,13 @@ import Algorithms
 import FoundationXML
 #endif
 
-/// Error descringing export erros
+/// Error describing export errors
 public enum GPXParserError: Error, Equatable {
     /// The provided xml contains no valid GPX.
     case invalidGPX
     // No tracks where found in the provided GPX xml.
     case noTracksFound
-    /// The provided xml could not be parsed. Contains the underlying NSError from the XMLParser along with the xml files line number where the error occured.
+    /// The provided xml could not be parsed. Contains the underlying NSError from the XMLParser along with the xml files line number where the error occurred.
     case parseError(NSError, Int)
 }
 
@@ -173,10 +173,10 @@ internal extension XMLNode {
     }()
 
     var latitude: Double? {
-        Double(atttributes[GPXAttributes.latitude.rawValue] ?? "")
+        Double(attributes[GPXAttributes.latitude.rawValue] ?? "")
     }
     var longitude: Double? {
-        Double(atttributes[GPXAttributes.longitude.rawValue] ?? "")
+        Double(attributes[GPXAttributes.longitude.rawValue] ?? "")
     }
     var elevation: Double? {
         Double(content)

@@ -13,7 +13,7 @@ public extension TrackGraph {
 }
 
 public extension CLLocationCoordinate2D {
-    /// Convenience initalizer for creation of a `CLLocationCoordinate2D` from a `GeoCoordinate`
+    /// Convenience initializer for creation of a `CLLocationCoordinate2D` from a `GeoCoordinate`
     /// - Parameter coord: A type which conforms to the `GeoCoordinate` protocol.
     init(_ coord: GeoCoordinate) {
 		self.init(latitude: coord.latitude, longitude: coord.longitude)

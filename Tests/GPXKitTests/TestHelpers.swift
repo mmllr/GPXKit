@@ -120,7 +120,7 @@ extension TestGPXPoint {
 extension TrackPoint {
     func expectedXMLNode(withDate: Bool = false) -> GPXKit.XMLNode {
         XMLNode(name: GPXTags.trackPoint.rawValue,
-                atttributes: [
+                attributes: [
                     GPXAttributes.latitude.rawValue: "\(coordinate.latitude)",
                     GPXAttributes.longitude.rawValue: "\(coordinate.longitude)"
                 ],
@@ -172,7 +172,7 @@ extension XCTest {
     /*
      public struct XMLNode: Equatable, Hashable {
      var name: String
-     var atttributes: [String: String] = [:]
+     var attributes: [String: String] = [:]
      var content: String = ""
      public var children: [XMLNode] = []
      }
@@ -185,7 +185,7 @@ extension XCTest {
     ) {
         XCTAssertEqual(expected.content, actual.content, file: file, line: line)
         XCTAssertEqual(expected.content, actual.content, file: file, line: line)
-        XCTAssertEqual(expected.atttributes, actual.atttributes, file: file, line: line)
+        XCTAssertEqual(expected.attributes, actual.attributes, file: file, line: line)
         XCTAssertEqual(expected.children, actual.children, file: file, line: line)
     }
 

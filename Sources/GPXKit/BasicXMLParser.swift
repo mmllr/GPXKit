@@ -5,7 +5,7 @@ import FoundationXML
 
 public struct XMLNode: Equatable, Hashable {
     var name: String
-    var atttributes: [String: String] = [:]
+    var attributes: [String: String] = [:]
     var content: String = ""
     public var children: [XMLNode] = []
 }
@@ -17,7 +17,7 @@ public enum BasicXMLParserError: Error, Equatable {
 
 public class BasicXMLParser: NSObject, XMLParserDelegate {
     private let parser: XMLParser
-    private var resultStack: [XMLNode] = [XMLNode(name: "", atttributes: [:], content: "", children: [])]
+    private var resultStack: [XMLNode] = [XMLNode(name: "", attributes: [:], content: "", children: [])]
     private var result: XMLNode? {
         return resultStack.first?.children.first
     }
@@ -42,7 +42,7 @@ public class BasicXMLParser: NSObject, XMLParserDelegate {
 
     // swiftlint:disable:next line_length
     public func parser(_: XMLParser, didStartElement elementName: String, namespaceURI _: String?, qualifiedName _: String?, attributes attributeDict: [String: String] = [:]) {
-        let newNode = XMLNode(name: elementName, atttributes: attributeDict, content: "", children: [])
+        let newNode = XMLNode(name: elementName, attributes: attributeDict, content: "", children: [])
         resultStack.append(newNode)
     }
 

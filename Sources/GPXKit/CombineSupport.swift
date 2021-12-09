@@ -33,7 +33,7 @@ extension GPXFileParser {
         return parser.publisher
     }
 
-    // Helper for loading a gpx track from data.
+    /// Helper for loading a gpx track from data.
     /// - Parameter data: The data containing the GPX as xml. See [GPX specification for details](https://www.topografix.com/gpx.asp).
     /// - Returns: An AnyPublisher with Output `GPXTrack` and Failure of `GPXParserError`.
     ///

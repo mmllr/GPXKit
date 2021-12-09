@@ -165,7 +165,7 @@ extension GeoCoordinate {
     ///
     /// [Details on Jan Philip Matuscheks website](http://janmatuschek.de/LatitudeLongitudeBoundingCoordinates#Latitude)
     /// - Parameter distanceInMeters: Distance in meters around the coordinate.
-    /// - Returns: A `GeoBounds` value or nil if no bounds could be calulcated (if distanceInMeters is below zero).
+    /// - Returns: A `GeoBounds` value or nil if no bounds could be calculated (if distanceInMeters is below zero).
     public func bounds(distanceInMeters: Double) -> GeoBounds? {
         guard distanceInMeters >= 0.0 else { return nil }
 

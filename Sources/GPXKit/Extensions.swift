@@ -16,7 +16,7 @@ public extension GeoCoordinate {
     /// Performs a mercator projection of a geo coordinate to values in meters along x/y
     /// - Returns: A pair of x/y-values in meters.
     ///
-    /// This produces a fast approximation to the truer, but heavier elliptical projection, where the Earth would be projected on a more accurate ellipsoid (flattened on poles). As a consequence, direct mesurements of distances in this projection will be approximative, except on the Equator, and the aspect ratios on the rendered map for true squares measured on the surface on Earth will slightly change with latitude and angles not so precisely preserved by this spherical projection.
+    /// This produces a fast approximation to the truer, but heavier elliptical projection, where the Earth would be projected on a more accurate ellipsoid (flattened on poles). As a consequence, direct measurements of distances in this projection will be approximative, except on the Equator, and the aspect ratios on the rendered map for true squares measured on the surface on Earth will slightly change with latitude and angles not so precisely preserved by this spherical projection.
     /// [More details on Wikipedia](https://wiki.openstreetmap.org/wiki/Mercator)
     func mercatorProjectionToMeters() -> (x: Double, y: Double) {
         let earthRadius: Double = 6_378_137.0 // meters
@@ -26,9 +26,9 @@ public extension GeoCoordinate {
     }
 
     /// Performs a mercator projection of a geo coordinate to values in degrees
-    /// - Returns: A pair of x/y-values in lagtitude/longitude degrees.
+    /// - Returns: A pair of x/y-values in latitude/longitude degrees.
     ///
-    /// This produces a fast approximation to the truer, but heavier elliptical projection, where the Earth would be projected on a more accurate ellipsoid (flattened on poles). As a consequence, direct mesurements of distances in this projection will be approximative, except on the Equator, and the aspect ratios on the rendered map for true squares measured on the surface on Earth will slightly change with latitude and angles not so precisely preserved by this spherical projection.
+    /// This produces a fast approximation to the truer, but heavier elliptical projection, where the Earth would be projected on a more accurate ellipsoid (flattened on poles). As a consequence, direct measurements of distances in this projection will be approximative, except on the Equator, and the aspect ratios on the rendered map for true squares measured on the surface on Earth will slightly change with latitude and angles not so precisely preserved by this spherical projection.
     /// [More details on Wikipedia](https://wiki.openstreetmap.org/wiki/Mercator)
     func mercatorProjectionToDegrees() -> (x: Double, y: Double) {
         return (x: longitude, y: -log(tan(latitude.degreesToRadians / 2 + .pi / 4)).radiansToDegrees)
@@ -78,7 +78,7 @@ public extension TrackGraph {
 public extension TrackGraph {
     /// Calculates the `TrackGraph`s climbs.
     /// - Parameters:
-    ///   - epsilon: The simplifaction factor in meters for smoothing out elevation jumps. Defaults to 1.
+    ///   - epsilon: The simplification factor in meters for smoothing out elevation jumps. Defaults to 1.
     ///   - minimumGrade: The minimum allowed grade in percent in the Range {0,1}. Defaults to 0.03 (3%).
     ///   - maxJoinDistance:The maximum allowed distance between climb segments in meters. If Climb segments are closer they will get joined to one climb. Defaults to 0.
     /// - Returns: An array of `Climb` values. Returns an empty array if no climbs where found.
@@ -113,8 +113,8 @@ public extension GPXFileParser {
 public extension GeoBounds {
     /// The _zero_ value of GeoBounds.
     ///
-    /// Its values are not zero but contain the follwing values:
-    /// ### minLatitute
+    /// Its values are not zero but contain the following values:
+    /// ### minLatitude
     /// `Coordinate.validLatitudeRange.upperBound`
     /// ### minLongitude
     /// `Coordinate.validLongitudeRange.upperBound`

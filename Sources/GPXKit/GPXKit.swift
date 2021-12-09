@@ -38,19 +38,19 @@ public struct Coordinate: GeoCoordinate, Hashable {
     }
 }
 
-/// Value type descriping a logical segment in a `TrackGraph`. A `TrackGraph` consists of a collection of `TrackSegment`s. Each has a coordinate (latitude, longitude & elevation) and the distance (in meters) to its preceding segment point.
+/// Value type describing a logical segment in a `TrackGraph`. A `TrackGraph` consists of a collection of `TrackSegment`s. Each has a coordinate (latitude, longitude & elevation) and the distance (in meters) to its preceding segment point.
 public struct TrackSegment: Hashable {
     /// The coordinate (latitude, longitude and elevation)
     public var coordinate: Coordinate
 
-    /// Distance in meters to its preceeding `TrackSegment` in a `TrackGraph`
+    /// Distance in meters to its preceding `TrackSegment` in a `TrackGraph`
     public var distanceInMeters: Double
 
-    /// Initilizes a `TrackSegment`
+    /// Initializes a `TrackSegment`
     /// You don't need to construct this value by yourself, as it is done by GXPKits track parsing logic.
     /// - Parameters:
     ///   - coordinate: A `Coordinate` struct, contains latitude/longitude and elevation
-    ///   - distanceInMeters: Distance in meters to its preceeding `TrackSegment` in a `TrackGraph`
+    ///   - distanceInMeters: Distance in meters to its preceding `TrackSegment` in a `TrackGraph`
     public init(coordinate: Coordinate, distanceInMeters: Double) {
         self.coordinate = coordinate
         self.distanceInMeters = distanceInMeters
@@ -79,7 +79,7 @@ public struct TrackPoint: Hashable {
     }
 }
 
-/// A value describing a graph of a track. Contains metadata such as a `GPXTrack`s distance, elevation and a heightmap.
+/// A value describing a graph of a track. Contains metadata such as a `GPXTrack`s distance, elevation and a height-map.
 public struct TrackGraph: Equatable {
     /// Array of `TrackSegment`s. The segments describe a tracks position along with its relative distance to its predecessor.
     public var segments: [TrackSegment]
@@ -87,7 +87,7 @@ public struct TrackGraph: Equatable {
     public var distance: Double
     /// The overall elevation gain of a track in meters.
     public var elevationGain: Double
-    /// A heightmap, which is an array of `DistanceHeight` values. Each value in the heightMap has the total distance in meters up to that point (imagine it as the values along the x-axis in a 2D-coordinate graph) paired with the elevation in meters above sea level at that point (the y-value in the afforementioned 2D-graph).
+    /// A heightmap, which is an array of `DistanceHeight` values. Each value in the heightMap has the total distance in meters up to that point (imagine it as the values along the x-axis in a 2D-coordinate graph) paired with the elevation in meters above sea level at that point (the y-value in the aforementioned 2D-graph).
     public var heightMap: [DistanceHeight]
 
     /// Initializer
@@ -96,7 +96,7 @@ public struct TrackGraph: Equatable {
     ///   - segments: An array of `TrackSegment`s.
     ///   - distance: The total distance in meters.
     ///   - elevationGain: The total elevation gain.
-    ///   - heightMap: The heightmap
+    ///   - heightMap: The height-map
     public init(segments: [TrackSegment], distance: Double, elevationGain: Double, heightMap: [DistanceHeight]) {
         self.segments = segments
         self.distance = distance
@@ -105,7 +105,7 @@ public struct TrackGraph: Equatable {
     }
 }
 
-/// A value describing an entry in a `TrackGraph`s heightmap. It has the totoal distance in meters up to that point in the track along with the elevation in meters above sea level at that given point in a track (imagine the dictance as the value along the x-axis in a 2D-coordinate graph, the elevation as the y-value).
+/// A value describing an entry in a `TrackGraph`s height-map. It has the total distance in meters up to that point in the track along with the elevation in meters above sea level at that given point in a track (imagine the distance as the value along the x-axis in a 2D-coordinate graph, the elevation as the y-value).
 public struct DistanceHeight: Hashable {
     /// Total distance from the tracks start location in meters
     public var distance: Double
@@ -147,7 +147,7 @@ public struct GeoBounds: Hashable, Codable {
     }
 }
 
-/// A value describing an track of geo locations. It has the recorded `TrackPoint`s, along with metadata of the track, such as recorded date, title, elevation gain, distance, heightmap and bounds.
+/// A value describing a track of geo locations. It has the recorded `TrackPoint`s, along with metadata of the track, such as recorded date, title, elevation gain, distance, height-map and bounds.
 public struct GPXTrack: Equatable {
     /// Optional date stamp of the gpx track
     public var date: Date?
@@ -155,9 +155,9 @@ public struct GPXTrack: Equatable {
     public var title: String
     /// Description of the gpx track
     public var description: String?
-    /// Array of latitude/longitutde/elevation stream values
+    /// Array of latitude/longitude/elevation stream values
     public var trackPoints: [TrackPoint]
-    /// `TrackGraph` containg elevation gain, overall distance and the height map of a track.
+    /// `TrackGraph` containing elevation gain, overall distance and the height map of a track.
     public var graph: TrackGraph
     /// The bounding box enclosing the track
     public var bounds: GeoBounds
@@ -198,7 +198,7 @@ public struct Climb: Hashable {
     public var maxGrade: Double
     /// The FIETS score of the climb
     /// 
-    /// One way to determine the difficulty of a climb is to use the FIETS formula to calculate a numeric value for the climb. This forumula was developed by the Dutch cycling magazine Fiets. The formula is shown below:
+    /// One way to determine the difficulty of a climb is to use the FIETS formula to calculate a numeric value for the climb. This formula was developed by the Dutch cycling magazine Fiets. The formula is shown below:
     ///
     /// ```
     /// FIETS Score = (H * H / D * 10) + (T - 1000) / 1000
@@ -209,11 +209,11 @@ public struct Climb: Hashable {
     /// * **D** is the climb length or distance (meters)
     /// * **T** is the altitude at the top (meters).
 
-    /// The second term in the formula is only added when it is positive, thay is, for climbs whose top is above 1000m.
+    /// The second term in the formula is only added when it is positive, that is, for climbs whose top is above 1000m.
     /// **NOTE** In GPXKit, the "(T - 1000)/1000" term of the FIETS formula is not added to the climb segments, so climbs can be joined together.
     public var score: Double
 
-    /// Intializes a `Climb`.
+    /// Initializes a `Climb`.
     /// - Parameters:
     ///   - start: The distance in meters from the `GPXTrack`s start.
     ///   - end: The distance in meters from the `GOXTracks`s end.
@@ -234,7 +234,7 @@ public struct Climb: Hashable {
         self.score = score
     }
 
-    // Intializes a `Climb`.
+    /// Initializes a `Climb`.
     /// - Parameters:
     ///   - start: The distance in meters from the `GPXTrack`s start.
     ///   - end: The distance in meters from the `GOXTracks`s end.
@@ -256,7 +256,7 @@ public struct Climb: Hashable {
 }
 
 public extension Climb {
-    /// The lenght in meters of the climb.
+    /// The length in meters of the climb.
     var distance: Double {
         end - start
     }

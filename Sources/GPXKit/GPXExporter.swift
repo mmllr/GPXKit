@@ -16,7 +16,7 @@ public final class GPXExporter {
     /// Initializes a GPXExporter
     /// - Parameters:
     ///   - track: The `GPXTrack` to export.
-    ///   - shouldExportDate: Flag indicating whether it should export the timestamps in the track. Set it to false if you want to omit the valus. This would decrease the exported xml's file size and protects privacy. Defaults to true.
+    ///   - shouldExportDate: Flag indicating whether it should export the timestamps in the track. Set it to false if you want to omit the values. This would decrease the exported xml's file size and protects privacy. Defaults to true.
     ///
     /// If the track cannot be exported, the resulting `xmlString` property of the exporter is an empty GPX track xml.
     public init(track: GPXTrack, shouldExportDate: Bool = true) {
@@ -24,7 +24,7 @@ public final class GPXExporter {
         self.exportDate = shouldExportDate
     }
 
-    /// The exported GPX xml string. If a track cannot be exportet, the resulting string. If the track cannot be exported, its value is an empty GPX track xml.
+    /// The exported GPX xml string. If a track cannot be exported, the resulting string. If the track cannot be exported, its value is an empty GPX track xml.
     public var xmlString: String {
         return """
         <?xml version="1.0" encoding="UTF-8"?>
