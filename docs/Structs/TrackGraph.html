@@ -285,6 +285,64 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:6GPXKit10TrackGraphV6points18gradeSegmentLengthACSayAA0B5PointVG_Sdtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(points:gradeSegmentLength:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit10TrackGraphV6points18gradeSegmentLengthACSayAA0B5PointVG_Sdtcfc">init(points:<wbr>gradeSegmentLength:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initialize for creating a <code>TrackGraph</code>  from <code><a href="../Structs/TrackPoint.html">TrackPoint</a></code>s.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">points</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/TrackPoint.html">TrackPoint</a></span><span class="p">],</span> <span class="nv">gradeSegmentLength</span><span class="p">:</span> <span class="kt">Double</span> <span class="o">=</span> <span class="mf">25.0</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>points</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Array of <code><a href="../Structs/TrackPoint.html">TrackPoint</a></code> values.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>gradeSegmentLength</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The length of the grade segments in meters. Defaults to 25 meters. Adjacent segments with the same grade will be joined together.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:6GPXKit10TrackGraphV8segments8distance13elevationGain9heightMapACSayAA0B7SegmentVG_S2dSayAA14DistanceHeightVGtcfc"></a>
                     <a name="//apple_ref/swift/Method/init(segments:distance:elevationGain:heightMap:)" class="dashAnchor"></a>
                     <a class="token" href="#/s:6GPXKit10TrackGraphV8segments8distance13elevationGain9heightMapACSayAA0B7SegmentVG_S2dSayAA14DistanceHeightVGtcfc">init(segments:<wbr>distance:<wbr>elevationGain:<wbr>heightMap:<wbr>)</a>
@@ -303,7 +361,7 @@ You don&rsquo;t need to construct this value by yourself, as it is done by GXPKi
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">deprecated</span><span class="p">,</span> <span class="nv">message</span><span class="p">:</span> <span class="s">"Parse your data by hand instead"</span><span class="p">)</span>
+                          <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">deprecated</span><span class="p">,</span> <span class="nv">message</span><span class="p">:</span> <span class="s">"Will be removed in a future release, don't use it anymore!"</span><span class="p">)</span>
 <span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">segments</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/TrackSegment.html">TrackSegment</a></span><span class="p">],</span> <span class="nv">distance</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span> <span class="nv">elevationGain</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span> <span class="nv">heightMap</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/DistanceHeight.html">DistanceHeight</a></span><span class="p">])</span></code></pre>
 
                         </div>

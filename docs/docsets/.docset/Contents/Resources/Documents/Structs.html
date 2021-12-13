@@ -171,6 +171,62 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:6GPXKit5ClimbV"></a>
+                    <a name="//apple_ref/swift/Struct/Climb" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit5ClimbV">Climb</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Describes a climb section within a track.</p>
+
+                        <a href="Structs/Climb.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Climb</span> <span class="p">:</span> <span class="kt">Hashable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit10CoordinateV"></a>
+                    <a name="//apple_ref/swift/Struct/Coordinate" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit10CoordinateV">Coordinate</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Basic type for storing a geo location.</p>
+
+                        <a href="Structs/Coordinate.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Coordinate</span> <span class="p">:</span> <span class="kt"><a href="Protocols/GeoCoordinate.html">GeoCoordinate</a></span><span class="p">,</span> <span class="kt">Hashable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:6GPXKit10TrackGraphV"></a>
                     <a name="//apple_ref/swift/Struct/TrackGraph" class="dashAnchor"></a>
                     <a class="token" href="#/s:6GPXKit10TrackGraphV">TrackGraph</a>
@@ -190,6 +246,34 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">TrackGraph</span> <span class="p">:</span> <span class="kt">Equatable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit14DistanceHeightV"></a>
+                    <a name="//apple_ref/swift/Struct/DistanceHeight" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit14DistanceHeightV">DistanceHeight</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A value describing an entry in a <code><a href="Structs/TrackGraph.html">TrackGraph</a></code>s height-map. It has the total distance in meters up to that point in the track along with the elevation in meters above sea level at that given point in a track (imagine the distance as the value along the x-axis in a 2D-coordinate graph, the elevation as the y-value).</p>
+
+                        <a href="Structs/DistanceHeight.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">DistanceHeight</span> <span class="p">:</span> <span class="kt">Hashable</span></code></pre>
 
                         </div>
                       </div>
@@ -256,118 +340,6 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:6GPXKit10CoordinateV"></a>
-                    <a name="//apple_ref/swift/Struct/Coordinate" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit10CoordinateV">Coordinate</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Basic type for storing a geo location.</p>
-
-                        <a href="Structs/Coordinate.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Coordinate</span> <span class="p">:</span> <span class="kt"><a href="Protocols/GeoCoordinate.html">GeoCoordinate</a></span><span class="p">,</span> <span class="kt">Hashable</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:6GPXKit12TrackSegmentV"></a>
-                    <a name="//apple_ref/swift/Struct/TrackSegment" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit12TrackSegmentV">TrackSegment</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Value type describing a logical segment in a <code><a href="Structs/TrackGraph.html">TrackGraph</a></code>. A <code><a href="Structs/TrackGraph.html">TrackGraph</a></code> consists of a collection of <code>TrackSegment</code>s. Each has a coordinate (latitude, longitude &amp; elevation) and the distance (in meters) to its preceding segment point.</p>
-
-                        <a href="Structs/TrackSegment.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">TrackSegment</span> <span class="p">:</span> <span class="kt">Hashable</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:6GPXKit12GradeSegmentV"></a>
-                    <a name="//apple_ref/swift/Struct/GradeSegment" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit12GradeSegmentV">GradeSegment</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A value describing a grade of a track. A <code><a href="Structs/TrackGraph.html">TrackGraph</a></code> has an array of <code>GradeSegment</code> from start to its distance each with a given lenght and the grade at this distance.</p>
-
-                        <a href="Structs/GradeSegment.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">GradeSegment</span> <span class="p">:</span> <span class="kt">Hashable</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:6GPXKit14DistanceHeightV"></a>
-                    <a name="//apple_ref/swift/Struct/DistanceHeight" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit14DistanceHeightV">DistanceHeight</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A value describing an entry in a <code><a href="Structs/TrackGraph.html">TrackGraph</a></code>s height-map. It has the total distance in meters up to that point in the track along with the elevation in meters above sea level at that given point in a track (imagine the distance as the value along the x-axis in a 2D-coordinate graph, the elevation as the y-value).</p>
-
-                        <a href="Structs/DistanceHeight.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">DistanceHeight</span> <span class="p">:</span> <span class="kt">Hashable</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
                     <a name="/s:6GPXKit8GPXTrackV"></a>
                     <a name="//apple_ref/swift/Struct/GPXTrack" class="dashAnchor"></a>
                     <a class="token" href="#/s:6GPXKit8GPXTrackV">GPXTrack</a>
@@ -396,9 +368,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:6GPXKit5ClimbV"></a>
-                    <a name="//apple_ref/swift/Struct/Climb" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit5ClimbV">Climb</a>
+                    <a name="/s:6GPXKit12GradeSegmentV"></a>
+                    <a name="//apple_ref/swift/Struct/GradeSegment" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit12GradeSegmentV">GradeSegment</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -406,15 +378,44 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Describes a climb section within a track.</p>
+                        <p>A value describing a grade of a track. A <code><a href="Structs/TrackGraph.html">TrackGraph</a></code> has an array of <code>GradeSegment</code> from start to its distance each with a given lenght and the grade at this distance.</p>
 
-                        <a href="Structs/Climb.html" class="slightly-smaller">See more</a>
+                        <a href="Structs/GradeSegment.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Climb</span> <span class="p">:</span> <span class="kt">Hashable</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">GradeSegment</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">GradeSegment</span><span class="p">:</span> <span class="kt">Hashable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit12TrackSegmentV"></a>
+                    <a name="//apple_ref/swift/Struct/TrackSegment" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit12TrackSegmentV">TrackSegment</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Value type describing a logical segment in a <code><a href="Structs/TrackGraph.html">TrackGraph</a></code>. A <code><a href="Structs/TrackGraph.html">TrackGraph</a></code> consists of a collection of <code>TrackSegment</code>s. Each has a coordinate (latitude, longitude &amp; elevation) and the distance (in meters) to its preceding segment point.</p>
+
+                        <a href="Structs/TrackSegment.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">TrackSegment</span> <span class="p">:</span> <span class="kt">Hashable</span></code></pre>
 
                         </div>
                       </div>
