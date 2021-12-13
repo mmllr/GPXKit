@@ -112,6 +112,9 @@
                 <a href="Structs/GeoBounds.html">GeoBounds</a>
               </li>
               <li class="nav-group-task">
+                <a href="Structs/GradeSegment.html">GradeSegment</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Structs/TrackGraph.html">TrackGraph</a>
               </li>
               <li class="nav-group-task">
@@ -178,7 +181,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A value describing a graph of a track. Contains metadata such as a <code><a href="Structs/GPXTrack.html">GPXTrack</a></code>s distance, elevation and a heightmap.</p>
+                        <p>A value describing a graph of a track. Contains metadata such as a <code><a href="Structs/GPXTrack.html">GPXTrack</a></code>s distance, elevation and a height-map.</p>
 
                         <a href="Structs/TrackGraph.html" class="slightly-smaller">See more</a>
                       </div>
@@ -291,7 +294,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Value type descriping a logical segment in a <code><a href="Structs/TrackGraph.html">TrackGraph</a></code>. A <code><a href="Structs/TrackGraph.html">TrackGraph</a></code> consists of a collection of <code>TrackSegment</code>s. Each has a coordinate (latitude, longitude &amp; elevation) and the distance (in meters) to its preceding segment point.</p>
+                        <p>Value type describing a logical segment in a <code><a href="Structs/TrackGraph.html">TrackGraph</a></code>. A <code><a href="Structs/TrackGraph.html">TrackGraph</a></code> consists of a collection of <code>TrackSegment</code>s. Each has a coordinate (latitude, longitude &amp; elevation) and the distance (in meters) to its preceding segment point.</p>
 
                         <a href="Structs/TrackSegment.html" class="slightly-smaller">See more</a>
                       </div>
@@ -300,6 +303,34 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">TrackSegment</span> <span class="p">:</span> <span class="kt">Hashable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit12GradeSegmentV"></a>
+                    <a name="//apple_ref/swift/Struct/GradeSegment" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit12GradeSegmentV">GradeSegment</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A value describing a grade of a track. A <code><a href="Structs/TrackGraph.html">TrackGraph</a></code> has an array of <code>GradeSegment</code> from start to its distance each with a given lenght and the grade at this distance.</p>
+
+                        <a href="Structs/GradeSegment.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">GradeSegment</span> <span class="p">:</span> <span class="kt">Hashable</span></code></pre>
 
                         </div>
                       </div>
@@ -319,7 +350,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A value describing an entry in a <code><a href="Structs/TrackGraph.html">TrackGraph</a></code>s heightmap. It has the totoal distance in meters up to that point in the track along with the elevation in meters above sea level at that given point in a track (imagine the dictance as the value along the x-axis in a 2D-coordinate graph, the elevation as the y-value).</p>
+                        <p>A value describing an entry in a <code><a href="Structs/TrackGraph.html">TrackGraph</a></code>s height-map. It has the total distance in meters up to that point in the track along with the elevation in meters above sea level at that given point in a track (imagine the distance as the value along the x-axis in a 2D-coordinate graph, the elevation as the y-value).</p>
 
                         <a href="Structs/DistanceHeight.html" class="slightly-smaller">See more</a>
                       </div>
@@ -347,7 +378,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A value describing an track of geo locations. It has the recorded <code><a href="Structs/TrackPoint.html">TrackPoint</a></code>s, along with metadata of the track, such as recorded date, title, elevation gain, distance, heightmap and bounds.</p>
+                        <p>A value describing a track of geo locations. It has the recorded <code><a href="Structs/TrackPoint.html">TrackPoint</a></code>s, along with metadata of the track, such as recorded date, title, elevation gain, distance, height-map and bounds.</p>
 
                         <a href="Structs/GPXTrack.html" class="slightly-smaller">See more</a>
                       </div>
@@ -395,7 +426,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2021 <a class="link" href="" target="_blank" rel="external noopener"></a>. All rights reserved. (Last updated: 2021-12-09)</p>
+          <p>&copy; 2021 <a class="link" href="" target="_blank" rel="external noopener"></a>. All rights reserved. (Last updated: 2021-12-13)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
         </section>
       </article>

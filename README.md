@@ -10,12 +10,13 @@ A library for parsing and exporting gpx files with no dependencies besides Found
 - [x] Heightmap, geobounds, distance and elevation information for an imported track
 - [x] Test coverage
 - [x] Climb detection
+- [x] Grade segmentation
 
 ## Installation
 To use the `GPXKit` library in a SwiftPM project, add the following line to the dependencies in your `Package.swift` file:
 
 ```swift
-.package(url: "https://github.com/mmllr/GPXKit", from: "1.3.0"),
+.package(url: "https://github.com/mmllr/GPXKit", from: "1.4.2")
 ```
 ## Usage examples
 ### Importing a track
