@@ -344,11 +344,7 @@ class TrackGraphTests: XCTestCase {
     func testGraphWithTheSameGrade() {
         let sut = TrackGraph(coords: [.leipzig, .leipzig.offset(north: 1000, elevation: 100)], gradeSegmentLength: 25)
 
-        let expected = stride(from: 0.0, through: sut.distance, by: 25.0).map { distance in
-            GradeSegment(start: distance, end: min(distance + 25.0, sut.distance), grade: 0.1)
-        }
-
-        XCTAssertEqual(expected, sut.gradeSegments)
+        XCTAssertEqual([GradeSegment(start: 0, end: sut.distance, grade: 0.1)], sut.gradeSegments)
     }
 
     func testGraphWithVaryingGradeHasSegmentsInTheSpecifiedLength() {
@@ -361,14 +357,8 @@ class TrackGraphTests: XCTestCase {
         ], gradeSegmentLength: 25)
 
         let expected: [GradeSegment] = [
-            .init(start: 0, end: 25, grade: 0.1),
-            .init(start: 25, end: 50, grade: 0.1),
-            .init(start: 50, end: 75, grade: 0.1),
-            .init(start: 75, end: 100, grade: 0.1),
-            .init(start: 100, end: 125, grade: 0.2),
-            .init(start: 125, end: 150, grade: 0.2),
-            .init(start: 150, end: 175, grade: 0.2),
-            .init(start: 175, end: sut.distance, grade: 0.2),
+            .init(start: 0, end: 100, grade: 0.1),
+            .init(start: 100, end: sut.distance, grade: 0.2)
         ]
         XCTAssertEqual(expected, sut.gradeSegments)
     }
@@ -398,12 +388,9 @@ class TrackGraphTests: XCTestCase {
         ], gradeSegmentLength: 50)
 
         let expected: [GradeSegment] = [
-            .init(start: 0, end: 50, grade: 0.1),
-            .init(start: 50, end: 100, grade: 0.1),
-            .init(start: 100, end: 150, grade: 0.2),
-            .init(start: 150, end: 200, grade: 0.2),
-            .init(start: 200, end: 250, grade: -0.3),
-            .init(start: 250, end: sut.distance, grade: -0.3)
+            .init(start: 0, end: 100, grade: 0.1),
+            .init(start: 100, end: 200, grade: 0.2),
+            .init(start: 200, end: sut.distance, grade: -0.3)
         ]
         XCTAssertEqual(expected, sut.gradeSegments)
     }
@@ -413,20 +400,20 @@ class TrackGraphTests: XCTestCase {
         let first: Coordinate = start.offset(distance: 100, grade: 0.1)
         let second: Coordinate = first.offset(distance: 100, grade: 0.2)
         let third: Coordinate = second.offset(distance: 100, grade: -0.3)
+        let fourth: Coordinate = third.offset(distance: 50, grade: 0.06)
         let sut = TrackGraph(points: [
             start,
             first,
             second,
-            third
+            third,
+            fourth
         ].map { TrackPoint(coordinate: $0) }, gradeSegmentLength: 50)
 
         let expected: [GradeSegment] = [
-            .init(start: 0, end: 50, grade: 0.1),
-            .init(start: 50, end: 100, grade: 0.1),
-            .init(start: 100, end: 150, grade: 0.2),
-            .init(start: 150, end: 200, grade: 0.2),
-            .init(start: 200, end: 250, grade: -0.3),
-            .init(start: 250, end: sut.distance, grade: -0.3)
+            .init(start: 0, end: 100, grade: 0.1),
+            .init(start: 100, end: 200, grade: 0.2),
+            .init(start: 200, end: 300, grade: -0.3),
+            .init(start: 300, end: sut.distance, grade: 0.06)
         ]
         XCTAssertEqual(expected, sut.gradeSegments)
     }

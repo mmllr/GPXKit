@@ -89,8 +89,16 @@ public struct TrackGraph: Equatable {
     public var elevationGain: Double
     /// A heightmap, which is an array of `DistanceHeight` values. Each value in the heightMap has the total distance in meters up to that point (imagine it as the values along the x-axis in a 2D-coordinate graph) paired with the elevation in meters above sea level at that point (the y-value in the aforementioned 2D-graph).
     public var heightMap: [DistanceHeight]
-
+    /// Array of `GradeSegment`s. The segments describe the grade over the entire track with specified interval length in meters in initializer.
     public var gradeSegments: [GradeSegment] = []
+
+    /// Initialize for creating a `TrackGraph`  from `TrackPoint`s.
+    /// - Parameters:
+    ///   - points: Array of `TrackPoint` values.
+    ///   - gradeSegmentLength: The length of the grade segments in meters. Defaults to 25 meters. Adjacent segments with the same grade will be joined together.
+    init(points: [TrackPoint], gradeSegmentLength: Double = 25.0) {
+        self.init(coords: points.map { $0.coordinate }, gradeSegmentLength: gradeSegmentLength)
+    }
 
     /// Initializer
     /// You don't need to construct this value by yourself, as it is done by GXPKits track parsing logic.
@@ -99,6 +107,7 @@ public struct TrackGraph: Equatable {
     ///   - distance: The total distance in meters.
     ///   - elevationGain: The total elevation gain.
     ///   - heightMap: The height-map
+    @available(*, deprecated, message: "Parse your data by hand instead")
     public init(segments: [TrackSegment], distance: Double, elevationGain: Double, heightMap: [DistanceHeight]) {
         self.segments = segments
         self.distance = distance
@@ -108,9 +117,13 @@ public struct TrackGraph: Equatable {
     }
 }
 
+/// A value describing a grade of a track. A `TrackGraph` has an array of `GradeSegment` from start to its distance each with a given lenght and the grade at this distance.
 public struct GradeSegment: Hashable {
+    /// The start in meters of the segment.
     var start: Double
+    /// The end in meters of the grade segment.
     var end: Double
+    /// The normalized grade in percent in the range -1...1.
     var grade: Double
 
     public func hash(into hasher: inout Hasher) {
@@ -197,12 +210,14 @@ public struct GPXTrack: Equatable {
     ///   - date: The date stamp of the track. Defaults to nil.
     ///   - title: String describing the track.
     ///   - trackPoints: Array of `TrackPoint`s describing the route.
-    public init(date: Date? = nil, title: String, description: String? = nil, trackPoints: [TrackPoint], keywords: [String] = []) {
+    ///   - keywords: Array of `String`s with keyords. Default is an empty array (no keywords).
+    ///   - gradeSegmentLength: The length in meters for the grade segments. Defaults to 25 meters.
+    public init(date: Date? = nil, title: String, description: String? = nil, trackPoints: [TrackPoint], keywords: [String] = [], gradeSegmentLength: Double = 25.0) {
         self.date = date
         self.title = title
         self.description = description
         self.trackPoints = trackPoints
-        self.graph = TrackGraph(points: trackPoints)
+        self.graph = TrackGraph(points: trackPoints, gradeSegmentLength: gradeSegmentLength)
         self.bounds = trackPoints.bounds()
         self.keywords = keywords
     }

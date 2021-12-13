@@ -60,4 +60,27 @@ final class GPXTrackTests: XCTestCase {
         )
         XCTAssertEqual(expected, sut.bounds)
     }
+
+    func testGradeSegments() {
+        let start = Coordinate.leipzig.offset(elevation: 100)
+        let first: Coordinate = start.offset(distance: 100, grade: 0.1)
+        let second: Coordinate = first.offset(distance: 100, grade: 0.2)
+        let third: Coordinate = second.offset(distance: 100, grade: -0.3)
+        let fourth: Coordinate = third.offset(distance: 50, grade: 0.06)
+        sut = GPXTrack(title: "Track", trackPoints: [
+            start,
+            first,
+            second,
+            third,
+            fourth
+        ].map { TrackPoint(coordinate: $0) }, gradeSegmentLength: 50)
+
+        let expected: [GradeSegment] = [
+            .init(start: 0, end: 100, grade: 0.1),
+            .init(start: 100, end: 200, grade: 0.2),
+            .init(start: 200, end: 300, grade: -0.3),
+            .init(start: 300, end: sut.graph.distance, grade: 0.06)
+        ]
+        XCTAssertEqual(expected, sut.graph.gradeSegments)
+    }
 }

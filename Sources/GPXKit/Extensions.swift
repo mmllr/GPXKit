@@ -69,7 +69,7 @@ public extension TrackGraph {
     }
 }
 
-extension Array where Element == DistanceHeight {
+private extension Array where Element == DistanceHeight {
     func calculateGradeSegments(segmentLength: Double) -> [GradeSegment] {
         guard !isEmpty else { return [] }
 
@@ -93,10 +93,21 @@ extension Array where Element == DistanceHeight {
                 gradeSegments.append(.init(start: last.end, end: trackDistance, grade: (currentHeight - prevHeight) / (trackDistance - last.end)))
             }
         }
-        return gradeSegments
+        return gradeSegments.reduce(into: []) { joined, segment in
+            guard var last = joined.last else {
+                joined.append(segment)
+                return
+            }
+            if abs(last.grade - segment.grade) > 0.01 {
+                joined.append(segment)
+            } else {
+                let remaining = Swift.min(segmentLength, trackDistance - last.end)
+                joined[joined.count - 1].end += remaining
+            }
+        }
     }
 
-    private func height(at distance: Double) -> Double? {
+    func height(at distance: Double) -> Double? {
         if distance == 0 {
             return first?.elevation
         }
@@ -112,17 +123,9 @@ extension Array where Element == DistanceHeight {
         let t = (distance - self[start].distance) / delta
         return linearInterpolated(start: self[start].elevation, end: self[next].elevation, using: t)
     }
-}
 
-func linearInterpolated<Value: FloatingPoint>(start: Value, end: Value, using t: Value) -> Value {
-    start + t * (end - start)
-}
-
-public extension TrackGraph {
-    /// Convenience initialize for creating a `TrackGraph`  from `TrackPoint`s.
-    /// - Parameter points: Array of `TrackPoint` values.
-    init(points: [TrackPoint], gradeSegmentLength: Double = 25.0) {
-        self.init(coords: points.map { $0.coordinate }, gradeSegmentLength: gradeSegmentLength)
+    func linearInterpolated<Value: FloatingPoint>(start: Value, end: Value, using t: Value) -> Value {
+        start + t * (end - start)
     }
 }
 
