@@ -94,7 +94,7 @@ private extension Array where Element == DistanceHeight {
             }
         }
         return gradeSegments.reduce(into: []) { joined, segment in
-            guard var last = joined.last else {
+            guard let last = joined.last else {
                 joined.append(segment)
                 return
             }
