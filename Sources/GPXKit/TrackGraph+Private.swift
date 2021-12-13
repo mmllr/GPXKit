@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  File
-//
-//  Created by Markus Müller on 24.08.21.
-//
-
 import Foundation
 
 extension TrackGraph {

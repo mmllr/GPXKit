@@ -1,6 +1,6 @@
 import XCTest
 import Foundation
-@testable import GPXKit
+import GPXKit
 
 final class GeoBoundsTests: XCTestCase {
     func boundsWith(leftEdge: Double, topEdge: Double, size: Double) -> GeoBounds {

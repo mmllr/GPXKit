@@ -1,5 +1,5 @@
 import XCTest
-@testable import GPXKit
+import GPXKit
 
 class TrackGraphTests: XCTestCase {
     var sut: TrackGraph!

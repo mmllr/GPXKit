@@ -1,6 +1,6 @@
 import Foundation
 import XCTest
-@testable import GPXKit
+import GPXKit
 
 final class ArrayExtensionsTests: XCTestCase {
     func testRemovingNearbyCoordinatesInEmptyCollection() {

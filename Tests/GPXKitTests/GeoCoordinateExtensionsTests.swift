@@ -1,5 +1,5 @@
 import Foundation
-@testable import GPXKit
+import GPXKit
 import XCTest
 
 final class GeoCoordinateExtensionsTests: XCTestCase {
