@@ -107,7 +107,7 @@ public struct TrackGraph: Equatable {
     ///   - distance: The total distance in meters.
     ///   - elevationGain: The total elevation gain.
     ///   - heightMap: The height-map
-    @available(*, deprecated, message: "Parse your data by hand instead")
+    @available(*, deprecated, message: "Will be removed in a future release, don't use it anymore!")
     public init(segments: [TrackSegment], distance: Double, elevationGain: Double, heightMap: [DistanceHeight]) {
         self.segments = segments
         self.distance = distance
