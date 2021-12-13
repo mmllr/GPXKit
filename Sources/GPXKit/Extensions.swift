@@ -43,7 +43,7 @@ extension TrackPoint: GeoCoordinate {
 public extension TrackGraph {
     /// Convenience initialize for creating a `TrackGraph`  from `Coordinate`s.
     /// - Parameter coords: Array of `Coordinate` values.
-    init(coords: [Coordinate]) {
+    init(coords: [Coordinate], gradeSegmentLength: Double = 25) {
         let zippedCoords = zip(coords, coords.dropFirst())
         let distances: [Double] = [0.0] + zippedCoords.map {
             $0.distance(to: $1)
@@ -59,19 +59,70 @@ public extension TrackGraph {
             }
             return elevation
         }
-        heightMap = segments.reduce((0.0, [DistanceHeight]())) { acc, segment in
+        let heightmap = segments.reduce((0.0, [DistanceHeight]())) { acc, segment in
             let distanceSoFar = acc.0 + segment.distanceInMeters
             let heightMap = acc.1 + [DistanceHeight(distance: distanceSoFar, elevation: segment.coordinate.elevation)]
             return (distanceSoFar, heightMap)
         }.1
+        self.heightMap = heightmap
+        self.gradeSegments = heightmap.calculateGradeSegments(segmentLength: gradeSegmentLength)
     }
+}
+
+extension Array where Element == DistanceHeight {
+    func calculateGradeSegments(segmentLength: Double) -> [GradeSegment] {
+        guard !isEmpty else { return [] }
+
+        let trackDistance = self[endIndex - 1].distance
+        guard trackDistance >= segmentLength else {
+            if let prevHeight = height(at: 0), let currentHeight = height(at: trackDistance) {
+                return [.init(start: 0, end: trackDistance, grade: (currentHeight - prevHeight) / trackDistance)]
+            }
+            return []
+        }
+        var gradeSegments: [GradeSegment] = []
+        var previousHeight: Double = self[0].elevation
+        for distance in stride(from: segmentLength, to: trackDistance, by: segmentLength) {
+            guard let height = height(at: distance) else { break }
+            gradeSegments.append(.init(start: distance - segmentLength, end: distance, grade: (height - previousHeight) / segmentLength))
+            previousHeight = height
+        }
+        if let last = gradeSegments.last,
+           last.end < trackDistance {
+            if let prevHeight = height(at: last.end), let currentHeight = height(at: trackDistance) {
+                gradeSegments.append(.init(start: last.end, end: trackDistance, grade: (currentHeight - prevHeight) / (trackDistance - last.end)))
+            }
+        }
+        return gradeSegments
+    }
+
+    private func height(at distance: Double) -> Double? {
+        if distance == 0 {
+            return first?.elevation
+        }
+        if distance == last?.distance {
+            return last?.elevation
+        }
+        guard let next = firstIndex(where: { element in
+            element.distance > distance
+        }), next > 0 else { return nil }
+
+        let start = next - 1
+        let delta = self[next].distance - self[start].distance
+        let t = (distance - self[start].distance) / delta
+        return linearInterpolated(start: self[start].elevation, end: self[next].elevation, using: t)
+    }
+}
+
+func linearInterpolated<Value: FloatingPoint>(start: Value, end: Value, using t: Value) -> Value {
+    start + t * (end - start)
 }
 
 public extension TrackGraph {
     /// Convenience initialize for creating a `TrackGraph`  from `TrackPoint`s.
     /// - Parameter points: Array of `TrackPoint` values.
-    init(points: [TrackPoint]) {
-        self.init(coords: points.map { $0.coordinate })
+    init(points: [TrackPoint], gradeSegmentLength: Double = 25.0) {
+        self.init(coords: points.map { $0.coordinate }, gradeSegmentLength: gradeSegmentLength)
     }
 }
 

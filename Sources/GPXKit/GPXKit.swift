@@ -90,6 +90,8 @@ public struct TrackGraph: Equatable {
     /// A heightmap, which is an array of `DistanceHeight` values. Each value in the heightMap has the total distance in meters up to that point (imagine it as the values along the x-axis in a 2D-coordinate graph) paired with the elevation in meters above sea level at that point (the y-value in the aforementioned 2D-graph).
     public var heightMap: [DistanceHeight]
 
+    public var gradeSegments: [GradeSegment] = []
+
     /// Initializer
     /// You don't need to construct this value by yourself, as it is done by GXPKits track parsing logic.
     /// - Parameters:
@@ -102,6 +104,32 @@ public struct TrackGraph: Equatable {
         self.distance = distance
         self.elevationGain = elevationGain
         self.heightMap = heightMap
+        self.gradeSegments = [.init(start: 0, end: distance, grade: elevationGain/distance)]
+    }
+}
+
+public struct GradeSegment: Hashable {
+    var start: Double
+    var end: Double
+    var grade: Double
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(start)
+        hasher.combine(end)
+        hasher.combine(grade)
+    }
+
+    public static func ==(lhs: GradeSegment, rhs: GradeSegment) -> Bool {
+        if lhs.start != rhs.start {
+            return false
+        }
+        if lhs.end != rhs.end {
+            return false
+        }
+        if (lhs.grade - rhs.grade).magnitude > 0.005 {
+            return false
+        }
+        return true
     }
 }
 
