@@ -21,3 +21,8 @@ public struct TrackPoint: Hashable {
         self.power = power
     }
 }
+
+extension TrackPoint: GeoCoordinate {
+    public var latitude: Double { coordinate.latitude }
+    public var longitude: Double { coordinate.longitude }
+}

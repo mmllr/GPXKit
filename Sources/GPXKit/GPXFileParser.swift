@@ -202,3 +202,21 @@ internal extension XMLNode {
         }
     }
 }
+
+public extension GPXFileParser {
+    /// Convenience initialize for loading a GPX file from an url. Fails if the track cannot be parsed.
+    /// - Parameter url: The url containing the GPX file. See [GPX specification for details](https://www.topografix.com/gpx.asp).
+    /// - Returns: An `GPXFileParser` instance or nil if the track cannot be parsed.
+    convenience init?(url: URL) {
+        guard let xmlString = try? String(contentsOf: url) else { return nil }
+        self.init(xmlString: xmlString)
+    }
+
+    /// Convenience initialize for loading a GPX file from a data. Returns nil if the track cannot be parsed.
+    /// - Parameter data: Data containing the GPX file as encoded xml string. See [GPX specification for details](https://www.topografix.com/gpx.asp).
+    /// - Returns: An `GPXFileParser` instance or nil if the track cannot be parsed.
+    convenience init?(data: Data) {
+        guard let xmlString = String(data: data, encoding: .utf8) else { return nil }
+        self.init(xmlString: xmlString)
+    }
+}

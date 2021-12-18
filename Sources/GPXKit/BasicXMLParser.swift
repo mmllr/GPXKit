@@ -23,7 +23,7 @@ public class BasicXMLParser: NSObject, XMLParserDelegate {
     }
 
     public init(xml: String) {
-        parser = XMLParser(data: xml.data(using: .utf8)!)
+        parser = XMLParser(data: xml.data(using: .utf8) ?? Data())
     }
 
     public func parse() -> Result<XMLNode, BasicXMLParserError> {

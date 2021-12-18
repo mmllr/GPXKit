@@ -24,3 +24,41 @@ public struct GeoBounds: Hashable, Codable {
         self.maxLongitude = maxLongitude
     }
 }
+
+public extension GeoBounds {
+    /// The _zero_ value of GeoBounds.
+    ///
+    /// Its values are not zero but contain the following values:
+    /// ### minLatitude
+    /// `Coordinate.validLatitudeRange.upperBound`
+    /// ### minLongitude
+    /// `Coordinate.validLongitudeRange.upperBound`
+    /// ### maxLatitude
+    /// `Coordinate.validLatitudeRange.lowerBound`
+    /// #### maxLongitude
+    /// `Coordinate.validLongitudeRange.lowerBound`
+    ///
+    /// See `Coordinate.validLongitudeRange` & `Coordinate.validLatitudeRange.upperBound` for details.
+    static let empty = GeoBounds(
+        minLatitude: Coordinate.validLatitudeRange.upperBound,
+        minLongitude: Coordinate.validLongitudeRange.upperBound,
+        maxLatitude: Coordinate.validLatitudeRange.lowerBound,
+        maxLongitude: Coordinate.validLongitudeRange.lowerBound
+    )
+
+    /// Tests if two `GeoBound` values intersects
+    /// - Parameter rhs: The other `GeoBound` to test for intersection.
+    /// - Returns: True if both bounds intersect, otherwise false.
+    func intersects(_ rhs: GeoBounds) -> Bool {
+        return (minLatitude...maxLatitude).overlaps(rhs.minLatitude...rhs.maxLatitude) &&
+            (minLongitude...maxLongitude).overlaps(rhs.minLongitude...rhs.maxLongitude)
+    }
+
+    /// Tests if a `GeoCoordinate` is within a `GeoBound`
+    /// - Parameter coordinate: The `GeoCoordinate` to test for.
+    /// - Returns: True if coordinate is within the bounds otherwise false.
+    func contains(_ coordinate: GeoCoordinate) -> Bool {
+        return (minLatitude...maxLatitude).contains(coordinate.latitude) &&
+            (minLongitude...maxLongitude).contains(coordinate.longitude)
+    }
+}

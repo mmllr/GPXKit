@@ -1,5 +1,20 @@
 import Foundation
 
+public extension Collection where Element: GeoCoordinate {
+    /// Creates a bounding box from a collection of `GeoCoordinate`s.
+    /// - Returns: The 2D representation of the bounding box as `GeoBounds` value.
+    func bounds() -> GeoBounds {
+        reduce(GeoBounds.empty) { bounds, coord in
+            GeoBounds(
+                minLatitude: Swift.min(bounds.minLatitude, coord.latitude),
+                minLongitude: Swift.min(bounds.minLongitude, coord.longitude),
+                maxLatitude: Swift.max(bounds.maxLatitude, coord.latitude),
+                maxLongitude: Swift.max(bounds.maxLongitude, coord.longitude)
+            )
+        }
+    }
+}
+
 #if canImport(MapKit) && canImport(CoreLocation) && !os(watchOS)
 import MapKit
 import CoreLocation
