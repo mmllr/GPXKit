@@ -111,8 +111,6 @@ final class GPXExporterTests: XCTestCase {
                     ])
                 ])
 
-        parseResult(sut.xmlString)
-
         assertNodesAreEqual(expectedContent, result)
     }
 
@@ -129,6 +127,7 @@ final class GPXExporterTests: XCTestCase {
     }
 
     func testItWillNotExportTheDatesFromTrack() {
+        print(Date())
         let track = GPXTrack(date: Date(),
                 title: "test track",
                 trackPoints: [
@@ -137,8 +136,8 @@ final class GPXExporterTests: XCTestCase {
                     TrackPoint(coordinate: .random, date: Date()),
                     TrackPoint(coordinate: .random, date: Date()),
                 ])
+        print(Date())
         sut = GPXExporter(track: track, shouldExportDate: false)
-
         let expectedContent: GPXKit.XMLNode = XMLNode(
                 name: GPXTags.gpx.rawValue,
                 attributes: expectedHeaderAttributes,

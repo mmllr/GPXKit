@@ -43,6 +43,7 @@ extension TrackPoint: GeoCoordinate {
 public extension TrackGraph {
     /// Convenience initialize for creating a `TrackGraph`  from `Coordinate`s.
     /// - Parameter coords: Array of `Coordinate` values.
+    /// - Parameter gradeSegmentLength: The Length of the grade segments in meters. Defaults to 25.
     init(coords: [Coordinate], gradeSegmentLength: Double = 25) {
         let zippedCoords = zip(coords, coords.dropFirst())
         let distances: [Double] = [0.0] + zippedCoords.map {

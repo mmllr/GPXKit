@@ -417,4 +417,63 @@ class TrackGraphTests: XCTestCase {
         ]
         XCTAssertEqual(expected, sut.gradeSegments)
     }
+
+    func testElevationAtDistanceTestBeyondTheTracksBounds() {
+        let start = Coordinate.leipzig.offset(elevation: 100)
+        let end: Coordinate = start.offset(distance: 100, grade: 0.1)
+        let sut = TrackGraph(coords: [
+            start,
+            end
+        ])
+
+        XCTAssertNil(sut.elevation(at: -10))
+        XCTAssertNil(sut.elevation(at: Double.greatestFiniteMagnitude))
+        XCTAssertNil(sut.elevation(at: -Double.greatestFiniteMagnitude))
+        XCTAssertNil(sut.elevation(at: sut.distance+1))
+        XCTAssertNil(sut.elevation(at: sut.distance+100))
+    }
+
+    func testElevationAtDistanceForDistancesAtCoordinates() throws {
+        let start = Coordinate.leipzig.offset(elevation: 100)
+        let first = start.offset(distance: 100, grade: 0.1)
+        let second = first.offset(distance: 100, grade: 0.2)
+        let third = second.offset(distance: 100, grade: -0.3)
+        let coords = [
+            start,
+            first,
+            second,
+            third
+        ]
+        let sut = TrackGraph(coords: coords)
+
+        XCTAssertEqual(start.elevation, sut.elevation(at: 0))
+        XCTAssertEqual(first.elevation, try XCTUnwrap(sut.elevation(at: start.distance(to: first))), accuracy: 0.001)
+        XCTAssertEqual(second.elevation, try XCTUnwrap(sut.elevation(at: start.distance(to: second))), accuracy: 0.001)
+        XCTAssertEqual(third.elevation, try XCTUnwrap(sut.elevation(at: start.distance(to: third))), accuracy: 0.001)
+        XCTAssertEqual(third.elevation, try XCTUnwrap(sut.elevation(at: sut.distance)), accuracy: 0.001)
+    }
+
+    func testElevationAtDistanceForDistancesBetweenCoordinates() throws {
+        let start = Coordinate.leipzig.offset(elevation: 100)
+        let first = start.offset(distance: 100, grade: 0.1)
+        let second = first.offset(distance: 100, grade: 0.2)
+        let third = second.offset(distance: 100, grade: -0.3)
+        let coords = [
+            start,
+            first,
+            second,
+            third
+        ]
+        let sut = TrackGraph(coords: coords)
+
+        for (lhs, rhs) in sut.heightMap.adjacentPairs() {
+            let distanceDelta = rhs.distance - lhs.distance
+            let heightDelta = rhs.elevation - lhs.elevation
+            for t in stride(from: 0, through: 1, by: 0.1) {
+                let expectedHeight = lhs.elevation + t * heightDelta
+
+                XCTAssertEqual(expectedHeight, try XCTUnwrap(sut.elevation(at: lhs.distance + distanceDelta * t)), accuracy: 0.0001)
+            }
+        }
+    }
 }

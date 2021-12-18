@@ -37,3 +37,25 @@ public struct TrackGraph: Equatable {
         self.gradeSegments = [.init(start: 0, end: distance, grade: elevationGain/distance)]
     }
 }
+
+
+public extension TrackGraph {
+    /// The elevation at a given distance. Elevations between coordinates will be interpolated from their adjacent track corrdinates.
+    /// - Parameter distanceInMeters: The distance from the start of the track in meters. Must be in the range **{0, trackdistance}**.
+    /// - Returns: The elevation in meters for a given distance or nil, if ```distanceInMeters``` is not within the tracks length.
+    func elevation(at distanceInMeters: Double) -> Double? {
+        guard (0...distance).contains(distanceInMeters),
+              let index = heightMap.firstIndex(where: { $0.distance >= distanceInMeters  }) else { return nil }
+
+        if heightMap[index].distance == distanceInMeters {
+            return heightMap[index].elevation
+        }
+        let prev = heightMap[index-1]
+        let next = heightMap[index]
+
+        let distanceDelta = next.distance - prev.distance
+        let heightDelta = next.elevation - prev.elevation
+        let t = (distanceInMeters - prev.distance) / distanceDelta
+        return prev.elevation + heightDelta * t
+    }
+}
