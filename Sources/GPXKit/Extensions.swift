@@ -60,11 +60,10 @@ public extension TrackGraph {
             }
             return elevation
         }
-        let heightmap = segments.reduce((0.0, [DistanceHeight]())) { acc, segment in
-            let distanceSoFar = acc.0 + segment.distanceInMeters
-            let heightMap = acc.1 + [DistanceHeight(distance: distanceSoFar, elevation: segment.coordinate.elevation)]
-            return (distanceSoFar, heightMap)
-        }.1
+        let heightmap = segments.reduce(into: [DistanceHeight]()) { acc, segment in
+            let distanceSoFar = (acc.last?.distance ?? 0) + segment.distanceInMeters
+            acc.append(DistanceHeight(distance: distanceSoFar, elevation: segment.coordinate.elevation))
+        }
         self.heightMap = heightmap
         self.gradeSegments = heightmap.calculateGradeSegments(segmentLength: gradeSegmentLength)
     }
