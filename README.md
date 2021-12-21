@@ -1,6 +1,9 @@
 # GPXKit
 A library for parsing and exporting gpx files with no dependencies besides Foundation.
 
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fmmllr%2FGPXKit%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/mmllr/GPXKit)  
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fmmllr%2FGPXKit%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/mmllr/GPXKit)  
+
 ## Features
 - [x] Parsing gpx files into a track struct
 - [x] Exporting a track to a gpx xml
@@ -16,7 +19,7 @@ A library for parsing and exporting gpx files with no dependencies besides Found
 To use the `GPXKit` library in a SwiftPM project, add the following line to the dependencies in your `Package.swift` file:
 
 ```swift
-.package(url: "https://github.com/mmllr/GPXKit", from: "1.4.2")
+.package(url: "https://github.com/mmllr/GPXKit", from: "1.5.2")
 ```
 ## Usage examples
 ### Importing a track
