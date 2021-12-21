@@ -36,7 +36,7 @@ public final class GPXExporter {
                                 ].joined(separator: "\n")),
                                 GPXTags.track.embed([
                                     GPXTags.name.embed(track.title),
-                                    GPXTags.description.embed(track.description ?? ""),
+                                    track.description.flatMap { GPXTags.description.embed( $0) } ?? "",
                                     trackXML
                                 ].joined(separator: "\n"))
                             ].joined(separator: "\n")))
@@ -58,11 +58,11 @@ public final class GPXExporter {
                 ].joined(separator: " ")
                 let childs = [GPXTags.elevation.embed(String(format:"%.2f", point.coordinate.elevation)),
                               exportDate ? point.date.flatMap {
-                                GPXTags.time.embed(iso8601Formatter.string(from: $0))
-                              } : nil
+                    GPXTags.time.embed(iso8601Formatter.string(from: $0))
+                } : nil
                 ].compactMap { $0 }.joined(separator: "\n")
                 return GPXTags.trackPoint.embed(
-                        attributes: attributes,
+                    attributes: attributes,
                     childs
                 )
             }.joined(separator: "\n")
