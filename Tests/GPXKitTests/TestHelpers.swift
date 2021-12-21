@@ -166,7 +166,11 @@ extension XCTest {
     ) {
         assertDatesEqual(expected.date, actual.date, file: file, line: line)
         XCTAssertEqual(expected.title, actual.title, file: file, line: line)
+        XCTAssertEqual(expected.description, actual.description, file: file, line: line)
+        XCTAssertEqual(expected.keywords, actual.keywords, file: file, line: line)
         XCTAssertEqual(expected.trackPoints, actual.trackPoints, file: file, line: line)
+        XCTAssertEqual(expected.graph, actual.graph, file: file, line: line)
+        XCTAssertEqual(expected.bounds, actual.bounds, file: file, line: line)
     }
 
     /*

@@ -96,6 +96,7 @@ class GPXParserTests: XCTestCase {
 
         assertTracksAreEqual(GPXTrack(date: expectedDate(for: "2020-03-18T12:39:47Z"),
                                 title: "Haus- und Seenrunde Ausdauer",
+                description: "Track description",
                                 trackPoints: expected), result!)
     }
 

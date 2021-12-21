@@ -112,6 +112,7 @@ let testTrack = GPXTrack(date: expectedDate(for: "2020-03-18T12:39:47Z"),
 
 let testTrackWithoutTime = GPXTrack(date: nil,
                                     title: "Test track without time",
+                                        description: "Description",
                                     trackPoints: [
                                         TrackPoint(coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 114.2),
                                                    date: nil),
