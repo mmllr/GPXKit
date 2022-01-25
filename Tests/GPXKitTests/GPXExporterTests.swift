@@ -10,7 +10,7 @@ final class GPXExporterTests: XCTestCase {
     private var parseError: GPXParserError?
     private var iso8601Formatter: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
-        formatter.formatOptions = .withInternetDateTime
+        formatter.formatOptions = .withFractionalSeconds
         return formatter
     }()
     private var result: GPXKit.XMLNode!

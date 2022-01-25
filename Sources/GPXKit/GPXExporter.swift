@@ -5,11 +5,6 @@ import FoundationXML
 
 /// A class for exporting a `GPXTrack` to an xml string.
 public final class GPXExporter {
-    private lazy var iso8601Formatter: ISO8601DateFormatter = {
-        let formatter = ISO8601DateFormatter()
-        formatter.formatOptions = .withInternetDateTime
-        return formatter
-    }()
     private let track: GPXTrack
     private let exportDate: Bool
 
@@ -45,7 +40,7 @@ public final class GPXExporter {
 
     private var metaDataTime: String {
         guard exportDate, let date = track.date else { return "" }
-        return GPXTags.time.embed(iso8601Formatter.string(from: date))
+        return GPXTags.time.embed(ISO8601DateFormatter.gpxKit.string(from: date))
     }
 
     private var trackXML: String {
@@ -58,7 +53,7 @@ public final class GPXExporter {
                 ].joined(separator: " ")
                 let childs = [GPXTags.elevation.embed(String(format:"%.2f", point.coordinate.elevation)),
                               exportDate ? point.date.flatMap {
-                    GPXTags.time.embed(iso8601Formatter.string(from: $0))
+                    GPXTags.time.embed(ISO8601DateFormatter.gpxKit.string(from: $0))
                 } : nil
                 ].compactMap { $0 }.joined(separator: "\n")
                 return GPXTags.trackPoint.embed(

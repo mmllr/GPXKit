@@ -33,7 +33,7 @@ public func XCTAssertEqual<T: Equatable>(_ expected: @autoclosure () throws -> T
 
 fileprivate var iso8601Formatter: ISO8601DateFormatter = {
     let formatter = ISO8601DateFormatter()
-    formatter.formatOptions = .withInternetDateTime
+    formatter.formatOptions = .withFractionalSeconds
     return formatter
 }()
 

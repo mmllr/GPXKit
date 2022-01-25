@@ -72,9 +72,9 @@ class GPXParserTests: XCTestCase {
 
         let expected = [
             TrackPoint(coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 114.2),
-                       date: expectedDate(for: "2020-03-18T12:39:47Z")),
+                       date: expectedDate(for: "2020-07-03T13:20:50.000Z")),
             TrackPoint(coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
-                       date: expectedDate(for: "2020-03-18T12:39:48Z"))
+                       date: expectedDate(for: "2020-03-18T12:45:48Z"))
         ]
 
         assertTracksAreEqual(GPXTrack(date: expectedDate(for: "2020-03-18T12:39:47Z"),

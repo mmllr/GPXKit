@@ -50,11 +50,11 @@ let testXMLWithoutExtensions = """
                 <trkseg>
                     <trkpt lat="51.2760600" lon="12.3769500">
                         <ele>114.2</ele>
-                        <time>2020-03-18T12:39:47Z</time>
+                        <time>2020-07-03T13:20:50.000Z</time>
                     </trkpt>
                     <trkpt lat="51.2760420" lon="12.3769760">
                         <ele>114.0</ele>
-                        <time>2020-03-18T12:39:48Z</time>
+                        <time>2020-03-18T12:45:48Z</time>
                     </trkpt>
                 </trkseg>
             </trk>
@@ -107,7 +107,7 @@ let testTrack = GPXTrack(date: expectedDate(for: "2020-03-18T12:39:47Z"),
                             TrackPoint(coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 114.2),
                                        date: expectedDate(for: "2020-03-18T12:39:47Z")),
                             TrackPoint(coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
-                                       date: expectedDate(for: "2020-03-18T12:39:48Z"))
+                                       date: expectedDate(for: "2020-03-18T12:45:48Z"))
                          ])
 
 let testTrackWithoutTime = GPXTrack(date: nil,

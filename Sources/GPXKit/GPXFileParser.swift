@@ -168,12 +168,6 @@ internal extension TrackPoint {
 }
 
 internal extension XMLNode {
-    static var iso8601Formatter: ISO8601DateFormatter = {
-        let formatter = ISO8601DateFormatter()
-        formatter.formatOptions = .withInternetDateTime
-        return formatter
-    }()
-
     var latitude: Double? {
         Double(attributes[GPXAttributes.latitude.rawValue] ?? "")
     }
@@ -184,7 +178,7 @@ internal extension XMLNode {
         Double(content)
     }
     var date: Date? {
-        XMLNode.iso8601Formatter.date(from: content)
+        ISO8601DateFormatter.gpxKit.date(from: content)
     }
     var power: Measurement<UnitPower>? {
         Double(content).flatMap {
