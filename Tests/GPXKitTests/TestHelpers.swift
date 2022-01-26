@@ -33,12 +33,28 @@ public func XCTAssertEqual<T: Equatable>(_ expected: @autoclosure () throws -> T
 
 fileprivate var iso8601Formatter: ISO8601DateFormatter = {
     let formatter = ISO8601DateFormatter()
+    formatter.formatOptions = .withInternetDateTime
+    return formatter
+}()
+
+fileprivate var importFormatter: ISO8601DateFormatter = {
+    let formatter = ISO8601DateFormatter()
+    formatter.formatOptions = .withInternetDateTime
+    return formatter
+}()
+
+fileprivate var fractionalFormatter: ISO8601DateFormatter = {
+    let formatter = ISO8601DateFormatter()
     formatter.formatOptions = .withFractionalSeconds
     return formatter
 }()
 
 func expectedDate(for dateString: String) -> Date {
-    return iso8601Formatter.date(from: dateString)!
+    if let date = importFormatter.date(from: dateString) {
+        return date
+    } else {
+        return fractionalFormatter.date(from: dateString)!
+    }
 }
 
 func expectedString(for date: Date) -> String {

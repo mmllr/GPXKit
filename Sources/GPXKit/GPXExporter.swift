@@ -40,7 +40,7 @@ public final class GPXExporter {
 
     private var metaDataTime: String {
         guard exportDate, let date = track.date else { return "" }
-        return GPXTags.time.embed(ISO8601DateFormatter.gpxKit.string(from: date))
+        return GPXTags.time.embed(ISO8601DateFormatter.exporting.string(from: date))
     }
 
     private var trackXML: String {
@@ -53,7 +53,7 @@ public final class GPXExporter {
                 ].joined(separator: " ")
                 let childs = [GPXTags.elevation.embed(String(format:"%.2f", point.coordinate.elevation)),
                               exportDate ? point.date.flatMap {
-                    GPXTags.time.embed(ISO8601DateFormatter.gpxKit.string(from: $0))
+                    GPXTags.time.embed(ISO8601DateFormatter.exporting.string(from: $0))
                 } : nil
                 ].compactMap { $0 }.joined(separator: "\n")
                 return GPXTags.trackPoint.embed(

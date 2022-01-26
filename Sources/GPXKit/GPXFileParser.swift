@@ -178,7 +178,11 @@ internal extension XMLNode {
         Double(content)
     }
     var date: Date? {
-        ISO8601DateFormatter.gpxKit.date(from: content)
+        if let date = ISO8601DateFormatter.importing.date(from: content) {
+            return date
+        } else {
+            return ISO8601DateFormatter.importingFractionalSeconds.date(from: content)
+        }
     }
     var power: Measurement<UnitPower>? {
         Double(content).flatMap {
