@@ -9,7 +9,7 @@ extension ISO8601DateFormatter {
 
     static var importingFractionalSeconds: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
-        if #available(macOS 10.13, iOS 12, *) {
+        if #available(macOS 10.13, iOS 12, tvOS 11.0, *) {
             formatter.formatOptions = .withFractionalSeconds
         } else {
             formatter.formatOptions = .withInternetDateTime

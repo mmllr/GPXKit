@@ -45,7 +45,11 @@ fileprivate var importFormatter: ISO8601DateFormatter = {
 
 fileprivate var fractionalFormatter: ISO8601DateFormatter = {
     let formatter = ISO8601DateFormatter()
-    formatter.formatOptions = .withFractionalSeconds
+    if #available(tvOS 11.0, *) {
+        formatter.formatOptions = .withFractionalSeconds
+    } else {
+        formatter.formatOptions = .withInternetDateTime
+    }
     return formatter
 }()
 
