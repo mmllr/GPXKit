@@ -284,4 +284,35 @@ class GPXParserTests: XCTestCase {
         let sut = try XCTUnwrap(self.result)
         XCTAssertEqual(["one", "two", "three", "four"], sut.keywords)
     }
+
+    func testParsingAFileWithoutWaypointDefinitionsHasEmptyWaypoints() throws {
+        parseXML(testXMLData)
+        let sut = try XCTUnwrap(self.result)
+
+        XCTAssertNil(sut.waypoints)
+    }
+
+    func testParsingWaypointAttributes() throws {
+        parseXML(testXMLDataContainingWaypoint)
+        let sut = try XCTUnwrap(self.result)
+
+        let waypointStart = Waypoint(
+            coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500),
+            date: expectedDate(for: "2020-03-18T12:39:47Z"),
+            name: "Start",
+            comment: "start comment",
+            description: "This is the start"
+        )
+
+        let waypointFinish = Waypoint(
+            coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760),
+            date: expectedDate(for: "2020-03-18T12:39:48Z"),
+            name: "Finish",
+            comment: "finish comment",
+            description: "This is the finish"
+        )
+
+        XCTAssertEqual([waypointStart, waypointFinish], sut.waypoints)
+
+    }
 }

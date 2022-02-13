@@ -4,6 +4,8 @@ import Foundation
 public struct GPXTrack: Hashable {
     /// Optional date stamp of the gpx track
     public var date: Date?
+    /// Waypoint defined for the gpx
+    public var waypoints: [Waypoint]?
     /// Title of the gpx track
     public var title: String
     /// Description of the gpx track
@@ -20,12 +22,14 @@ public struct GPXTrack: Hashable {
     /// Initializes a GPXTrack. You don't need to construct this value by yourself, as it is done by GXPKits track parsing logic.
     /// - Parameters:
     ///   - date: The date stamp of the track. Defaults to nil.
+    ///   - waypoints: Array of `Waypoints`. Defaults to nil.
     ///   - title: String describing the track.
     ///   - trackPoints: Array of `TrackPoint`s describing the route.
-    ///   - keywords: Array of `String`s with keyords. Default is an empty array (no keywords).
+    ///   - keywords: Array of `String`s with keywords. Default is an empty array (no keywords).
     ///   - gradeSegmentLength: The length in meters for the grade segments. Defaults to 50 meters.
-    public init(date: Date? = nil, title: String, description: String? = nil, trackPoints: [TrackPoint], keywords: [String] = [], gradeSegmentLength: Double = 50.0) {
+    public init(date: Date? = nil, waypoints: [Waypoint]? = nil, title: String, description: String? = nil, trackPoints: [TrackPoint], keywords: [String] = [], gradeSegmentLength: Double = 50.0) {
         self.date = date
+        self.waypoints = waypoints
         self.title = title
         self.description = description
         self.trackPoints = trackPoints

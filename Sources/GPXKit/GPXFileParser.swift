@@ -17,6 +17,7 @@ public enum GPXParserError: Error, Equatable {
 internal enum GPXTags: String {
     case gpx
     case metadata
+    case waypoint = "wpt"
     case time
     case track = "trk"
     case name
@@ -27,6 +28,7 @@ internal enum GPXTags: String {
     case power
     case description = "desc"
     case keywords
+    case comment = "cmt"
 }
 
 internal enum GPXAttributes: String {
@@ -72,12 +74,18 @@ final public class GPXFileParser {
         }
         return GPXTrack(
                 date: node.childFor(.metadata)?.childFor(.time)?.date,
+                waypoints: parseWaypoints(node.childrenOfType(.waypoint)),
                 title: title,
                 description: trackNode.childFor(.description)?.content,
                 trackPoints: parseSegment(trackNode.childFor(.trackSegment)),
                 keywords: parseKeywords(node: node),
                 gradeSegmentLength: gradeSegmentLength
         )
+    }
+
+    private func parseWaypoints(_ nodes: [XMLNode]) -> [Waypoint]? {
+        guard !nodes.isEmpty else { return nil }
+        return nodes.compactMap { Waypoint.init($0) ?? nil }
     }
 
     private func parseKeywords(node: XMLNode) -> [String] {
@@ -147,6 +155,24 @@ final public class GPXFileParser {
             }
         }
         return result
+    }
+}
+
+internal extension Waypoint {
+    init?(_ waypointNode: XMLNode) {
+        guard let lat = waypointNode.latitude,
+              let lon = waypointNode.longitude
+        else {
+            return nil
+        }
+        self.coordinate = Coordinate(
+            latitude: lat,
+            longitude: lon
+        )
+        self.date = waypointNode.childFor(.time)?.date
+        self.name = waypointNode.childFor(.name)?.content
+        self.comment = waypointNode.childFor(.comment)?.content
+        self.description = waypointNode.childFor(.description)?.content
     }
 }
 
