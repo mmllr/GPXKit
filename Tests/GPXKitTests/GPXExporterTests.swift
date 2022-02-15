@@ -180,4 +180,60 @@ final class GPXExporterTests: XCTestCase {
 
         assertNodesAreEqual(expectedContent, result)
     }
+
+    func testItWillNotExportNilWaypoints() {
+        let track: GPXTrack = GPXTrack(date: Date(), waypoints: nil, title: "Track title", trackPoints: [])
+        sut = GPXExporter(track: track, shouldExportDate: false)
+        let expectedContent: GPXKit.XMLNode = XMLNode(
+            name: GPXTags.gpx.rawValue,
+            attributes: expectedHeaderAttributes,
+            children: [
+                XMLNode(name: GPXTags.metadata.rawValue),
+                XMLNode(name: GPXTags.track.rawValue, children: [
+                    XMLNode(name: GPXTags.name.rawValue, content: track.title),
+                ])
+            ])
+
+        parseResult(sut.xmlString)
+
+        assertNodesAreEqual(expectedContent, result)
+    }
+
+    func testItWillExportAllWaypoints() {
+        let waypoints = [
+            Waypoint(coordinate: .dehner, name: "Dehner", comment: "Dehner comment", description: "Dehner description"),
+            Waypoint(coordinate: .kreisel, name: "Kreisel", comment: "Kreisel comment", description: "Kreisel description")
+        ]
+        let track: GPXTrack = GPXTrack(date: Date(), waypoints: waypoints, title: "Track title", trackPoints: [])
+        sut = GPXExporter(track: track, shouldExportDate: false)
+        let expectedContent: GPXKit.XMLNode = XMLNode(
+            name: GPXTags.gpx.rawValue,
+            attributes: expectedHeaderAttributes,
+            children: [
+                XMLNode(name: GPXTags.metadata.rawValue),
+                XMLNode(name: GPXTags.waypoint.rawValue, attributes: [
+                    GPXAttributes.latitude.rawValue: String(Coordinate.dehner.latitude),
+                    GPXAttributes.longitude.rawValue: String(Coordinate.dehner.longitude),
+                ], children: [
+                    XMLNode(name: GPXTags.name.rawValue, content: "Dehner"),
+                    XMLNode(name: GPXTags.comment.rawValue, content: "Dehner comment"),
+                    XMLNode(name: GPXTags.description.rawValue, content: "Dehner description"),
+                ]),
+                XMLNode(name: GPXTags.waypoint.rawValue, attributes: [
+                    GPXAttributes.latitude.rawValue: String(Coordinate.kreisel.latitude),
+                    GPXAttributes.longitude.rawValue: String(Coordinate.kreisel.longitude),
+                ], children: [
+                    XMLNode(name: GPXTags.name.rawValue, content: "Kreisel"),
+                    XMLNode(name: GPXTags.comment.rawValue, content: "Kreisel comment"),
+                    XMLNode(name: GPXTags.description.rawValue, content: "Kreisel description"),
+                ]),
+                XMLNode(name: GPXTags.track.rawValue, children: [
+                    XMLNode(name: GPXTags.name.rawValue, content: track.title),
+                ])
+            ])
+
+        parseResult(sut.xmlString)
+
+        assertNodesAreEqual(expectedContent, result)
+    }
 }

@@ -1,27 +1,33 @@
 # GPXKit
-A library for parsing and exporting gpx files with no dependencies besides Foundation.
+
+A library for parsing and exporting GPX files with no dependencies besides Foundation.
 
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fmmllr%2FGPXKit%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/mmllr/GPXKit)  
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fmmllr%2FGPXKit%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/mmllr/GPXKit)  
 
 ## Features
-- [x] Parsing gpx files into a track struct
-- [x] Exporting a track to a gpx xml
+
+- [x] Parsing GPX files into a track struct
+- [x] Exporting a track to a GPX xml
 - [x] Support for iOS, macOS & watchOS
-- [x] Optionally removes date and time from exported gpx for keeping privacy
+- [x] Optionally removes date and time from exported GPX for keeping privacy
 - [x] Combine support
-- [x] Heightmap, geobounds, distance and elevation information for an imported track
+- [x] Height Map, geo-bounds, distance, and elevation information for an imported track
+- [x] Waypoint support
 - [x] Test coverage
 - [x] Climb detection
 - [x] Grade segmentation
 
 ## Installation
+
 To use the `GPXKit` library in a SwiftPM project, add the following line to the dependencies in your `Package.swift` file:
 
 ```swift
 .package(url: "https://github.com/mmllr/GPXKit", from: "1.5.8")
 ```
+
 ## Usage examples
+
 ### Importing a track
 
 ```swift
@@ -57,6 +63,7 @@ let track: GPXTrack = ...
 let exporter = GPXExporter(track: track, shouldExportDate: false)
 print(exporter.xmlString)
 ```
+
 ### Combine integration
 
 ```swift
@@ -71,7 +78,9 @@ GPXFileParser.load(from: url)
    }
 ```
 See tests for more usage examples.
+
 ### Climb detection
+
 To detect climbs in a track, use the `TrackGraph`s `climb(epsilon:minimumGrade:maxJoinDistance:)` method which returns an array of `Climb` values for given filter parameters.
 
 ```swift
@@ -81,6 +90,7 @@ let climbs = track.graph.climbs(epsilon: 4.0, minimumGrade: 3.0, maxJoinDistance
 ```
 
 ## Documentation
+
 Project documentation is available at [GitHub Pages](https://mmllr.github.io/GPXKit/)
 
 Run the following commands from the projects root to generate the documentation:
@@ -91,5 +101,6 @@ jazzy
 Browse the documention under the doc folder.
 
 ## Contributing
+
 Contributions to this project will be more than welcomed. Feel free to add a pull request or open an issue.
 If you require a feature that has yet to be available, do open an issue, describing why and what the feature could bring and how it would help you!

@@ -19,7 +19,7 @@ public final class GPXExporter {
         self.exportDate = shouldExportDate
     }
 
-    /// The exported GPX xml string. If a track cannot be exported, the resulting string. If the track cannot be exported, its value is an empty GPX track xml.
+    /// The exported GPX xml string. If the track cannot be exported, its value is an empty GPX track xml.
     public var xmlString: String {
         return """
         <?xml version="1.0" encoding="UTF-8"?>
@@ -29,6 +29,7 @@ public final class GPXExporter {
                                     metaDataTime,
                                     track.keywords.isEmpty ? "" : GPXTags.keywords.embed(track.keywords.joined(separator: " "))
                                 ].joined(separator: "\n")),
+                                waypointsXML,
                                 GPXTags.track.embed([
                                     GPXTags.name.embed(track.title),
                                     track.description.flatMap { GPXTags.description.embed( $0) } ?? "",
@@ -43,6 +44,27 @@ public final class GPXExporter {
         return GPXTags.time.embed(ISO8601DateFormatter.exporting.string(from: date))
     }
 
+    private var waypointsXML: String {
+        guard let waypoints = track.waypoints, !waypoints.isEmpty else { return "" }
+        return waypoints.map { waypoint in
+            let attributes = [
+                GPXAttributes.latitude.assign("\"\(waypoint.coordinate.latitude)\""),
+                GPXAttributes.longitude.assign("\"\(waypoint.coordinate.longitude)\"")
+            ].joined(separator: " ")
+            var children = [String]()
+            if let name = waypoint.name {
+                children.append(GPXTags.name.embed(name))
+            }
+            if let comment = waypoint.comment {
+                children.append(GPXTags.comment.embed(comment))
+            }
+            if let description = waypoint.description {
+                children.append(GPXTags.description.embed(description))
+            }
+            return GPXTags.waypoint.embed(attributes: attributes, children.joined(separator: "\n"))
+        }.joined(separator: "\n")
+    }
+
     private var trackXML: String {
         guard !track.trackPoints.isEmpty else { return "" }
         return GPXTags.trackSegment.embed(
@@ -51,14 +73,14 @@ public final class GPXExporter {
                     GPXAttributes.latitude.assign("\"\(point.coordinate.latitude)\""),
                     GPXAttributes.longitude.assign("\"\(point.coordinate.longitude)\"")
                 ].joined(separator: " ")
-                let childs = [GPXTags.elevation.embed(String(format:"%.2f", point.coordinate.elevation)),
+                let children = [GPXTags.elevation.embed(String(format:"%.2f", point.coordinate.elevation)),
                               exportDate ? point.date.flatMap {
                     GPXTags.time.embed(ISO8601DateFormatter.exporting.string(from: $0))
                 } : nil
                 ].compactMap { $0 }.joined(separator: "\n")
                 return GPXTags.trackPoint.embed(
                     attributes: attributes,
-                    childs
+                    children
                 )
             }.joined(separator: "\n")
         )
