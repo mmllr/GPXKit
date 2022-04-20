@@ -73,7 +73,7 @@ final class GPXTrackTests: XCTestCase {
             second,
             third,
             fourth
-        ].map { TrackPoint(coordinate: $0) }, gradeSegmentLength: 50)
+        ].map { TrackPoint(coordinate: $0) }, elevationSmoothing: .segmentation(50))
 
         let expected: [GradeSegment] = [
             .init(start: 0, end: 100, grade: 0.1),

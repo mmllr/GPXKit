@@ -13,7 +13,7 @@ class TrackGraphTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        sut = TrackGraph(coords: coordinates)
+        sut = TrackGraph(coords: coordinates, elevationSmoothing: .segmentation(50))
     }
 
     override func tearDown() {
@@ -75,7 +75,7 @@ class TrackGraphTests: XCTestCase {
             Coordinate(latitude: 51.2765020, longitude: 12.3767050, elevation: 1),
         ]
 
-        sut = TrackGraph(coords: coordinates)
+        sut = TrackGraph(coords: coordinates, elevationSmoothing: .segmentation(50))
 
         XCTAssertEqual(0, sut.elevationGain)
     }
@@ -90,7 +90,7 @@ class TrackGraphTests: XCTestCase {
             Coordinate(latitude: 51.2765520, longitude: 12.3766820, elevation: 344), // 268
         ]
 
-        sut = TrackGraph(coords: coordinates)
+        sut = TrackGraph(coords: coordinates, elevationSmoothing: .segmentation(50))
 
         // 10 + 95 + 268
         XCTAssertEqual(373, sut.elevationGain)
@@ -127,7 +127,7 @@ class TrackGraphTests: XCTestCase {
             Coordinate(latitude: 51.2765520, longitude: 12.3766820, elevation: 150),
         ]
 
-        sut = TrackGraph(coords: coordinates)
+        sut = TrackGraph(coords: coordinates, elevationSmoothing: .segmentation(50))
 
         // 10 + 95 + 268
         XCTAssertEqual(50, sut.elevationGain)
@@ -143,25 +143,25 @@ class TrackGraphTests: XCTestCase {
             Coordinate(latitude: 51.2765520, longitude: 12.3766820, elevation: 150), // 10
         ]
 
-        sut = TrackGraph(coords: coordinates)
+        sut = TrackGraph(coords: coordinates, elevationSmoothing: .segmentation(50))
 
         XCTAssertEqual(30 + 80 + 10, sut.elevationGain)
     }
 
     func testEmptyTrackGraphHasNoClimbs() {
-        sut = TrackGraph(coords: [])
+        sut = TrackGraph(coords: [], elevationSmoothing: .segmentation(50))
 
         XCTAssertEqual([], sut.climbs())
     }
 
     func testClimbsWithOnePointInTrackisEmpty() {
-        sut = TrackGraph(coords: [.leipzig])
+        sut = TrackGraph(coords: [.leipzig], elevationSmoothing: .segmentation(50))
 
         XCTAssertEqual([], sut.climbs())
     }
 
     func testATrackWithTwoPointsHasOneClimb() {
-        sut = TrackGraph(coords: [.leipzig, .leipzig.offset(east: 1000, elevation: 50)])
+        sut = TrackGraph(coords: [.leipzig, .leipzig.offset(east: 1000, elevation: 50)], elevationSmoothing: .segmentation(50))
 
         let expected = Climb(
             start: sut.heightMap.first!.distance,
@@ -181,7 +181,7 @@ class TrackGraphTests: XCTestCase {
     }
 
     func testDownhillSectionsWillNotBeInTheClimbs() {
-        sut = TrackGraph(coords: [.leipzig, .leipzig.offset(north: 1000, elevation: -50)])
+        sut = TrackGraph(coords: [.leipzig, .leipzig.offset(north: 1000, elevation: -50)], elevationSmoothing: .segmentation(50))
 
         XCTAssertEqual([], sut.climbs())
     }
@@ -192,7 +192,7 @@ class TrackGraphTests: XCTestCase {
             .leipzig.offset(distance: 2_000, grade: 0.05),
             .leipzig.offset(distance: 3_000, grade: 0.06),
             .leipzig.offset(distance: 5_000, grade: 0.07)
-        ])
+        ], elevationSmoothing: .segmentation(50))
 
         let expectedDistance = sut.heightMap.last!.distance
         let expectedTotalElevation = sut.heightMap.last!.elevation - sut.heightMap.first!.elevation
@@ -215,7 +215,7 @@ class TrackGraphTests: XCTestCase {
     func testItJoinsAdjacentSegmentsWithTheSameGrade() {
         sut = TrackGraph(coords: (1...10).map {
             .kreisel.offset(north: Double($0) * 1000, elevation: Double($0) * 100)
-        })
+        }, elevationSmoothing: .segmentation(50))
 
         XCTAssertEqual([
             Climb(
@@ -241,7 +241,7 @@ class TrackGraphTests: XCTestCase {
             .dehner.offset(east: 3000, elevation: 70),
             // 2nd climb
             .leipzig.offset(distance: 5_000, grade: 0.055)
-        ])
+        ], elevationSmoothing: .segmentation(50))
 
         let expectedA = Climb(
             start: sut.heightMap[0].distance,
@@ -273,7 +273,7 @@ class TrackGraphTests: XCTestCase {
             .leipzig,
             .leipzig.offset(distance: 3_000, grade: 0.05),
             .leipzig.offset(distance: 6_000, grade: 0.049)
-        ])
+        ], elevationSmoothing: .segmentation(50))
 
         let expected = Climb(
             start: sut.heightMap[0].distance,
@@ -295,7 +295,7 @@ class TrackGraphTests: XCTestCase {
             .leipzig.offset(east: 2_000, elevation: 100),
             .leipzig.offset(east: 2_100, elevation: 80),
             .leipzig.offset(east: 300, elevation: 300),
-        ])
+        ], elevationSmoothing: .segmentation(50))
 
         let expectedTotalElevation = 100.0 + (300.0 - 80.0)
         let expected = Climb(
@@ -336,13 +336,13 @@ class TrackGraphTests: XCTestCase {
     }
 
     func testGradeSegmentsForEmptyGraphIsEmptyArray() {
-        let sut = TrackGraph(coords: [])
+        let sut = TrackGraph(coords: [], elevationSmoothing: .segmentation(50))
 
         XCTAssertEqual([], sut.gradeSegments)
     }
 
     func testGraphWithTheSameGrade() {
-        let sut = TrackGraph(coords: [.leipzig, .leipzig.offset(north: 1000, elevation: 100)], gradeSegmentLength: 25)
+        let sut = TrackGraph(coords: [.leipzig, .leipzig.offset(north: 1000, elevation: 100)], elevationSmoothing: .segmentation(25))
 
         XCTAssertEqual([GradeSegment(start: 0, end: sut.distance, grade: 0.1)], sut.gradeSegments)
     }
@@ -354,7 +354,7 @@ class TrackGraphTests: XCTestCase {
             .leipzig,
             first,
             second
-        ], gradeSegmentLength: 25)
+        ], elevationSmoothing: .segmentation(25))
 
         let expected: [GradeSegment] = [
             .init(start: 0, end: 100, grade: 0.1),
@@ -367,7 +367,7 @@ class TrackGraphTests: XCTestCase {
         let sut = TrackGraph(coords: [
             .leipzig,
             .leipzig.offset(distance: 50, grade: 0.3)
-        ], gradeSegmentLength: 100)
+        ], elevationSmoothing: .segmentation(100))
 
         let expected: [GradeSegment] = [
             .init(start: 0, end: sut.distance, grade: 0.3)
@@ -385,7 +385,7 @@ class TrackGraphTests: XCTestCase {
             first,
             second,
             third
-        ], gradeSegmentLength: 50)
+        ], elevationSmoothing: .segmentation(50))
 
         let expected: [GradeSegment] = [
             .init(start: 0, end: 100, grade: 0.1),
@@ -407,7 +407,7 @@ class TrackGraphTests: XCTestCase {
             second,
             third,
             fourth
-        ].map { TrackPoint(coordinate: $0) }, gradeSegmentLength: 50)
+        ].map { TrackPoint(coordinate: $0) }, elevationSmoothing: .segmentation(50))
 
         let expected: [GradeSegment] = [
             .init(start: 0, end: 100, grade: 0.1),
@@ -424,7 +424,7 @@ class TrackGraphTests: XCTestCase {
         let sut = TrackGraph(coords: [
             start,
             end
-        ])
+        ], elevationSmoothing: .segmentation(50))
 
         XCTAssertNil(sut.elevation(at: -10))
         XCTAssertNil(sut.elevation(at: Double.greatestFiniteMagnitude))
@@ -444,7 +444,7 @@ class TrackGraphTests: XCTestCase {
             second,
             third
         ]
-        let sut = TrackGraph(coords: coords)
+        let sut = TrackGraph(coords: coords, elevationSmoothing: .segmentation(50))
 
         XCTAssertEqual(start.elevation, sut.elevation(at: 0))
         XCTAssertEqual(first.elevation, try XCTUnwrap(sut.elevation(at: start.distance(to: first))), accuracy: 0.001)
@@ -464,7 +464,7 @@ class TrackGraphTests: XCTestCase {
             second,
             third
         ]
-        let sut = TrackGraph(coords: coords)
+        let sut = TrackGraph(coords: coords, elevationSmoothing: .segmentation(50))
 
         for (lhs, rhs) in sut.heightMap.adjacentPairs() {
             let distanceDelta = rhs.distance - lhs.distance
