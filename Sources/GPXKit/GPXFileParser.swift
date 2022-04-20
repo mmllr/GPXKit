@@ -49,11 +49,11 @@ final public class GPXFileParser {
     /// Parses the GPX xml.
     /// - Returns: A `Result` of the `GPXTrack` in the success or an `GPXParserError` in the failure case.
     /// - Parameter gradeSegmentLength: The length in meters for the grade segments. Defaults to 50 meters.
-    public func parse(gradeSegmentLength: Double = 50.0) -> Result<GPXTrack, GPXParserError> {
+    public func parse(elevationSmoothing: ElevationSmoothing = .smoothing(50)) -> Result<GPXTrack, GPXParserError> {
         let parser = BasicXMLParser(xml: xml)
         switch parser.parse() {
         case let .success(root):
-            guard let track = parseRoot(node: root, gradeSegmentLength: gradeSegmentLength) else {
+            guard let track = parseRoot(node: root, elevationSmoothing: elevationSmoothing) else {
                 return .failure(.noTracksFound)
             }
             return .success(track)
@@ -67,7 +67,7 @@ final public class GPXFileParser {
         }
     }
 
-    private func parseRoot(node: XMLNode, gradeSegmentLength: Double) -> GPXTrack? {
+    private func parseRoot(node: XMLNode, elevationSmoothing: ElevationSmoothing) -> GPXTrack? {
         guard let trackNode = node.childFor(.track),
               let title = trackNode.childFor(.name)?.content else {
             return nil
@@ -79,7 +79,7 @@ final public class GPXFileParser {
                 description: trackNode.childFor(.description)?.content,
                 trackPoints: parseSegment(trackNode.childFor(.trackSegment)),
                 keywords: parseKeywords(node: node),
-                gradeSegmentLength: gradeSegmentLength
+                elevationSmoothing: elevationSmoothing
         )
     }
 
