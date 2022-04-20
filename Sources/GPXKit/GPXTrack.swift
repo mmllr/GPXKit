@@ -1,5 +1,11 @@
 import Foundation
 
+public enum ElevationSmoothing {
+    // length in meters
+    case segmentation(Double)
+    case smoothing(Int)
+}
+
 /// A value describing a track of geo locations. It has the recorded `TrackPoint`s, along with metadata of the track, such as recorded date, title, elevation gain, distance, height-map and bounds.
 public struct GPXTrack: Hashable {
     /// Optional date stamp of the gpx track
@@ -27,13 +33,13 @@ public struct GPXTrack: Hashable {
     ///   - trackPoints: Array of `TrackPoint`s describing the route.
     ///   - keywords: Array of `String`s with keywords. Default is an empty array (no keywords).
     ///   - gradeSegmentLength: The length in meters for the grade segments. Defaults to 50 meters.
-    public init(date: Date? = nil, waypoints: [Waypoint]? = nil, title: String, description: String? = nil, trackPoints: [TrackPoint], keywords: [String] = [], gradeSegmentLength: Double = 50.0) {
+    public init(date: Date? = nil, waypoints: [Waypoint]? = nil, title: String, description: String? = nil, trackPoints: [TrackPoint], keywords: [String] = [], elevationSmoothing: ElevationSmoothing = .smoothing(24)) {
         self.date = date
         self.waypoints = waypoints
         self.title = title
         self.description = description
         self.trackPoints = trackPoints
-        self.graph = TrackGraph(points: trackPoints, gradeSegmentLength: gradeSegmentLength)
+        self.graph = TrackGraph(points: trackPoints, elevationSmoothing: elevationSmoothing)
         self.bounds = trackPoints.bounds()
         self.keywords = keywords
     }
