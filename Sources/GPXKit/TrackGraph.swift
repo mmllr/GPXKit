@@ -133,7 +133,7 @@ private extension Array where Element == DistanceHeight {
                 joined.append(segment)
                 return
             }
-            if abs(last.grade - segment.grade) > 0.01 {
+            if (last.grade - segment.grade).magnitude > 0.003 {
                 joined.append(segment)
             } else {
                 let remaining = Swift.min(segmentLength, trackDistance - last.end)
