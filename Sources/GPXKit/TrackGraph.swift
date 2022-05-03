@@ -91,7 +91,7 @@ public extension TrackGraph {
         else {
             return []
         }
-        return findClimps(epsilon: epsilon, minimumGrade: minimumGrade, maxJoinDistance: maxJoinDistance)
+        return findClimbs(epsilon: epsilon, minimumGrade: minimumGrade, maxJoinDistance: maxJoinDistance)
     }
 }
 

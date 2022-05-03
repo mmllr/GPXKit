@@ -1,7 +1,7 @@
 import Foundation
 
 extension TrackGraph {
-    func findClimps(epsilon: Double, minimumGrade: Double, maxJoinDistance: Double) -> [Climb] {
+    func findClimbs(epsilon: Double, minimumGrade: Double, maxJoinDistance: Double) -> [Climb] {
         let simplified = heightMap.simplify(tolerance: epsilon)
         let climbs: [Climb] = zip(simplified, simplified.dropFirst()).compactMap { start, end in
             guard end.elevation > start.elevation else { return nil }
