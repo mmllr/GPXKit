@@ -34,7 +34,7 @@ extension GradeSegment: Hashable {
         if lhs.end != rhs.end {
             return false
         }
-        if (lhs.grade - rhs.grade).magnitude > 0.005 {
+        if (lhs.grade - rhs.grade).magnitude > 0.0025 {
             return false
         }
         return true
