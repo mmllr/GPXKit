@@ -33,7 +33,7 @@ public struct GPXTrack: Hashable {
     ///   - trackPoints: Array of `TrackPoint`s describing the route.
     ///   - keywords: Array of `String`s with keywords. Default is an empty array (no keywords).
     ///   - gradeSegmentLength: The length in meters for the grade segments. Defaults to 50 meters.
-    public init(date: Date? = nil, waypoints: [Waypoint]? = nil, title: String, description: String? = nil, trackPoints: [TrackPoint], keywords: [String] = [], elevationSmoothing: ElevationSmoothing = .smoothing(24)) {
+    public init(date: Date? = nil, waypoints: [Waypoint]? = nil, title: String, description: String? = nil, trackPoints: [TrackPoint], keywords: [String] = [], elevationSmoothing: ElevationSmoothing = .segmentation(50)) {
         self.date = date
         self.waypoints = waypoints
         self.title = title

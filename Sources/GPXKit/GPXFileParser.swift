@@ -49,7 +49,7 @@ final public class GPXFileParser {
     /// Parses the GPX xml.
     /// - Returns: A `Result` of the `GPXTrack` in the success or an `GPXParserError` in the failure case.
     /// - Parameter gradeSegmentLength: The length in meters for the grade segments. Defaults to 50 meters.
-    public func parse(elevationSmoothing: ElevationSmoothing = .smoothing(50)) -> Result<GPXTrack, GPXParserError> {
+    public func parse(elevationSmoothing: ElevationSmoothing = .segmentation(50)) -> Result<GPXTrack, GPXParserError> {
         let parser = BasicXMLParser(xml: xml)
         switch parser.parse() {
         case let .success(root):

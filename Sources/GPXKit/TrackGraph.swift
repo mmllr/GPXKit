@@ -17,7 +17,7 @@ public struct TrackGraph: Hashable {
     /// - Parameters:
     ///   - points: Array of `TrackPoint` values.
     ///   - gradeSegmentLength: The length of the grade segments in meters. Defaults to 25 meters. Adjacent segments with the same grade will be joined together.
-    public init(points: [TrackPoint], elevationSmoothing: ElevationSmoothing = .smoothing(24)) {
+    public init(points: [TrackPoint], elevationSmoothing: ElevationSmoothing = .segmentation(50)) {
         self.init(coords: points.map { $0.coordinate }, elevationSmoothing: elevationSmoothing)
     }
 
