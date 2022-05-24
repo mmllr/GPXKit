@@ -90,10 +90,50 @@ let testXMLData = """
                         <extensions>
                             <power>272</power>
                             <gpxtpx:TrackPointExtension>
-                                <gpxtpx:atemp>20</gpxtpx:atemp>
-                                <gpxtpx:hr>97</gpxtpx:hr>
-                                <gpxtpx:cad>40</gpxtpx:cad>
+                                <gpxtpx:atemp>20.5</gpxtpx:atemp>
+                                <gpxtpx:hr>87</gpxtpx:hr>
+                                <gpxtpx:cad>45</gpxtpx:cad>
                             </gpxtpx:TrackPointExtension>
+                        </extensions>
+                    </trkpt>
+                </trkseg>
+            </trk>
+        </gpx>
+        """
+
+let namespacedTestXMLData = """
+        <?xml version="1.0" encoding="UTF-8"?>
+        <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:ns3="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
+            <metadata>
+             <time>2020-03-18T12:39:47Z</time>
+            </metadata>
+            <trk>
+                <name>Haus- und Seenrunde Ausdauer</name>
+                <desc>Track description</desc>
+                <type>1</type>
+                <trkseg>
+                    <trkpt lat="51.2760600" lon="12.3769500">
+                        <ele>114.2</ele>
+                        <time>2020-03-18T12:39:47Z</time>
+                        <extensions>
+                            <power>166</power>
+                            <ns3:TrackPointExtension>
+                                <ns3:atemp>22</ns3:atemp>
+                                <ns3:hr>90</ns3:hr>
+                                <ns3:cad>99</ns3:cad>
+                            </ns3:TrackPointExtension>
+                        </extensions>
+                    </trkpt>
+                    <trkpt lat="51.2760420" lon="12.3769760">
+                        <ele>114.0</ele>
+                        <time>2020-03-18T12:39:48Z</time>
+                        <extensions>
+                            <power>230</power>
+                            <ns3:TrackPointExtension>
+                                <ns3:atemp>21</ns3:atemp>
+                                <ns3:hr>92</ns3:hr>
+                                <ns3:cad>101</ns3:cad>
+                            </ns3:TrackPointExtension>
                         </extensions>
                     </trkpt>
                 </trkseg>

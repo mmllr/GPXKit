@@ -29,6 +29,10 @@ internal enum GPXTags: String {
     case description = "desc"
     case keywords
     case comment = "cmt"
+    case trackPointExtension = "trackpointextension"
+    case temperature = "atemp"
+    case heartrate = "hr"
+    case cadence = "cad"
 }
 
 internal enum GPXAttributes: String {
@@ -107,7 +111,7 @@ final public class GPXFileParser {
         checkForInvalidElevationAtStartAndEnd(trackPoints: &trackPoints)
         return correctElevationGaps(trackPoints: trackPoints)
                 .map {
-                    .init(coordinate: .init(latitude: $0.latitude, longitude: $0.longitude, elevation: $0.coordinate.elevation == .greatestFiniteMagnitude ? 0 : $0.coordinate.elevation), date: $0.date, power: $0.power)
+                    .init(coordinate: .init(latitude: $0.latitude, longitude: $0.longitude, elevation: $0.coordinate.elevation == .greatestFiniteMagnitude ? 0 : $0.coordinate.elevation), date: $0.date, power: $0.power, cadence: $0.cadence, heartrate: $0.heartrate, temperature: $0.temperature)
                 }
     }
 
@@ -142,7 +146,7 @@ final public class GPXFileParser {
             $0.0
         }, grades).map { chunk, grade in
             return chunk.1.map {
-                TrackPoint(coordinate: .init(latitude: $0.latitude, longitude: $0.longitude, elevation: grade.start.elevation + grade.start.distance(to: $0.coordinate) * grade.grade), date: $0.date, power: $0.power)
+                TrackPoint(coordinate: .init(latitude: $0.latitude, longitude: $0.longitude, elevation: grade.start.elevation + grade.start.distance(to: $0.coordinate) * grade.grade), date: $0.date, power: $0.power, cadence: $0.cadence, heartrate: $0.heartrate, temperature: $0.temperature)
             }
         }
 
@@ -190,6 +194,9 @@ internal extension TrackPoint {
         )
         self.date = trackNode.childFor(.time)?.date
         self.power = trackNode.childFor(.extensions)?.childFor(.power)?.power
+        self.cadence = trackNode.childFor(.extensions)?.childFor(.trackPointExtension)?.childFor(.cadence).flatMap { UInt($0.content) }
+        self.heartrate = trackNode.childFor(.extensions)?.childFor(.trackPointExtension)?.childFor(.heartrate).flatMap { UInt($0.content) }
+        self.temperature = trackNode.childFor(.extensions)?.childFor(.trackPointExtension)?.childFor(.temperature)?.temperature
     }
 }
 
@@ -213,6 +220,12 @@ internal extension XMLNode {
     var power: Measurement<UnitPower>? {
         Double(content).flatMap {
             Measurement<UnitPower>(value: $0, unit: .watts)
+        }
+    }
+
+    var temperature: Measurement<UnitTemperature>? {
+        Double(content).flatMap {
+            Measurement<UnitTemperature>(value: $0, unit: .celsius)
         }
     }
 

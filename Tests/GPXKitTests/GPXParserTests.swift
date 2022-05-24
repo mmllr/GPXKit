@@ -47,7 +47,7 @@ class GPXParserTests: XCTestCase {
         XCTAssertEqual(.noTracksFound, parseError)
     }
 
-    func testParsingTrackTitlesAndDescrption() {
+    func testParsingTrackTitlesAndDescription() {
         parseXML(
         """
 		<?xml version="1.0" encoding="UTF-8"?>
@@ -82,22 +82,55 @@ class GPXParserTests: XCTestCase {
                                 trackPoints: expected), result!)
     }
 
-    func testParsingTrackSegmentsWithExtensions() {
+    func testParsingTrackSegmentsWithDefaultExtensions() {
         parseXML(testXMLData)
 
         let expected = [
             TrackPoint(coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 114.2),
                        date: expectedDate(for: "2020-03-18T12:39:47Z"),
-                       power: Measurement<UnitPower>(value: 42, unit: .watts)),
+                       power: Measurement<UnitPower>(value: 42, unit: .watts),
+                       cadence: 40,
+                       heartrate: 97,
+                       temperature: Measurement<UnitTemperature>(value: 21, unit: .celsius)
+                      ),
             TrackPoint(coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
                        date: expectedDate(for: "2020-03-18T12:39:48Z"),
-                       power: Measurement<UnitPower>(value: 272, unit: .watts))
+                       power: Measurement<UnitPower>(value: 272, unit: .watts),
+                       cadence: 45,
+                       heartrate: 87,
+                       temperature: Measurement<UnitTemperature>(value: 20.5, unit: .celsius)
+                      )
         ]
 
         assertTracksAreEqual(GPXTrack(date: expectedDate(for: "2020-03-18T12:39:47Z"),
                                 title: "Haus- und Seenrunde Ausdauer",
                 description: "Track description",
                                 trackPoints: expected), result!)
+    }
+
+    func testParsingTrackSegmentsWithNameSpacedExtensions() throws {
+        parseXML(namespacedTestXMLData)
+
+        let expected = [
+            TrackPoint(coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 114.2),
+                       date: expectedDate(for: "2020-03-18T12:39:47Z"),
+                       power: Measurement<UnitPower>(value: 166, unit: .watts),
+                       cadence: 99,
+                       heartrate: 90,
+                       temperature: Measurement<UnitTemperature>(value: 22, unit: .celsius)
+                      ),
+            TrackPoint(coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
+                       date: expectedDate(for: "2020-03-18T12:39:48Z"),
+                       power: Measurement<UnitPower>(value: 230, unit: .watts),
+                       cadence: 101,
+                       heartrate: 92,
+                       temperature: Measurement<UnitTemperature>(value: 21, unit: .celsius))
+        ]
+
+        assertTracksAreEqual(GPXTrack(date: expectedDate(for: "2020-03-18T12:39:47Z"),
+                                title: "Haus- und Seenrunde Ausdauer",
+                description: "Track description",
+                                trackPoints: expected), try XCTUnwrap(result))
     }
 
     func testParsingTrackSegmentsWithoutTimeHaveANilDate() {

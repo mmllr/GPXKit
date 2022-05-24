@@ -3,6 +3,10 @@ import Foundation
 import FoundationXML
 #endif
 
+extension String {
+    static let trackPointExtensionURL: Self = "http://www.garmin.com/xmlschemas/TrackPointExtension/v1"
+}
+
 public struct XMLNode: Equatable, Hashable {
     var name: String
     var attributes: [String: String] = [:]
@@ -21,9 +25,11 @@ public class BasicXMLParser: NSObject, XMLParserDelegate {
     private var result: XMLNode? {
         return resultStack.first?.children.first
     }
+    private var prefixes: Set<String> = []
 
     public init(xml: String) {
         parser = XMLParser(data: xml.data(using: .utf8) ?? Data())
+        parser.shouldReportNamespacePrefixes = true
     }
 
     public func parse() -> Result<XMLNode, BasicXMLParserError> {
@@ -42,7 +48,16 @@ public class BasicXMLParser: NSObject, XMLParserDelegate {
 
     // swiftlint:disable:next line_length
     public func parser(_: XMLParser, didStartElement elementName: String, namespaceURI _: String?, qualifiedName _: String?, attributes attributeDict: [String: String] = [:]) {
-        let newNode = XMLNode(name: elementName, attributes: attributeDict, content: "", children: [])
+
+        var name: String = elementName
+        for pref in prefixes {
+            if name.hasPrefix(pref) {
+                name.removeFirst(pref.count + 1)
+                break
+            }
+        }
+
+        let newNode = XMLNode(name: name, attributes: attributeDict, content: "", children: [])
         resultStack.append(newNode)
     }
 
@@ -59,5 +74,14 @@ public class BasicXMLParser: NSObject, XMLParserDelegate {
     public func parser(_ parser: XMLParser,
                          parseErrorOccurred parseError: Error) {
         print(parseError.localizedDescription)
+    }
+
+    public func parser(_ parser: XMLParser,
+    didStartMappingPrefix prefix: String,
+                         toURI namespaceURI: String) {
+        guard !prefix.isEmpty else { return }
+        if namespaceURI == .trackPointExtensionURL {
+            prefixes.insert(prefix)
+        }
     }
 }
