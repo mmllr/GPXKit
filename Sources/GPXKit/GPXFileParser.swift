@@ -20,6 +20,8 @@ internal enum GPXTags: String {
     case waypoint = "wpt"
     case time
     case track = "trk"
+    case route = "rte"
+    case routePoint = "rtept"
     case name
     case trackPoint = "trkpt"
     case trackSegment = "trkseg"
@@ -72,16 +74,17 @@ final public class GPXFileParser {
     }
 
     private func parseRoot(node: XMLNode, elevationSmoothing: ElevationSmoothing) -> GPXTrack? {
-        guard let trackNode = node.childFor(.track),
+        guard let trackNode = node.childFor(.track) ?? node.childFor(.route),
               let title = trackNode.childFor(.name)?.content else {
             return nil
         }
+        let isRoute = trackNode.name == GPXTags.route.rawValue
         return GPXTrack(
                 date: node.childFor(.metadata)?.childFor(.time)?.date,
                 waypoints: parseWaypoints(node.childrenOfType(.waypoint)),
                 title: title,
                 description: trackNode.childFor(.description)?.content,
-                trackPoints: parseSegment(trackNode.childFor(.trackSegment)),
+                trackPoints: isRoute ? parseRoute(trackNode) : parseSegment(trackNode.childFor(.trackSegment)),
                 keywords: parseKeywords(node: node),
                 elevationSmoothing: elevationSmoothing
         )
@@ -108,6 +111,18 @@ final public class GPXFileParser {
             return []
         }
         var trackPoints = node.childrenOfType(.trackPoint).compactMap(TrackPoint.init)
+        checkForInvalidElevationAtStartAndEnd(trackPoints: &trackPoints)
+        return correctElevationGaps(trackPoints: trackPoints)
+                .map {
+                    .init(coordinate: .init(latitude: $0.latitude, longitude: $0.longitude, elevation: $0.coordinate.elevation == .greatestFiniteMagnitude ? 0 : $0.coordinate.elevation), date: $0.date, power: $0.power, cadence: $0.cadence, heartrate: $0.heartrate, temperature: $0.temperature)
+                }
+    }
+
+    private func parseRoute(_ routeNode: XMLNode?) -> [TrackPoint] {
+        guard let node = routeNode else {
+            return []
+        }
+        var trackPoints = node.childrenOfType(.routePoint).compactMap(TrackPoint.init)
         checkForInvalidElevationAtStartAndEnd(trackPoints: &trackPoints)
         return correctElevationGaps(trackPoints: trackPoints)
                 .map {
