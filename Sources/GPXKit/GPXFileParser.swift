@@ -74,10 +74,10 @@ final public class GPXFileParser {
     }
 
     private func parseRoot(node: XMLNode, elevationSmoothing: ElevationSmoothing) -> GPXTrack? {
-        guard let trackNode = node.childFor(.track) ?? node.childFor(.route),
-              let title = trackNode.childFor(.name)?.content else {
+        guard let trackNode = node.childFor(.track) ?? node.childFor(.route) else {
             return nil
         }
+        let title = trackNode.childFor(.name)?.content ?? ""
         let isRoute = trackNode.name == GPXTags.route.rawValue
         return GPXTrack(
                 date: node.childFor(.metadata)?.childFor(.time)?.date,
