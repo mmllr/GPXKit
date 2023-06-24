@@ -222,6 +222,14 @@ class GPXParserTests: XCTestCase {
         ), XCTUnwrap(result))
     }
 
+    func testTrackPointsDateWithFraction() throws {
+        parseXML(sampleGPX)
+
+        let date = try XCTUnwrap(result?.trackPoints.first?.date)
+        
+        XCTAssertEqual(1351121380, date.timeIntervalSince1970)
+    }
+
     func testTrackLength() throws {
         parseXML(sampleGPX)
 
