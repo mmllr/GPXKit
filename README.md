@@ -99,7 +99,7 @@ Run the following commands from the projects root to generate the documentation:
 [sudo] gem install jazzy
 jazzy
 ```
-Browse the documention under the doc folder.
+Browse the documentation under the doc folder.
 
 ## Contributing
 
