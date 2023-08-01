@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>GradeSegment Structure Reference</title>
+    <title>Waypoint Structure Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -13,8 +13,8 @@
     <script src="../js/jazzy.search.js" defer></script>
   </head>
   <body>
-    <a name="//apple_ref/swift/Struct/GradeSegment" class="dashAnchor"></a>
-    <a title="GradeSegment Structure Reference"></a>
+    <a name="//apple_ref/swift/Struct/Waypoint" class="dashAnchor"></a>
+    <a title="Waypoint Structure Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html"> Docs</a> (100% documented)</p>
@@ -29,7 +29,7 @@
       <p id="breadcrumbs">
         <a href="../index.html"> Reference</a>
         <img id="carat" src="../img/carat.png" alt=""/>
-        GradeSegment Structure Reference
+        Waypoint Structure Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -139,16 +139,16 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>GradeSegment</h1>
+            <h1>Waypoint</h1>
               <div class="declaration">
                 <div class="language">
                   
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">GradeSegment</span></code></pre>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">GradeSegment</span><span class="p">:</span> <span class="kt">Hashable</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Waypoint</span> <span class="p">:</span> <span class="kt">Hashable</span></code></pre>
 
                 </div>
               </div>
-            <p>A value describing a grade of a track. A <code><a href="../Structs/TrackGraph.html">TrackGraph</a></code> has an array of <code>GradeSegment</code> from start to its distance each with a given lenght and the grade at this distance.</p>
+            <p>Value type describing a single Waypoint defined  within a <code><a href="../Structs/GPXTrack.html">GPXTrack</a></code>. A <code>Waypoint</code> has a location consisting of latitude, longitude and some metadata,
+e.g. name and description.</p>
 
           </section>
           <section class="section task-group-section">
@@ -157,9 +157,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:6GPXKit12GradeSegmentV5startSdvp"></a>
-                    <a name="//apple_ref/swift/Property/start" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit12GradeSegmentV5startSdvp">start</a>
+                    <a name="/s:6GPXKit8WaypointV10coordinateAA10CoordinateVvp"></a>
+                    <a name="//apple_ref/swift/Property/coordinate" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit8WaypointV10coordinateAA10CoordinateVvp">coordinate</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -167,14 +167,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The start in meters of the segment.</p>
+                        <p>The coordinate (latitude, longitude and elevation in meters)</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">start</span><span class="p">:</span> <span class="kt">Double</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">coordinate</span><span class="p">:</span> <span class="kt"><a href="../Structs/Coordinate.html">Coordinate</a></span></code></pre>
 
                         </div>
                       </div>
@@ -184,9 +184,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:6GPXKit12GradeSegmentV3endSdvp"></a>
-                    <a name="//apple_ref/swift/Property/end" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit12GradeSegmentV3endSdvp">end</a>
+                    <a name="/s:6GPXKit8WaypointV4date10Foundation4DateVSgvp"></a>
+                    <a name="//apple_ref/swift/Property/date" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit8WaypointV4date10Foundation4DateVSgvp">date</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -194,14 +194,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The end in meters of the grade segment.</p>
+                        <p>Optional date for a given point.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">end</span><span class="p">:</span> <span class="kt">Double</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">date</span><span class="p">:</span> <span class="kt">Date</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -211,9 +211,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:6GPXKit12GradeSegmentV5gradeSdvp"></a>
-                    <a name="//apple_ref/swift/Property/grade" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit12GradeSegmentV5gradeSdvp">grade</a>
+                    <a name="/s:6GPXKit8WaypointV4nameSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/name" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit8WaypointV4nameSSSgvp">name</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -221,14 +221,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The normalized grade in percent in the range -1&hellip;1.</p>
+                        <p>Optional name of the waypoint</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">grade</span><span class="p">:</span> <span class="kt">Double</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -238,9 +238,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:6GPXKit12GradeSegmentV5start3end5gradeACSd_S2dtcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(start:end:grade:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit12GradeSegmentV5start3end5gradeACSd_S2dtcfc">init(start:<wbr>end:<wbr>grade:<wbr>)</a>
+                    <a name="/s:6GPXKit8WaypointV7commentSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/comment" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit8WaypointV7commentSSSgvp">comment</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -248,13 +248,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        
+                        <p>Optional comment for the waypoint</p>
+
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">start</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span> <span class="nv">end</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span> <span class="nv">grade</span><span class="p">:</span> <span class="kt">Double</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">comment</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -264,9 +265,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:SH4hash4intoys6HasherVz_tF"></a>
-                    <a name="//apple_ref/swift/Method/hash(into:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:SH4hash4intoys6HasherVz_tF">hash(into:<wbr>)</a>
+                    <a name="/s:6GPXKit8WaypointV11descriptionSSSgvp"></a>
+                    <a name="//apple_ref/swift/Property/description" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit8WaypointV11descriptionSSSgvp">description</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -274,13 +275,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        
+                        <p>Optional description of the waypoint</p>
+
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">hash</span><span class="p">(</span><span class="n">into</span> <span class="nv">hasher</span><span class="p">:</span> <span class="k">inout</span> <span class="kt">Hasher</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">description</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -290,9 +292,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:SQ2eeoiySbx_xtFZ"></a>
-                    <a name="//apple_ref/swift/Method/==(_:_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:SQ2eeoiySbx_xtFZ">==(_:<wbr>_:<wbr>)</a>
+                    <a name="/s:6GPXKit8WaypointV10coordinate4date4name7comment11descriptionAcA10CoordinateV_10Foundation4DateVSgSSSgA2Otcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(coordinate:date:name:comment:description:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit8WaypointV10coordinate4date4name7comment11descriptionAcA10CoordinateV_10Foundation4DateVSgSSSgA2Otcfc">init(coordinate:<wbr>date:<wbr>name:<wbr>comment:<wbr>description:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -300,15 +302,84 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        
+                        <p>Initializer
+You don&rsquo;t need to construct this value by yourself, as it is done by GXPKits track parsing logic.</p>
+
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="o">==</span> <span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="kt">GradeSegment</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="kt">GradeSegment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">coordinate</span><span class="p">:</span> <span class="kt"><a href="../Structs/Coordinate.html">Coordinate</a></span><span class="p">,</span> <span class="nv">date</span><span class="p">:</span> <span class="kt">Date</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">comment</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">description</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>coordinate</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Location of the waypoint, required</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>date</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional date</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>name</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Name of the waypoint</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>comment</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A short comment</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>description</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A longer description</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>

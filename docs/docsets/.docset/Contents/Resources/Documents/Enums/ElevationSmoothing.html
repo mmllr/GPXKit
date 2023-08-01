@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>GradeSegment Structure Reference</title>
+    <title>ElevationSmoothing Enumeration Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -13,8 +13,8 @@
     <script src="../js/jazzy.search.js" defer></script>
   </head>
   <body>
-    <a name="//apple_ref/swift/Struct/GradeSegment" class="dashAnchor"></a>
-    <a title="GradeSegment Structure Reference"></a>
+    <a name="//apple_ref/swift/Enum/ElevationSmoothing" class="dashAnchor"></a>
+    <a title="ElevationSmoothing Enumeration Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html"> Docs</a> (100% documented)</p>
@@ -29,7 +29,7 @@
       <p id="breadcrumbs">
         <a href="../index.html"> Reference</a>
         <img id="carat" src="../img/carat.png" alt=""/>
-        GradeSegment Structure Reference
+        ElevationSmoothing Enumeration Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -139,17 +139,15 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>GradeSegment</h1>
+            <h1>ElevationSmoothing</h1>
               <div class="declaration">
                 <div class="language">
                   
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">GradeSegment</span></code></pre>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">GradeSegment</span><span class="p">:</span> <span class="kt">Hashable</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">ElevationSmoothing</span></code></pre>
 
                 </div>
               </div>
-            <p>A value describing a grade of a track. A <code><a href="../Structs/TrackGraph.html">TrackGraph</a></code> has an array of <code>GradeSegment</code> from start to its distance each with a given lenght and the grade at this distance.</p>
-
+            
           </section>
           <section class="section task-group-section">
             <div class="task-group">
@@ -157,90 +155,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:6GPXKit12GradeSegmentV5startSdvp"></a>
-                    <a name="//apple_ref/swift/Property/start" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit12GradeSegmentV5startSdvp">start</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The start in meters of the segment.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">start</span><span class="p">:</span> <span class="kt">Double</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:6GPXKit12GradeSegmentV3endSdvp"></a>
-                    <a name="//apple_ref/swift/Property/end" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit12GradeSegmentV3endSdvp">end</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The end in meters of the grade segment.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">end</span><span class="p">:</span> <span class="kt">Double</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:6GPXKit12GradeSegmentV5gradeSdvp"></a>
-                    <a name="//apple_ref/swift/Property/grade" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit12GradeSegmentV5gradeSdvp">grade</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The normalized grade in percent in the range -1&hellip;1.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">grade</span><span class="p">:</span> <span class="kt">Double</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:6GPXKit12GradeSegmentV5start3end5gradeACSd_S2dtcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(start:end:grade:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit12GradeSegmentV5start3end5gradeACSd_S2dtcfc">init(start:<wbr>end:<wbr>grade:<wbr>)</a>
+                    <a name="/s:6GPXKit18ElevationSmoothingO12segmentationyACSdcACmF"></a>
+                    <a name="//apple_ref/swift/Element/segmentation(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit18ElevationSmoothingO12segmentationyACSdcACmF">segmentation(_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -254,7 +171,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">start</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span> <span class="nv">end</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span> <span class="nv">grade</span><span class="p">:</span> <span class="kt">Double</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">segmentation</span><span class="p">(</span><span class="kt">Double</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -264,9 +181,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:SH4hash4intoys6HasherVz_tF"></a>
-                    <a name="//apple_ref/swift/Method/hash(into:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:SH4hash4intoys6HasherVz_tF">hash(into:<wbr>)</a>
+                    <a name="/s:6GPXKit18ElevationSmoothingO9smoothingyACSicACmF"></a>
+                    <a name="//apple_ref/swift/Element/smoothing(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit18ElevationSmoothingO9smoothingyACSicACmF">smoothing(_:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -280,33 +197,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">hash</span><span class="p">(</span><span class="n">into</span> <span class="nv">hasher</span><span class="p">:</span> <span class="k">inout</span> <span class="kt">Hasher</span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:SQ2eeoiySbx_xtFZ"></a>
-                    <a name="//apple_ref/swift/Method/==(_:_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:SQ2eeoiySbx_xtFZ">==(_:<wbr>_:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="o">==</span> <span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="kt">GradeSegment</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="kt">GradeSegment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">smoothing</span><span class="p">(</span><span class="kt">Int</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
