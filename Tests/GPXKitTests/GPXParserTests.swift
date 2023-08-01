@@ -33,7 +33,7 @@ class GPXParserTests: XCTestCase {
         }
     }
 
-    func testParsingGPXFilesWithoutATrack() {
+    func testParsingGPXFilesWithoutATrack() throws {
         parseXML("""
         <?xml version="1.0" encoding="UTF-8"?>
         <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
@@ -43,8 +43,15 @@ class GPXParserTests: XCTestCase {
         </gpx>
         """)
 
-        XCTAssertNil(result)
-        XCTAssertEqual(.noTracksFound, parseError)
+        let sut = try XCTUnwrap(result)
+        XCTAssertEqual("", sut.title)
+        XCTAssertEqual(nil, sut.description)
+        XCTAssertEqual(expectedDate(for: "2020-03-17T11:27:02Z"), sut.date)
+        XCTAssertEqual([], sut.trackPoints)
+        XCTAssertEqual([], sut.graph.heightMap)
+        XCTAssertEqual([], sut.graph.segments)
+        XCTAssertEqual([], sut.graph.climbs())
+
     }
 
     func testParsingTrackTitlesAndDescription() {
@@ -479,5 +486,80 @@ class GPXParserTests: XCTestCase {
             ),
             XCTUnwrap(result)
         )
+    }
+
+    func testParsingWaypointWithEmptyTrack() throws {
+        let input = """
+        <?xml version="1.0" encoding="UTF-8"?>
+        <gpx xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.topografix.com/GPX/1/1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd http://www.topografix.com/GPX/gpx_style/0/2 http://www.topografix.com/GPX/gpx_style/0/2/gpx_style.xsd" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:gpx_style="http://www.topografix.com/GPX/gpx_style/0/2" version="1.1" creator="gpxgenerator.com">
+        <metadata>
+            <name>gpxgenerator_path</name>
+            <author>
+                <name>gpx.studio</name>
+                <link href="https://gpx.studio"></link>
+            </author>
+        </metadata>
+        <trk></trk>
+        <wpt lat="53.060632820504345" lon="5.6932974383264616">
+            <ele>8.4</ele>
+            <sym> </sym>
+        </wpt>
+
+        <wpt lat="53.06485377614443" lon="5.702670398232679">
+            <ele>8.3</ele>
+            <sym> </sym>
+        </wpt>
+        </gpx>
+        """
+
+        let sut = GPXFileParser(xmlString: input)
+
+        let track = try sut.parse().get()
+        XCTAssertEqual([], track.trackPoints)
+        XCTAssertEqual([], track.graph.heightMap)
+        XCTAssertEqual([], track.graph.segments)
+        XCTAssertEqual(.zero, track.graph.distance)
+        XCTAssertEqual(.zero, track.graph.elevationGain)
+        XCTAssertEqual([
+            Waypoint(coordinate: .init(latitude: 53.060632820504345, longitude: 5.6932974383264616, elevation: 8.4)),
+            Waypoint(coordinate: .init(latitude: 53.06485377614443, longitude: 5.702670398232679, elevation: 8.3)),
+        ], track.waypoints)
+    }
+
+    func testParsingWaypointWithoutTrack() throws {
+        let input = """
+        <?xml version="1.0" encoding="UTF-8"?>
+        <gpx xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.topografix.com/GPX/1/1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd http://www.topografix.com/GPX/gpx_style/0/2 http://www.topografix.com/GPX/gpx_style/0/2/gpx_style.xsd" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:gpx_style="http://www.topografix.com/GPX/gpx_style/0/2" version="1.1" creator="gpxgenerator.com">
+        <metadata>
+            <name>gpxgenerator_path</name>
+            <author>
+                <name>gpx.studio</name>
+                <link href="https://gpx.studio"></link>
+            </author>
+        </metadata>
+        <wpt lat="53.060632820504345" lon="5.6932974383264616">
+            <ele>8.4</ele>
+            <sym> </sym>
+        </wpt>
+
+        <wpt lat="53.06485377614443" lon="5.702670398232679">
+            <ele>8.3</ele>
+            <sym> </sym>
+        </wpt>
+        </gpx>
+        """
+
+        let sut = GPXFileParser(xmlString: input)
+
+        let track = try sut.parse().get()
+        XCTAssertEqual([], track.trackPoints)
+        XCTAssertEqual([], track.graph.heightMap)
+        XCTAssertEqual([], track.graph.segments)
+        XCTAssertEqual(.zero, track.graph.distance)
+        XCTAssertEqual(.zero, track.graph.elevationGain)
+        XCTAssertEqual([
+            Waypoint(coordinate: .init(latitude: 53.060632820504345, longitude: 5.6932974383264616, elevation: 8.4)),
+            Waypoint(coordinate: .init(latitude: 53.06485377614443, longitude: 5.702670398232679, elevation: 8.3)),
+        ], track.waypoints)
     }
 }
