@@ -92,7 +92,7 @@ public final class GPXFileParser {
             waypoints: parseWaypoints(node.childrenOfType(.waypoint)),
             title: title,
             description: trackNode.childFor(.description)?.content,
-            trackPoints: isRoute ? parseRoute(trackNode) : parseSegment(trackNode.childFor(.trackSegment)),
+            trackPoints: isRoute ? parseRoute(trackNode) : parseSegment(trackNode.childrenOfType(.trackSegment)),
             keywords: parseKeywords(node: node),
             elevationSmoothing: elevationSmoothing
         )
@@ -114,11 +114,10 @@ public final class GPXFileParser {
         return node.childFor(.time)?.date
     }
 
-    private func parseSegment(_ segmentNode: XMLNode?) -> [TrackPoint] {
-        guard let node = segmentNode else {
-            return []
-        }
-        var trackPoints = node.childrenOfType(.trackPoint).compactMap(TrackPoint.init)
+    private func parseSegment(_ segmentNodes: [XMLNode]) -> [TrackPoint] {
+        guard !segmentNodes.isEmpty else { return [] }
+        
+        var trackPoints = segmentNodes.map{$0.childrenOfType(.trackPoint).compactMap(TrackPoint.init)}.flatMap { $0 }
         checkForInvalidElevationAtStartAndEnd(trackPoints: &trackPoints)
         return correctElevationGaps(trackPoints: trackPoints)
             .map {
