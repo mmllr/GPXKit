@@ -1,7 +1,7 @@
 import XCTest
 import GPXKit
 
-class TrackGraphTests: XCTestCase {
+final class TrackGraphTests: XCTestCase {
     var sut: TrackGraph!
     let coordinates: [Coordinate] = [
         Coordinate(latitude: 51.2763320, longitude: 12.3767670, elevation: 82.2),
