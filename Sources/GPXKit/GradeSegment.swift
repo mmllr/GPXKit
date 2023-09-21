@@ -5,7 +5,7 @@
 import Foundation
 
 /// A value describing a grade of a track. A `TrackGraph` has an array of `GradeSegment` from start to its distance each with a given lenght and the grade at this distance.
-public struct GradeSegment {
+public struct GradeSegment: Sendable {
     /// The start in meters of the segment.
     public var start: Double
     /// The end in meters of the grade segment.

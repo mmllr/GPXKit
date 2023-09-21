@@ -1,7 +1,7 @@
 import Foundation
 
 /// A 2D-bounding box describing the area enclosing a track.
-public struct GeoBounds: Hashable, Codable {
+public struct GeoBounds: Hashable, Codable, Sendable {
     /// The minimum latitude value in degrees
     public var minLatitude: Double
     /// The minimum longitude value in degrees

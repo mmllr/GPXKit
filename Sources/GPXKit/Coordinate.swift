@@ -1,7 +1,7 @@
 import Foundation
 
 /// Basic type for storing a geo location.
-public struct Coordinate: GeoCoordinate, Hashable {
+public struct Coordinate: GeoCoordinate, Hashable, Sendable {
     /// Latitude value in degrees
     public var latitude: Double
     /// Longitude value in degrees

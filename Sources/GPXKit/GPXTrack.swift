@@ -1,13 +1,13 @@
 import Foundation
 
-public enum ElevationSmoothing {
+public enum ElevationSmoothing: Sendable {
     // length in meters
     case segmentation(Double)
     case smoothing(Int)
 }
 
 /// A value describing a track of geo locations. It has the recorded `TrackPoint`s, along with metadata of the track, such as recorded date, title, elevation gain, distance, height-map and bounds.
-public struct GPXTrack: Hashable {
+public struct GPXTrack: Hashable, Sendable {
     /// Optional date stamp of the gpx track
     public var date: Date?
     /// Waypoint defined for the gpx

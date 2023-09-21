@@ -9,7 +9,7 @@ extension FloatingPoint {
 }
 
 /// Error indicating that the distance could not be computed within the maximal number of iterations.
-public enum ConvergenceError: Error {
+public enum ConvergenceError: Error, Sendable {
     case notConverged(maxIter: UInt, tol: Double, eps: Double)
 }
 
