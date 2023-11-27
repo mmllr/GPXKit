@@ -62,13 +62,7 @@ public extension TrackGraph {
             TrackSegment(coordinate: $0, distanceInMeters: $1)
         }
         distance = distances.reduce(0, +)
-        elevationGain = zippedCoords.reduce(0.0) { elevation, pair in
-            let delta = pair.1.elevation - pair.0.elevation
-            if delta > 0 {
-                return elevation + delta
-            }
-            return elevation
-        }
+        elevationGain = coords.calculateElevationGain()
         let heightmap = segments.reduce(into: [DistanceHeight]()) { acc, segment in
             let distanceSoFar = (acc.last?.distance ?? 0) + segment.distanceInMeters
             acc.append(DistanceHeight(distance: distanceSoFar, elevation: segment.coordinate.elevation))
@@ -92,6 +86,36 @@ public extension TrackGraph {
             return []
         }
         return findClimbs(epsilon: epsilon, minimumGrade: minimumGrade, maxJoinDistance: maxJoinDistance)
+    }
+}
+
+private extension Collection<Coordinate> {
+    /// Calculates the elevation gain by applying a threshold to reduce vertical noise.
+    ///
+    /// See https://www.gpsvisualizer.com/tutorials/elevation_gain.html for more details
+    /// - Parameters:
+    ///   - coordinates: An array of `Coordinate` values for which the elevation gain should be calculated
+    ///   - threshold: The elevation threshold in meters to be applied.
+    /// - Returns: The elevation gain
+    func calculateElevationGain(threshold: Double = 5) -> Double {
+        guard self.count > 1, let first = self.first else { return 0 }
+
+        var reducedCoordinates: [Coordinate] = [first]
+        var lastCoord = first
+
+        for coordinate in self.dropFirst() where abs(coordinate.elevation - lastCoord.elevation) > threshold {
+            reducedCoordinates.append(coordinate)
+            lastCoord = coordinate
+        }
+
+        let zippedCoords = zip(reducedCoordinates, reducedCoordinates.dropFirst())
+        return zippedCoords.reduce(0.0) { elevation, pair in
+            let delta = pair.1.elevation - pair.0.elevation
+            if delta > 0 {
+                return elevation + delta
+            }
+            return elevation
+        }
     }
 }
 

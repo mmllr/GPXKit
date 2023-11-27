@@ -244,7 +244,7 @@ class GPXParserTests: XCTestCase {
         let elevation = try XCTUnwrap(result?.graph.elevationGain)
 
         XCTAssertEqual(3100.5625, distance, accuracy: 10)
-        XCTAssertEqual(158.4000015258789, elevation, accuracy: 0.001)
+        XCTAssertEqual(115.19, elevation, accuracy: 0.1)
     }
 
     func testTracksWithoutElevationInTheGPXHaveAnElevationOfZero() throws {
