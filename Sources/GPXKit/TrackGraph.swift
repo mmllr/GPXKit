@@ -2,13 +2,13 @@ import Foundation
 
 /// A value describing a graph of a track. Contains metadata such as a `GPXTrack`s distance, elevation and a height-map.
 public struct TrackGraph: Hashable, Sendable {
-    /// Array of `TrackSegment`s. The segments describe a tracks position along with its relative distance to its predecessor.
+    /// Array of ``TrackSegment`` values. The segments describe a tracks position along with its relative distance to its predecessor.
     public var segments: [TrackSegment]
     /// The overall distance of a track in meters.
     public var distance: Double
     /// The overall elevation gain of a track in meters.
     public var elevationGain: Double
-    /// A heightmap, which is an array of `DistanceHeight` values. Each value in the heightMap has the total distance in meters up to that point (imagine it as the values along the x-axis in a 2D-coordinate graph) paired with the elevation in meters above sea level at that point (the y-value in the aforementioned 2D-graph).
+    /// A heightmap, which is an array of ``DistanceHeight`` values. Each value in the heightMap has the total distance in meters up to that point (imagine it as the values along the x-axis in a 2D-coordinate graph) paired with the elevation in meters above sea level at that point (the y-value in the aforementioned 2D-graph).
     public var heightMap: [DistanceHeight]
     /// Array of `GradeSegment`s. The segments describe the grade over the entire track with specified interval length in meters in initializer.
     public var gradeSegments: [GradeSegment] = []
@@ -49,9 +49,9 @@ public extension TrackGraph {
 }
 
 public extension TrackGraph {
-    /// Convenience initialize for creating a `TrackGraph`  from `Coordinate`s.
-    /// - Parameter coords: Array of `Coordinate` values.
-    /// - Parameter gradeSegmentLength: The Length of the grade segments in meters. Defaults to 25.
+    /// Convenience initialize for creating a ``TrackGraph``  from ``Coordinate``s.
+    /// - Parameter coords: Array of ``Coordinate`` values.
+    /// - Parameter elevationSmoothing: The ``ElevationSmoothing`` for calculating the elevation grades..
     init(coords: [Coordinate], elevationSmoothing: ElevationSmoothing) {
         let zippedCoords = zip(coords, coords.dropFirst())
         let distances: [Double] = [0.0] + zippedCoords.map {
@@ -73,12 +73,12 @@ public extension TrackGraph {
 }
 
 public extension TrackGraph {
-    /// Calculates the `TrackGraph`s climbs.
+    /// Calculates the ``TrackGraph``s climbs.
     /// - Parameters:
     ///   - epsilon: The simplification factor in meters for smoothing out elevation jumps. Defaults to 1.
     ///   - minimumGrade: The minimum allowed grade in percent in the Range {0,1}. Defaults to 0.03 (3%).
-    ///   - maxJoinDistance:The maximum allowed distance between climb segments in meters. If Climb segments are closer they will get joined to one climb. Defaults to 0.
-    /// - Returns: An array of `Climb` values. Returns an empty array if no climbs where found.
+    ///   - maxJoinDistance:The maximum allowed distance between climb segments in meters. If ``Climb`` segments are closer they will get joined to one climb. Defaults to 0.
+    /// - Returns: An array of ``Climb`` values. Returns an empty array if no climbs where found.
     func climbs(epsilon: Double = 1, minimumGrade: Double = 0.03, maxJoinDistance: Double = 0) -> [Climb] {
         guard
             heightMap.count > 1
@@ -94,7 +94,7 @@ private extension Collection<Coordinate> {
     ///
     /// See https://www.gpsvisualizer.com/tutorials/elevation_gain.html for more details
     /// - Parameters:
-    ///   - coordinates: An array of `Coordinate` values for which the elevation gain should be calculated
+    ///   - coordinates: An array of ``Coordinate`` values for which the elevation gain should be calculated
     ///   - threshold: The elevation threshold in meters to be applied.
     /// - Returns: The elevation gain
     func calculateElevationGain(threshold: Double = 5) -> Double {

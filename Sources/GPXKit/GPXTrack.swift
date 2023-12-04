@@ -1,12 +1,12 @@
 import Foundation
 
-public enum ElevationSmoothing: Sendable {
+public enum ElevationSmoothing: Sendable, Hashable {
     // length in meters
     case segmentation(Double)
     case smoothing(Int)
 }
 
-/// A value describing a track of geo locations. It has the recorded `TrackPoint`s, along with metadata of the track, such as recorded date, title, elevation gain, distance, height-map and bounds.
+/// A value describing a track of geo locations. It has the recorded ``TrackPoint``s, along with metadata of the track, such as recorded date, title, elevation gain, distance, height-map and bounds.
 public struct GPXTrack: Hashable, Sendable {
     /// Optional date stamp of the gpx track
     public var date: Date?
@@ -28,11 +28,11 @@ public struct GPXTrack: Hashable, Sendable {
     /// Initializes a GPXTrack. You don't need to construct this value by yourself, as it is done by GXPKits track parsing logic.
     /// - Parameters:
     ///   - date: The date stamp of the track. Defaults to nil.
-    ///   - waypoints: Array of `Waypoints`. Defaults to nil.
+    ///   - waypoints: Array of ``Waypoint`` values. Defaults to nil.
     ///   - title: String describing the track.
-    ///   - trackPoints: Array of `TrackPoint`s describing the route.
+    ///   - trackPoints: Array of ``TrackPoint``s describing the route.
     ///   - keywords: Array of `String`s with keywords. Default is an empty array (no keywords).
-    ///   - gradeSegmentLength: The length in meters for the grade segments. Defaults to 50 meters.
+    ///   - elevationSmoothing: The ``ElevationSmoothing`` in meters for the grade segments. Defaults to ``ElevationSmoothing/segmentation(_:)`` with 50 meters.
     public init(date: Date? = nil, waypoints: [Waypoint]? = nil, title: String, description: String? = nil, trackPoints: [TrackPoint], keywords: [String] = [], elevationSmoothing: ElevationSmoothing = .segmentation(50)) {
         self.date = date
         self.waypoints = waypoints

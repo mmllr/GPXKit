@@ -10,10 +10,10 @@ public final class GPXExporter {
 
     /// Initializes a GPXExporter
     /// - Parameters:
-    ///   - track: The `GPXTrack` to export.
+    ///   - track: The ``GPXTrack`` to export.
     ///   - shouldExportDate: Flag indicating whether it should export the timestamps in the track. Set it to false if you want to omit the values. This would decrease the exported xml's file size and protects privacy. Defaults to true.
     ///
-    /// If the track cannot be exported, the resulting `xmlString` property of the exporter is an empty GPX track xml.
+    /// If the track cannot be exported, the resulting ``GPXExporter/xmlString`` property of the exporter is an empty GPX track xml.
     public init(track: GPXTrack, shouldExportDate: Bool = true) {
         self.track = track
         self.exportDate = shouldExportDate

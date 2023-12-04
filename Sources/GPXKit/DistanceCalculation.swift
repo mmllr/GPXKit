@@ -34,7 +34,7 @@ extension GeoCoordinate {
     /// - Returns: distance between `x` and `y` in meters.
     ///
     /// - Throws:
-    ///   - `ConvergenceError.notConverged` if the distance computation does not converge within `maxIter` iterations.
+    ///   - ``ConvergenceError/notConverged(maxIter:tol:eps:)`` if the distance computation does not converge within `maxIter` iterations.
     ///
     /// The ellipsoid parameters default to the WGS-84 parameters.
     /// [Details](https://www.movable-type.co.uk/scripts/latlong-vincenty.html).
@@ -131,7 +131,7 @@ extension GeoCoordinate {
     }
 
     /// Calculates the distance in meters to a coordinate using the **haversine** formula.
-    /// - Parameter to: The coordinate to which the distance should be calculated.
+    /// - Parameter to: The ``GeoCoordinate`` to which the distance should be calculated.
     /// - Returns: Distance in meters
     ///
     /// [Details](https://www.movable-type.co.uk/scripts/latlong.html)

@@ -2,8 +2,8 @@ import Foundation
 
 /// Protocol for describing geo coordinates
 ///
-/// Types that conform to the `GeoCoordinate` protocol can be used with GPXKits utility functions, for example distance or bounds calculations.
-/// Adding `GeoCoordinate` conformance to your custom types means that your types must provide readable getters for latitude and longitude degree values.
+/// Types that conform to the ``GeoCoordinate`` protocol can be used with GPXKits utility functions, for example distance or bounds calculations.
+/// Adding ``GeoCoordinate`` conformance to your custom types means that your types must provide readable getters for latitude and longitude degree values.
 public protocol GeoCoordinate {
     /// Latitude value in degrees
     var latitude: Double { get}
@@ -47,7 +47,7 @@ public extension GeoCoordinate {
 }
 
 public extension GeoCoordinate {
-    /// Helper method for offsetting a `GeoCoordinate`. Useful in tests or for tweaking a known location
+    /// Helper method for offsetting a ``GeoCoordinate``. Useful in tests or for tweaking a known location
     /// - Parameters:
     ///   - north: The offset in meters in _vertical_ direction as seen on a map. Use negative values to go _upwards_ on a globe, positive values for moving downwards.
     ///   - east: The offset in meters in _horizontal_ direction as seen on a map. Use negative values to go to the _west_ on a globe, positive values for moving in the _eastern_ direction.

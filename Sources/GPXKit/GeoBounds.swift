@@ -11,7 +11,7 @@ public struct GeoBounds: Hashable, Codable, Sendable {
     /// The maximum longitude value in degrees
     public var maxLongitude: Double
 
-    /// Initialized a GeoBounds value. You don't need to construct this value by yourself, as it is done by GXPKits track parsing logic.
+    /// Initialized a ``GeoBounds`` value. You don't need to construct this value by yourself, as it is done by GXPKits track parsing logic.
     /// - Parameters:
     ///   - minLatitude: The minimum latitude value in degrees.
     ///   - minLongitude: The minimum longitude value in degrees.

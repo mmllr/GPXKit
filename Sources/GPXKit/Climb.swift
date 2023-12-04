@@ -2,9 +2,9 @@ import Foundation
 
 /// Describes a climb section within a track.
 public struct Climb: Hashable, Sendable {
-    /// The distance in meters from the climbs start to the `GPXTrack`s origin.
+    /// The distance in meters from the climbs start to the ``GPXTrack``s origin.
     public var start: Double
-    /// The distance of the end climb in meters from the `GPXTrack`s origin.
+    /// The distance of the end climb in meters from the ``GPXTrack``s origin.
     public var end: Double
     /// The elevation in meters of the climbs bottom.
     public var bottom: Double

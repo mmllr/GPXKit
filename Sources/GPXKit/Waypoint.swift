@@ -3,7 +3,7 @@ import Foundation
 /// Value type describing a single Waypoint defined  within a `GPXTrack`. A `Waypoint` has a location consisting of latitude, longitude and some metadata,
 /// e.g. name and description.
 public struct Waypoint: Hashable, Sendable {
-    /// The coordinate (latitude, longitude and elevation in meters)
+    /// The ``Coordinate`` (latitude, longitude and elevation in meters)
     public var coordinate: Coordinate
     /// Optional date for a given point.
     public var date: Date?
@@ -17,7 +17,7 @@ public struct Waypoint: Hashable, Sendable {
     /// Initializer
     /// You don't need to construct this value by yourself, as it is done by GXPKits track parsing logic.
     /// - Parameters:
-    ///   - coordinate: Location of the waypoint, required
+    ///   - coordinate: ``Coordinate`` of the waypoint, required
     ///   - date: Optional date
     ///   - name: Name of the waypoint
     ///   - comment: A short comment
