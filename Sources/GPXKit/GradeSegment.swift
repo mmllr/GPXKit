@@ -13,20 +13,18 @@ public struct GradeSegment: Sendable {
     /// The normalized grade in percent in the range -1...1.
     public var grade: Double
 
-    public init(start: Double, end: Double, grade: Double) {
+    /// The elevation in meters at the start of the segment.
+    public var elevationAtStart: Double
+
+    public init(start: Double, end: Double, grade: Double, elevationAtStart: Double) {
         self.start = start
         self.end = end
         self.grade = grade
+        self.elevationAtStart = elevationAtStart
     }
 }
 
-extension GradeSegment: Hashable {
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(start)
-        hasher.combine(end)
-        hasher.combine(grade)
-    }
-
+extension GradeSegment: Equatable {
     public static func ==(lhs: GradeSegment, rhs: GradeSegment) -> Bool {
         if lhs.start != rhs.start {
             return false
@@ -37,6 +35,23 @@ extension GradeSegment: Hashable {
         if (lhs.grade - rhs.grade).magnitude > 0.0025 {
             return false
         }
+        if lhs.elevationAtStart != rhs.elevationAtStart {
+            return false
+        }
         return true
+    }
+}
+
+extension GradeSegment: Hashable {}
+
+extension GradeSegment {
+    /// The elevation in meters at the end of the segment.
+    public var elevationAtEnd: Double {
+        elevationAtStart + length * grade
+    }
+
+    /// The length in meters of the segment.
+    public var length: Double {
+        end - start
     }
 }

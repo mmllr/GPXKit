@@ -24,7 +24,7 @@ public struct TrackGraph: Hashable, Sendable {
     /// Initializer
     /// You don't need to construct this value by yourself, as it is done by GXPKits track parsing logic.
     /// - Parameters:
-    ///   - segments: An array of `TrackSegment`s.
+    ///   - segments: An array of ``TrackSegment``s.
     ///   - distance: The total distance in meters.
     ///   - elevationGain: The total elevation gain.
     ///   - heightMap: The height-map
@@ -34,7 +34,7 @@ public struct TrackGraph: Hashable, Sendable {
         self.distance = distance
         self.elevationGain = elevationGain
         self.heightMap = heightMap
-        self.gradeSegments = [.init(start: 0, end: distance, grade: elevationGain/distance)]
+        self.gradeSegments = [.init(start: 0, end: distance, grade: elevationGain/distance, elevationAtStart: 0)]
     }
 }
 
@@ -135,7 +135,7 @@ private extension Array where Element == DistanceHeight {
         let trackDistance = self[endIndex - 1].distance
         guard trackDistance >= segmentLength else {
             if let prevHeight = height(at: 0), let currentHeight = height(at: trackDistance) {
-                return [.init(start: 0, end: trackDistance, grade: (currentHeight - prevHeight) / trackDistance)]
+                return [.init(start: 0, end: trackDistance, grade: (currentHeight - prevHeight) / trackDistance, elevationAtStart: prevHeight)]
             }
             return []
         }
@@ -143,13 +143,13 @@ private extension Array where Element == DistanceHeight {
         var previousHeight: Double = self[0].elevation
         for distance in stride(from: segmentLength, to: trackDistance, by: segmentLength) {
             guard let height = height(at: distance) else { break }
-            gradeSegments.append(.init(start: distance - segmentLength, end: distance, grade: (height - previousHeight) / segmentLength))
+            gradeSegments.append(.init(start: distance - segmentLength, end: distance, grade: (height - previousHeight) / segmentLength, elevationAtStart: previousHeight))
             previousHeight = height
         }
         if let last = gradeSegments.last,
            last.end < trackDistance {
             if let prevHeight = height(at: last.end), let currentHeight = height(at: trackDistance) {
-                gradeSegments.append(.init(start: last.end, end: trackDistance, grade: (currentHeight - prevHeight) / (trackDistance - last.end)))
+                gradeSegments.append(.init(start: last.end, end: trackDistance, grade: (currentHeight - prevHeight) / (trackDistance - last.end), elevationAtStart: prevHeight))
             }
         }
         return gradeSegments.reduce(into: []) { joined, segment in
@@ -182,7 +182,7 @@ private extension Array where Element == DistanceHeight {
             updateHeightMap.append(.init(distance: self[idx].distance, elevation: elevation))
         }
         let result = zip(updateHeightMap, updateHeightMap.dropFirst()).map { cur, next in
-            return GradeSegment(start: cur.distance, end: next.distance, grade: (next.elevation - cur.elevation) / (next.distance - cur.distance))
+            return GradeSegment(start: cur.distance, end: next.distance, grade: (next.elevation - cur.elevation) / (next.distance - cur.distance), elevationAtStart: cur.elevation)
         }
         return result
     }
