@@ -1,6 +1,6 @@
 import Foundation
 import XCTest
-import Difference
+import CustomDump
 
 @testable import GPXKit
 #if canImport(FoundationXML)
@@ -17,17 +17,6 @@ struct TestGPXPoint: Hashable, GeoCoordinate {
         var copy = self
         try block(&copy)
         return copy
-    }
-}
-
-public func XCTAssertEqual<T: Equatable>(_ expected: @autoclosure () throws -> T, _ received: @autoclosure () throws -> T, file: StaticString = #filePath, line: UInt = #line) {
-    do {
-        let expected = try expected()
-        let received = try received()
-        XCTAssertTrue(expected == received, "Found difference for \n" + diff(expected, received).joined(separator: ", "), file: file, line: line)
-    }
-    catch {
-        XCTFail("Caught error while testing: \(error)", file: file, line: line)
     }
 }
 
@@ -165,7 +154,7 @@ extension XCTest {
         line: UInt = #line
     ) {
         guard let lhs = expected, let rhs = actual else {
-            XCTAssertEqual(expected, actual,
+            XCTAssertNoDifference(expected, actual,
                            "Dates are not equal - expected: \(String(describing: expected)), actual: \(String(describing: actual))",
                            file: file,
                            line: line )
@@ -185,12 +174,12 @@ extension XCTest {
         line: UInt = #line
     ) {
         assertDatesEqual(expected.date, actual.date, file: file, line: line)
-        XCTAssertEqual(expected.title, actual.title, file: file, line: line)
-        XCTAssertEqual(expected.description, actual.description, file: file, line: line)
-        XCTAssertEqual(expected.keywords, actual.keywords, file: file, line: line)
-        XCTAssertEqual(expected.trackPoints, actual.trackPoints, file: file, line: line)
-        XCTAssertEqual(expected.graph, actual.graph, file: file, line: line)
-        XCTAssertEqual(expected.bounds, actual.bounds, file: file, line: line)
+        XCTAssertNoDifference(expected.title, actual.title, file: file, line: line)
+        XCTAssertNoDifference(expected.description, actual.description, file: file, line: line)
+        XCTAssertNoDifference(expected.keywords, actual.keywords, file: file, line: line)
+        XCTAssertNoDifference(expected.trackPoints, actual.trackPoints, file: file, line: line)
+        XCTAssertNoDifference(expected.graph, actual.graph, file: file, line: line)
+        XCTAssertNoDifference(expected.bounds, actual.bounds, file: file, line: line)
     }
 
     /*
@@ -207,10 +196,10 @@ extension XCTest {
         file: StaticString = #filePath,
         line: UInt = #line
     ) {
-        XCTAssertEqual(expected.content, actual.content, file: file, line: line)
-        XCTAssertEqual(expected.content, actual.content, file: file, line: line)
-        XCTAssertEqual(expected.attributes, actual.attributes, file: file, line: line)
-        XCTAssertEqual(expected.children, actual.children, file: file, line: line)
+        XCTAssertNoDifference(expected.content, actual.content, file: file, line: line)
+        XCTAssertNoDifference(expected.content, actual.content, file: file, line: line)
+        XCTAssertNoDifference(expected.attributes, actual.attributes, file: file, line: line)
+        XCTAssertNoDifference(expected.children, actual.children, file: file, line: line)
     }
 
     func assertGeoCoordinateEqual(
@@ -240,7 +229,7 @@ extension XCTest {
         file: StaticString = #filePath,
         line: UInt = #line
     ) where T.Element: GeoCoordinate {
-        XCTAssertEqual(expected.count, acutal.count)
+        XCTAssertNoDifference(expected.count, acutal.count)
         zip(expected, acutal).forEach { lhs, rhs in
             assertGeoCoordinateEqual(lhs, rhs, accuracy: accuracy, file: file, line: line)
         }

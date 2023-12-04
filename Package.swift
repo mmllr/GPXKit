@@ -5,10 +5,10 @@ import PackageDescription
 let package = Package(
     name: "GPXKit",
     platforms: [
-        .iOS(.v12),
-        .macOS(.v10_12),
+        .iOS(.v13),
+        .macOS(.v10_13),
         .watchOS(.v6),
-        .tvOS(.v10)
+        .tvOS(.v12)
     ],
     products: [
         .library(
@@ -16,8 +16,8 @@ let package = Package(
             targets: ["GPXKit"]),
     ],
     dependencies: [
-        .package(name: "Difference", url: "https://github.com/krzysztofzablocki/Difference.git", .upToNextMajor(from: "1.0.2")),
-        .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
+        .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "1.1.2"),
+        .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0")
     ],
     targets: [
         .target(
@@ -28,7 +28,8 @@ let package = Package(
         .testTarget(
             name: "GPXKitTests",
             dependencies: [
-                "GPXKit", "Difference"
+                "GPXKit",
+                .product(name: "CustomDump", package: "swift-custom-dump")
             ]),
     ]
 )

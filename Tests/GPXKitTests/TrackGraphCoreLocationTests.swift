@@ -1,5 +1,6 @@
 import XCTest
 import GPXKit
+import CustomDump
 #if canImport(CoreLocation)
 import CoreLocation
 
@@ -18,7 +19,7 @@ extension TrackGraphTests {
             CLLocationCoordinate2D(latitude: 51.2765020, longitude: 12.3767050),
         ]
 
-        XCTAssertEqual(coordinates, sut.coreLocationCoordinates)
+        XCTAssertNoDifference(coordinates, sut.coreLocationCoordinates)
     }
 }
 

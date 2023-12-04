@@ -1,5 +1,6 @@
 import GPXKit
 import XCTest
+import CustomDump
 #if canImport(FoundationXML)
 import FoundationXML
 #endif
@@ -26,8 +27,8 @@ class GPXParserTests: XCTestCase {
 
         XCTAssertNil(result)
         if case let .parseError(error, line) = parseError {
-            XCTAssertEqual(0, line)
-            XCTAssertEqual(1, error.code)
+            XCTAssertNoDifference(0, line)
+            XCTAssertNoDifference(1, error.code)
         } else {
             XCTFail("Exepcted parse error, got \(String(describing: parseError))")
         }
@@ -44,13 +45,13 @@ class GPXParserTests: XCTestCase {
         """)
 
         let sut = try XCTUnwrap(result)
-        XCTAssertEqual("", sut.title)
-        XCTAssertEqual(nil, sut.description)
-        XCTAssertEqual(expectedDate(for: "2020-03-17T11:27:02Z"), sut.date)
-        XCTAssertEqual([], sut.trackPoints)
-        XCTAssertEqual([], sut.graph.heightMap)
-        XCTAssertEqual([], sut.graph.segments)
-        XCTAssertEqual([], sut.graph.climbs())
+        XCTAssertNoDifference("", sut.title)
+        XCTAssertNoDifference(nil, sut.description)
+        XCTAssertNoDifference(expectedDate(for: "2020-03-17T11:27:02Z"), sut.date)
+        XCTAssertNoDifference([], sut.trackPoints)
+        XCTAssertNoDifference([], sut.graph.heightMap)
+        XCTAssertNoDifference([], sut.graph.segments)
+        XCTAssertNoDifference([], sut.graph.climbs())
 
     }
 
@@ -70,8 +71,8 @@ class GPXParserTests: XCTestCase {
             """
         )
 
-        XCTAssertEqual("Frühjahrsgeschlender ach wie schön!", result?.title)
-        XCTAssertEqual("Track description", result?.description)
+        XCTAssertNoDifference("Frühjahrsgeschlender ach wie schön!", result?.title)
+        XCTAssertNoDifference("Track description", result?.description)
     }
 
     func testParsingTrackSegmentsWithoutExtensions() throws {
@@ -234,7 +235,7 @@ class GPXParserTests: XCTestCase {
 
         let date = try XCTUnwrap(result?.trackPoints.first?.date)
         
-        XCTAssertEqual(1351121380, date.timeIntervalSince1970)
+        XCTAssertNoDifference(1351121380, date.timeIntervalSince1970)
     }
 
     func testTrackLength() throws {
@@ -251,7 +252,7 @@ class GPXParserTests: XCTestCase {
         parseXML(given(points: [.leipzig, .postPlatz, .dehner]))
 
         let elevation = try XCTUnwrap(result?.graph.elevationGain)
-        XCTAssertEqual(0, elevation)
+        XCTAssertNoDifference(0, elevation)
     }
 
     func testItInterpolatesElevationGapsWithElevationAtStartEndEndOfTheTrack() throws {
@@ -301,7 +302,7 @@ class GPXParserTests: XCTestCase {
         ]
 
         let result = try XCTUnwrap(result).flatMap { $0.trackPoints.map(\.coordinate) }
-        XCTAssertEqual(expected, result)
+        XCTAssertNoDifference(expected, result)
     }
 
     func testItTakesTheFirstElevationWhenTheTrackStartsWithNoElevation() throws {
@@ -322,7 +323,7 @@ class GPXParserTests: XCTestCase {
         ]
 
         let result = try XCTUnwrap(result).flatMap { $0.trackPoints.map(\.coordinate) }
-        XCTAssertEqual(expected, result)
+        XCTAssertNoDifference(expected, result)
     }
 
     func testItTakesTheLastElevationWhenTheTrackEndsWithNoElevation() throws {
@@ -347,14 +348,14 @@ class GPXParserTests: XCTestCase {
         ]
 
         let result = try XCTUnwrap(result).flatMap { $0.trackPoints.map(\.coordinate) }
-        XCTAssertEqual(expected, result)
+        XCTAssertNoDifference(expected, result)
     }
 
     func testEmptySegmentIsEmptyTrackPoints() throws {
         parseXML(given(points: []))
 
         let result = try XCTUnwrap(result)
-        XCTAssertEqual([], result.trackPoints)
+        XCTAssertNoDifference([], result.trackPoints)
     }
 
     func testParsingKeywords() throws {
@@ -380,7 +381,7 @@ class GPXParserTests: XCTestCase {
         """)
 
         let sut = try XCTUnwrap(self.result)
-        XCTAssertEqual(["one", "two", "three", "four"], sut.keywords)
+        XCTAssertNoDifference(["one", "two", "three", "four"], sut.keywords)
     }
 
     func testParsingAFileWithoutWaypointDefinitionsHasEmptyWaypoints() throws {
@@ -410,7 +411,7 @@ class GPXParserTests: XCTestCase {
             description: "This is the finish"
         )
 
-        XCTAssertEqual([waypointStart, waypointFinish], sut.waypoints)
+        XCTAssertNoDifference([waypointStart, waypointFinish], sut.waypoints)
     }
 
     func testParsingRouteFiles() throws {
@@ -515,12 +516,12 @@ class GPXParserTests: XCTestCase {
         let sut = GPXFileParser(xmlString: input)
 
         let track = try sut.parse().get()
-        XCTAssertEqual([], track.trackPoints)
-        XCTAssertEqual([], track.graph.heightMap)
-        XCTAssertEqual([], track.graph.segments)
-        XCTAssertEqual(.zero, track.graph.distance)
-        XCTAssertEqual(.zero, track.graph.elevationGain)
-        XCTAssertEqual([
+        XCTAssertNoDifference([], track.trackPoints)
+        XCTAssertNoDifference([], track.graph.heightMap)
+        XCTAssertNoDifference([], track.graph.segments)
+        XCTAssertNoDifference(.zero, track.graph.distance)
+        XCTAssertNoDifference(.zero, track.graph.elevationGain)
+        XCTAssertNoDifference([
             Waypoint(coordinate: .init(latitude: 53.060632820504345, longitude: 5.6932974383264616, elevation: 8.4)),
             Waypoint(coordinate: .init(latitude: 53.06485377614443, longitude: 5.702670398232679, elevation: 8.3)),
         ], track.waypoints)
@@ -552,12 +553,12 @@ class GPXParserTests: XCTestCase {
         let sut = GPXFileParser(xmlString: input)
 
         let track = try sut.parse().get()
-        XCTAssertEqual([], track.trackPoints)
-        XCTAssertEqual([], track.graph.heightMap)
-        XCTAssertEqual([], track.graph.segments)
-        XCTAssertEqual(.zero, track.graph.distance)
-        XCTAssertEqual(.zero, track.graph.elevationGain)
-        XCTAssertEqual([
+        XCTAssertNoDifference([], track.trackPoints)
+        XCTAssertNoDifference([], track.graph.heightMap)
+        XCTAssertNoDifference([], track.graph.segments)
+        XCTAssertNoDifference(.zero, track.graph.distance)
+        XCTAssertNoDifference(.zero, track.graph.elevationGain)
+        XCTAssertNoDifference([
             Waypoint(coordinate: .init(latitude: 53.060632820504345, longitude: 5.6932974383264616, elevation: 8.4)),
             Waypoint(coordinate: .init(latitude: 53.06485377614443, longitude: 5.702670398232679, elevation: 8.3)),
         ], track.waypoints)

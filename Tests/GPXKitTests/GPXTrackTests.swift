@@ -1,6 +1,7 @@
 import Foundation
 import XCTest
 import GPXKit
+import CustomDump
 
 final class GPXTrackTests: XCTestCase {
     var sut: GPXTrack!
@@ -26,7 +27,7 @@ final class GPXTrackTests: XCTestCase {
     func testBoundingBoxForEmptyTrack() {
         givenTrack(with: [])
 
-        XCTAssertEqual(.empty, sut.bounds)
+        XCTAssertNoDifference(.empty, sut.bounds)
     }
 
     func testBoundingBoxWithOnePointHasThePointAsBoundingBox() {
@@ -39,7 +40,7 @@ final class GPXTrackTests: XCTestCase {
             maxLatitude: coord.latitude,
             maxLongitude: coord.longitude
         )
-        XCTAssertEqual(expected, sut.bounds)
+        XCTAssertNoDifference(expected, sut.bounds)
     }
 
     func testBoundsHasTheMinimumAndMaximumCoordinates() {
@@ -58,7 +59,7 @@ final class GPXTrackTests: XCTestCase {
             maxLatitude: 79,
             maxLongitude: 120
         )
-        XCTAssertEqual(expected, sut.bounds)
+        XCTAssertNoDifference(expected, sut.bounds)
     }
 
     func testGradeSegments() {
@@ -76,11 +77,11 @@ final class GPXTrackTests: XCTestCase {
         ].map { TrackPoint(coordinate: $0) }, elevationSmoothing: .segmentation(50))
 
         let expected: [GradeSegment] = [
-            .init(start: 0, end: 100, grade: 0.1),
-            .init(start: 100, end: 200, grade: 0.2),
-            .init(start: 200, end: 300, grade: -0.3),
-            .init(start: 300, end: sut.graph.distance, grade: 0.06)
+            .init(start: 0, end: 100, grade: 0.1, elevationAtStart: 100),
+            .init(start: 100, end: 200, grade: 0.2, elevationAtStart: 110),
+            .init(start: 200, end: 300, grade: -0.3, elevationAtStart: 130),
+            .init(start: 300, end: sut.graph.distance, grade: 0.06, elevationAtStart: 100)
         ]
-        XCTAssertEqual(expected, sut.graph.gradeSegments)
+        XCTAssertNoDifference(expected, sut.graph.gradeSegments)
     }
 }

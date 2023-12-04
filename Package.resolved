@@ -2,15 +2,6 @@
   "object": {
     "pins": [
       {
-        "package": "Difference",
-        "repositoryURL": "https://github.com/krzysztofzablocki/Difference.git",
-        "state": {
-          "branch": null,
-          "revision": "f627d00718033c3d7888acd5f4e3524a843db1cf",
-          "version": "1.0.2"
-        }
-      },
-      {
         "package": "swift-algorithms",
         "repositoryURL": "https://github.com/apple/swift-algorithms",
         "state": {
@@ -20,12 +11,30 @@
         }
       },
       {
+        "package": "swift-custom-dump",
+        "repositoryURL": "https://github.com/pointfreeco/swift-custom-dump",
+        "state": {
+          "branch": null,
+          "revision": "aedcf6f4cd486ccef5b312ccac85d4b3f6e58605",
+          "version": "1.1.2"
+        }
+      },
+      {
         "package": "swift-numerics",
         "repositoryURL": "https://github.com/apple/swift-numerics",
         "state": {
           "branch": null,
           "revision": "0a23770641f65a4de61daf5425a37ae32a3fd00d",
           "version": "1.0.1"
+        }
+      },
+      {
+        "package": "xctest-dynamic-overlay",
+        "repositoryURL": "https://github.com/pointfreeco/xctest-dynamic-overlay",
+        "state": {
+          "branch": null,
+          "revision": "23cbf2294e350076ea4dbd7d5d047c1e76b03631",
+          "version": "1.0.2"
         }
       }
     ]

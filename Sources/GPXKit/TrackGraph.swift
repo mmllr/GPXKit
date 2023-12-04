@@ -12,6 +12,21 @@ public struct TrackGraph: Hashable, Sendable {
     public var heightMap: [DistanceHeight]
     /// Array of `GradeSegment`s. The segments describe the grade over the entire track with specified interval length in meters in initializer.
     public var gradeSegments: [GradeSegment] = []
+    
+    /// Initializes a ``TrackGraph``
+    /// - Parameters:
+    ///   - segments: Array of ``TrackSegment`` values.
+    ///   - distance: The graphs distance in meters.
+    ///   - elevationGain: The graphs elevation gain in meters.
+    ///   - heightMap: An array of ``DistanceHeight`` values.
+    ///   - gradeSegments: An array of ``GradeSegment`` values.
+    public init(segments: [TrackSegment], distance: Double, elevationGain: Double, heightMap: [DistanceHeight], gradeSegments: [GradeSegment]) {
+        self.segments = segments
+        self.distance = distance
+        self.elevationGain = elevationGain
+        self.heightMap = heightMap
+        self.gradeSegments = gradeSegments
+    }
 
     /// Initialize for creating a `TrackGraph`  from `TrackPoint`s.
     /// - Parameters:
@@ -69,6 +84,25 @@ public extension TrackGraph {
         }
         self.heightMap = heightmap
         self.gradeSegments = heightmap.calculateGradeSegments(elevationSmoothing)
+    }
+
+    init(coords: [Coordinate]) {
+        let zippedCoords = zip(coords, coords.dropFirst())
+        let distances: [Double] = [0.0] + zippedCoords.map {
+            $0.distance(to: $1)
+        }
+
+        segments = zip(coords, distances).map {
+            TrackSegment(coordinate: $0, distanceInMeters: $1)
+        }
+        distance = distances.reduce(0, +)
+        elevationGain = coords.calculateElevationGain()
+        let heightmap = segments.reduce(into: [DistanceHeight]()) { acc, segment in
+            let distanceSoFar = (acc.last?.distance ?? 0) + segment.distanceInMeters
+            acc.append(DistanceHeight(distance: distanceSoFar, elevation: segment.coordinate.elevation))
+        }
+        self.heightMap = heightmap
+        self.gradeSegments = []
     }
 }
 

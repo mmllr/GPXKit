@@ -13,10 +13,10 @@ public struct GradeSegment: Sendable {
     /// The normalized grade in percent in the range -1...1.
     public var grade: Double
 
-    /// The elevation in meters at the start of the segment.
+    /// The elevation in meters at the start of the segment. Defaults to zero.
     public var elevationAtStart: Double
 
-    public init(start: Double, end: Double, grade: Double, elevationAtStart: Double) {
+    public init(start: Double, end: Double, grade: Double, elevationAtStart: Double = 0) {
         self.start = start
         self.end = end
         self.grade = grade
@@ -35,7 +35,7 @@ extension GradeSegment: Equatable {
         if (lhs.grade - rhs.grade).magnitude > 0.0025 {
             return false
         }
-        if lhs.elevationAtStart != rhs.elevationAtStart {
+        if abs(lhs.elevationAtStart - rhs.elevationAtStart) > 0.1 {
             return false
         }
         return true

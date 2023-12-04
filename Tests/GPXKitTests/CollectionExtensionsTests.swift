@@ -1,24 +1,25 @@
 import Foundation
 import XCTest
 import GPXKit
+import CustomDump
 
 final class ArrayExtensionsTests: XCTestCase {
     func testRemovingNearbyCoordinatesInEmptyCollection() {
         let coords: [Coordinate] = []
 
-        XCTAssertEqual([], coords.removeIf(closerThan: 1))
+        XCTAssertNoDifference([], coords.removeIf(closerThan: 1))
     }
 
     func testRemovingNearbyCoordinatesWithOneElement() {
         let coords: [Coordinate] = [.leipzig]
 
-        XCTAssertEqual([.leipzig], coords.removeIf(closerThan: 1))
+        XCTAssertNoDifference([.leipzig], coords.removeIf(closerThan: 1))
     }
 
     func testRemovingNearbyCoordinatesWithtwoElement() {
         let coords: [Coordinate] = [.leipzig, .dehner]
 
-        XCTAssertEqual([.leipzig, .dehner], coords.removeIf(closerThan: 1))
+        XCTAssertNoDifference([.leipzig, .dehner], coords.removeIf(closerThan: 1))
     }
 
     func testRemovingDuplicateCoordinates() {
@@ -33,7 +34,7 @@ final class ArrayExtensionsTests: XCTestCase {
         ]
 
         let result = coords.removeIf(closerThan: 50)
-        XCTAssertEqual([coords[0], coords[1], coords[3], .postPlatz], result)
+        XCTAssertNoDifference([coords[0], coords[1], coords[3], .postPlatz], result)
     }
 }
 
