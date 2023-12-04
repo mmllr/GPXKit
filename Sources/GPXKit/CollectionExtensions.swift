@@ -100,3 +100,23 @@ public extension Array where Element == Coordinate {
         simplify(tolerance: epsilon)
     }
 }
+
+public extension RandomAccessCollection where Element == Coordinate, Index == Int {
+    func smoothedElevation(sampleCount: Int = 5) -> [Element] {
+        let smoothingSize = (sampleCount / 2).clamped(to: 2 ... (self.count / 2))
+
+        return self.indices.reduce(into: [Element]()) { result, idx in
+            let range = Swift.max(self.startIndex, idx - smoothingSize)...Swift.min(idx + smoothingSize, self.endIndex-1)
+            var updated = self[idx]
+            updated.elevation = self[range].map(\.elevation).reduce(0, +) / Double(range.count)
+
+            result.append(updated)
+        }
+    }
+}
+
+fileprivate extension Comparable {
+    func clamped(to limits: ClosedRange<Self>) -> Self {
+        min(max(self, limits.lowerBound), limits.upperBound)
+    }
+}
