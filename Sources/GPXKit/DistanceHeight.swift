@@ -16,3 +16,16 @@ public struct DistanceHeight: Hashable, Sendable {
         self.elevation = elevation
     }
 }
+
+import Algorithms
+
+public extension [DistanceHeight] {
+    func gradeSegments() -> [GradeSegment] {
+        adjacentPairs().reduce(into: [GradeSegment]()) { acc, value in
+            let (prev, cur) = value
+            let length = (cur.distance - prev.distance)
+            let grade = (cur.elevation - prev.elevation) / length
+            acc.append(.init(start: prev.distance, end: prev.distance + length, grade: grade, elevationAtStart: prev.elevation))
+        }
+    }
+}

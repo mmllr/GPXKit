@@ -102,7 +102,7 @@ public extension TrackGraph {
             acc.append(DistanceHeight(distance: distanceSoFar, elevation: segment.coordinate.elevation))
         }
         self.heightMap = heightmap
-        self.gradeSegments = []
+        self.gradeSegments = heightmap.gradeSegments()
     }
 }
 

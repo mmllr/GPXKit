@@ -477,4 +477,33 @@ final class TrackGraphTests: XCTestCase {
             }
         }
     }
+
+    func testInitializationFromCoordinates() {
+        let start = Coordinate.leipzig.offset(elevation: 100)
+        let first = start.offset(distance: 100, grade: 0.1)
+        let second = first.offset(distance: 100, grade: 0.2)
+        let third = second.offset(distance: 100, grade: -0.3)
+        let coords = [
+            start,
+            first,
+            second,
+            third
+        ]
+        let sut = TrackGraph(coords: coords)
+
+        let expected = [
+            DistanceHeight(distance: 0, elevation: 100),
+            DistanceHeight(distance: 99.88810211970392, elevation: 110),
+            DistanceHeight(distance: 199.77620423940783, elevation: 130),
+            DistanceHeight(distance: 299.6643063591117, elevation: 100),
+        ]
+        XCTAssertNoDifference(expected, sut.heightMap)
+        XCTAssertNoDifference(30, sut.elevationGain)
+        try XCTAssertNoDifference(XCTUnwrap(expected.last).distance, sut.distance)
+        XCTAssertNoDifference([
+            GradeSegment(start: 0, end: 99.88810211970392, grade: 0.1, elevationAtStart: 100),
+            GradeSegment(start: 99.88810211970392, end: 199.77620423940783, grade: 0.2, elevationAtStart: 110),
+            GradeSegment(start: 199.77620423940783, end: 299.6643063591117, grade: -0.3, elevationAtStart: 130),
+        ], sut.gradeSegments)
+    }
 }
