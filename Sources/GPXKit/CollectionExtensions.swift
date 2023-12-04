@@ -115,6 +115,29 @@ public extension RandomAccessCollection where Element == Coordinate, Index == In
     }
 }
 
+public extension [GradeSegment] {
+    func flatten(maxDelta: Double) -> Self {
+        var result: [Element] = []
+        for idx in self.indices {
+            var segment = self[idx]
+            if let previous = result.last {
+                let deltaSlope = segment.grade - previous.grade
+                if abs(deltaSlope) > maxDelta {
+                    if deltaSlope > 0 {
+                        segment.grade = previous.grade + maxDelta
+                    } else if deltaSlope < 0 {
+                        segment.grade = previous.grade - maxDelta
+                    }
+                }
+                segment.elevationAtStart = previous.elevationAtEnd
+            }
+            result.append(segment)
+        }
+        return result
+    }
+}
+
+
 fileprivate extension Comparable {
     func clamped(to limits: ClosedRange<Self>) -> Self {
         min(max(self, limits.lowerBound), limits.upperBound)
