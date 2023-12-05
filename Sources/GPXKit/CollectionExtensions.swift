@@ -125,6 +125,13 @@ public extension [GradeSegment] {
                     let delta = (segment.elevationAtStart - previous.elevationAtEnd)
                     segment.elevationAtStart -= delta
                     segment.elevationAtEnd -= delta
+                    // TODO: Test me!
+                    if segment.elevationAtStart < 0 {
+                        segment.elevationAtStart = 0
+                    }
+                    if segment.elevationAtEnd < 0 {
+                        segment.elevationAtEnd = 0
+                    }
                 }
                 let deltaSlope = segment.grade - previous.grade
                 if abs(deltaSlope) > maxDelta {
