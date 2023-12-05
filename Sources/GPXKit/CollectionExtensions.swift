@@ -121,17 +121,20 @@ public extension [GradeSegment] {
         for idx in self.indices {
             var segment = self[idx]
             if let previous = result.last {
-                let deltaSlope = segment.grade - previous.grade
                 if segment.elevationAtStart != previous.elevationAtEnd {
-                    segment.elevationAtStart = previous.elevationAtEnd
+                    let delta = (segment.elevationAtStart - previous.elevationAtEnd)
+                    segment.elevationAtStart -= delta
+                    segment.elevationAtEnd -= delta
                 }
+                let deltaSlope = segment.grade - previous.grade
                 if abs(deltaSlope) > maxDelta {
-                    if deltaSlope > 0 {
+                    if deltaSlope >= 0 {
                         segment.adjust(grade: previous.grade + maxDelta)
                     } else if deltaSlope < 0 {
                         segment.adjust(grade: previous.grade - maxDelta)
                     }
                 }
+//                assert((segment.grade - previous.grade).magnitude - maxDelta < 0.1)
             }
             result.append(segment)
         }
