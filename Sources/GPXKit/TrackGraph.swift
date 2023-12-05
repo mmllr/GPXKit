@@ -104,6 +104,30 @@ public extension TrackGraph {
         self.heightMap = heightmap
         self.gradeSegments = heightmap.gradeSegments()
     }
+
+    /// Initializer for adjusting the heightmap.
+    /// - Parameters:
+    ///   - coords: An array ``Coordinate`` values. Will be smoothed with the smoothingSampleCount parameter.
+    ///   - smoothingSampleCount: Number of neighbouring ``Coordinate`` values to take into account for smoothed elevation.
+    ///   - allowedGradeDelta: The maximum allowed grade between adjacent ``GradeSegment`` values. In normalized range [0,1].
+    init(coords: [Coordinate], smoothingSampleCount: Int, allowedGradeDelta: Double) {
+        let coords = coords.smoothedElevation(sampleCount: smoothingSampleCount)
+        let zippedCoords = zip(coords, coords.dropFirst())
+        let distances: [Double] = [0.0] + zippedCoords.map {
+            $0.distance(to: $1)
+        }
+        segments = zip(coords, distances).map {
+            TrackSegment(coordinate: $0, distanceInMeters: $1)
+        }
+        distance = distances.reduce(0, +)
+        elevationGain = coords.calculateElevationGain()
+        let heightmap = segments.reduce(into: [DistanceHeight]()) { acc, segment in
+            let distanceSoFar = (acc.last?.distance ?? 0) + segment.distanceInMeters
+            acc.append(DistanceHeight(distance: distanceSoFar, elevation: segment.coordinate.elevation))
+        }
+        self.heightMap = heightmap
+        self.gradeSegments = heightmap.gradeSegments().flatten(maxDelta: allowedGradeDelta)
+    }
 }
 
 public extension TrackGraph {
