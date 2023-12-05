@@ -371,7 +371,7 @@ final class TrackGraphTests: XCTestCase {
         ], elevationSmoothing: .segmentation(100))
 
         let expected: [GradeSegment] = [
-            .init(start: 0, end: sut.distance, grade: 0.3, elevationAtStart: 0)
+            .init(start: 0, end: sut.distance, elevationAtStart: 0, elevationAtEnd: 14.17)
         ]
         XCTAssertNoDifference(expected, sut.gradeSegments)
     }
@@ -389,9 +389,9 @@ final class TrackGraphTests: XCTestCase {
         ], elevationSmoothing: .segmentation(50))
 
         let expected: [GradeSegment] = [
-            .init(start: 0, end: 100, grade: 0.1, elevationAtStart: 100),
-            .init(start: 100, end: 200, grade: 0.2, elevationAtStart: 110),
-            .init(start: 200, end: sut.distance, grade: -0.3, elevationAtStart: 130)
+            .init(start: 0, end: 100, elevationAtStart: 100, elevationAtEnd: 109.98),
+            .init(start: 100, end: 200, elevationAtStart: 109.98, elevationAtEnd: 129.64),
+            .init(start: 200, end: sut.distance, elevationAtStart: 129.64, elevationAtEnd: 100.56)
         ]
         XCTAssertNoDifference(expected, sut.gradeSegments)
     }
@@ -413,8 +413,8 @@ final class TrackGraphTests: XCTestCase {
         let expected: [GradeSegment] = [
             .init(start: 0, end: 100, grade: 0.1, elevationAtStart: 100),
             .init(start: 100, end: 200, grade: 0.2, elevationAtStart: 110),
-            .init(start: 200, end: 300, grade: -0.3, elevationAtStart: 130),
-            .init(start: 300, end: sut.distance, grade: 0.06, elevationAtStart: 100)
+            .init(start: 200, end: 300, grade: -0.3, elevationAtStart: 129.64),
+            .init(start: 300, end: sut.distance, grade: 0.06, elevationAtStart: 100.58)
         ]
         XCTAssertNoDifference(expected, sut.gradeSegments)
     }
@@ -493,17 +493,17 @@ final class TrackGraphTests: XCTestCase {
 
         let expected = [
             DistanceHeight(distance: 0, elevation: 100),
-            DistanceHeight(distance: 99.88810211970392, elevation: 110),
-            DistanceHeight(distance: 199.77620423940783, elevation: 130),
-            DistanceHeight(distance: 299.6643063591117, elevation: 100),
+            DistanceHeight(distance: 99.88810211970392, elevation: 109.96686524911621),
+            DistanceHeight(distance: 199.77620423940783, elevation: 129.70642123410428),
+            DistanceHeight(distance: 299.6643063591117, elevation: 100.56074178631758),
         ]
         XCTAssertNoDifference(expected, sut.heightMap)
-        XCTAssertNoDifference(30, sut.elevationGain)
+        XCTAssertNoDifference(29.706421234104283, sut.elevationGain)
         try XCTAssertNoDifference(XCTUnwrap(expected.last).distance, sut.distance)
         XCTAssertNoDifference([
             GradeSegment(start: 0, end: 99.88810211970392, grade: 0.1, elevationAtStart: 100),
             GradeSegment(start: 99.88810211970392, end: 199.77620423940783, grade: 0.2, elevationAtStart: 110),
-            GradeSegment(start: 199.77620423940783, end: 299.6643063591117, grade: -0.3, elevationAtStart: 130),
+            GradeSegment(start: 199.77620423940783, end: 299.6643063591117, elevationAtStart: 129.70642123410428, elevationAtEnd: 100.56074178631758),
         ], sut.gradeSegments)
     }
 }

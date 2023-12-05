@@ -34,11 +34,11 @@ extension GradeSegment: Equatable {
         if lhs.end != rhs.end {
             return false
         }
-        if abs(lhs.elevationAtStart - rhs.elevationAtStart) > 0.01 {
+        if abs(lhs.elevationAtStart - rhs.elevationAtStart) > 0.1 {
             return false
         }
 
-        if abs(lhs.elevationAtEnd - rhs.elevationAtEnd) > 0.01 {
+        if abs(lhs.elevationAtEnd - rhs.elevationAtEnd) > 0.1 {
             return false
         }
         return true

@@ -217,7 +217,6 @@ private extension Array where Element == DistanceHeight {
                 gradeSegments.append(.init(start: last.end, end: trackDistance, elevationAtStart: prevHeight, elevationAtEnd: currentHeight))
             }
         }
-        let heightAtEndOfTrack = last!.elevation
         return gradeSegments.reduce(into: []) { joined, segment in
             guard let last = joined.last else {
                 joined.append(segment)
@@ -228,7 +227,7 @@ private extension Array where Element == DistanceHeight {
             } else {
                 let remaining = Swift.min(segmentLength, trackDistance - last.end)
                 joined[joined.count - 1].end += remaining
-                joined[joined.count - 1].elevationAtEnd = Swift.min(segment.elevationAtEnd, heightAtEndOfTrack)
+                joined[joined.count - 1].elevationAtEnd = segment.elevationAtEnd
             }
         }
     }
