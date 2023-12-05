@@ -4,6 +4,7 @@ public enum ElevationSmoothing: Sendable, Hashable {
     // length in meters
     case segmentation(Double)
     case smoothing(Int)
+    case combined(smoothingSampleCount: Int, maxGradeDelta: Double)
 }
 
 /// A value describing a track of geo locations. It has the recorded ``TrackPoint``s, along with metadata of the track, such as recorded date, title, elevation gain, distance, height-map and bounds.
