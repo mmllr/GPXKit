@@ -56,17 +56,28 @@ final class ArrayExtensionsTests: XCTestCase {
     }
 
     func testFlatteningGradeSegments() {
-        let sut: [GradeSegment] = [
-            .init(start: 0, end: 100, grade: 0.1, elevationAtStart: 50),
-            .init(start: 100, end: 200, grade: 0.15, elevationAtStart: 60),
-            GradeSegment(start: 200, end: 270, grade: 0.1, elevationAtStart: 65),
+        let grades: [GradeSegment] = [
+            .init(start: 0, end: 100, elevationAtStart: 50, elevationAtEnd: 60),
+            .init(start: 100, end: 200, elevationAtStart: 60, elevationAtEnd: 75),
+            GradeSegment(start: 200, end: 270, elevationAtStart: 75, elevationAtEnd: 82),
         ]
 
-        XCTAssertNoDifference([
-            GradeSegment(start: 0, end: 100, grade: 0.1, elevationAtStart: 50),
-            GradeSegment(start: 100, end: 200, grade: 0.11, elevationAtStart: 60),
-            GradeSegment(start: 200, end: 270, grade: 0.1, elevationAtStart: 71)
+        XCTAssertEqual(grades[0].grade, 0.1, accuracy: 0.001)
+        XCTAssertEqual(grades[1].grade, 0.15, accuracy: 0.01)
+        XCTAssertEqual(grades[2].grade, 0.1, accuracy: 0.001)
 
-        ], sut.flatten(maxDelta: 0.01))
+        let second = grades[1].adjusted(grade: grades[0].grade+0.01)
+        XCTAssertEqual(0.11, second.grade, accuracy: 0.001)
+        let third = GradeSegment(start: 200, end: 270, grade: second.grade-0.01, elevationAtStart: second.elevationAtEnd)
+        XCTAssertEqual(0.1, third.grade, accuracy: 0.001)
+
+        let expected: [GradeSegment] = [
+            grades[0],
+            second,
+           third
+        ]
+
+        let actual = grades.flatten(maxDelta: 0.01)
+        XCTAssertNoDifference(expected, actual)
     }
 }

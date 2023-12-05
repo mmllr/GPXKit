@@ -77,10 +77,10 @@ final class GPXTrackTests: XCTestCase {
         ].map { TrackPoint(coordinate: $0) }, elevationSmoothing: .segmentation(50))
 
         let expected: [GradeSegment] = [
-            .init(start: 0, end: 100, grade: 0.1, elevationAtStart: 100),
-            .init(start: 100, end: 200, grade: 0.2, elevationAtStart: 110),
-            .init(start: 200, end: 300, grade: -0.3, elevationAtStart: 130),
-            .init(start: 300, end: sut.graph.distance, grade: 0.06, elevationAtStart: 100)
+            .init(start: 0, end: 100, elevationAtStart: 100, elevationAtEnd: 110),
+            .init(start: 100, end: 200, elevationAtStart: 110),
+            .init(start: 200, end: 300, elevationAtStart: 130),
+            .init(start: 300, end: sut.graph.distance, elevationAtStart: 100)
         ]
         XCTAssertNoDifference(expected, sut.graph.gradeSegments)
     }

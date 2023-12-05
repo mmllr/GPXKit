@@ -345,7 +345,7 @@ final class TrackGraphTests: XCTestCase {
     func testGraphWithTheSameGrade() {
         let sut = TrackGraph(coords: [.leipzig, .leipzig.offset(north: 1000, elevation: 100)], elevationSmoothing: .segmentation(25))
 
-        XCTAssertNoDifference([GradeSegment(start: 0, end: sut.distance, grade: 0.1, elevationAtStart: 0)], sut.gradeSegments)
+        XCTAssertNoDifference([GradeSegment(start: 0, end: sut.distance, elevationAtStart: 0, elevationAtEnd: 100)], sut.gradeSegments)
     }
 
     func testGraphWithVaryingGradeHasSegmentsInTheSpecifiedLength() {

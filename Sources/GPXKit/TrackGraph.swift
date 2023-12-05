@@ -195,7 +195,7 @@ private extension Array where Element == DistanceHeight {
     }
 
     func calculateGradeSegments(segmentLength: Double) -> [GradeSegment] {
-        guard !isEmpty else { return [] }
+        guard self.count > 1 else { return [] }
 
         let trackDistance = self[endIndex - 1].distance
         guard trackDistance >= segmentLength else {
@@ -208,15 +208,16 @@ private extension Array where Element == DistanceHeight {
         var previousHeight: Double = self[0].elevation
         for distance in stride(from: segmentLength, to: trackDistance, by: segmentLength) {
             guard let height = height(at: distance) else { break }
-            gradeSegments.append(.init(start: distance - segmentLength, end: distance, grade: (height - previousHeight) / segmentLength, elevationAtStart: previousHeight))
+            gradeSegments.append(.init(start: distance - segmentLength, end: distance, elevationAtStart: previousHeight, elevationAtEnd: height))
             previousHeight = height
         }
         if let last = gradeSegments.last,
            last.end < trackDistance {
             if let prevHeight = height(at: last.end), let currentHeight = height(at: trackDistance) {
-                gradeSegments.append(.init(start: last.end, end: trackDistance, grade: (currentHeight - prevHeight) / (trackDistance - last.end), elevationAtStart: prevHeight))
+                gradeSegments.append(.init(start: last.end, end: trackDistance, elevationAtStart: prevHeight, elevationAtEnd: currentHeight))
             }
         }
+        let heightAtEndOfTrack = last!.elevation
         return gradeSegments.reduce(into: []) { joined, segment in
             guard let last = joined.last else {
                 joined.append(segment)
@@ -227,6 +228,7 @@ private extension Array where Element == DistanceHeight {
             } else {
                 let remaining = Swift.min(segmentLength, trackDistance - last.end)
                 joined[joined.count - 1].end += remaining
+                joined[joined.count - 1].elevationAtEnd = Swift.min(segment.elevationAtEnd, heightAtEndOfTrack)
             }
         }
     }

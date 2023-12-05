@@ -10,17 +10,19 @@ public struct GradeSegment: Sendable {
     public var start: Double
     /// The end in meters of the grade segment.
     public var end: Double
-    /// The normalized grade in percent in the range -1...1.
-    public var grade: Double
 
     /// The elevation in meters at the start of the segment. Defaults to zero.
     public var elevationAtStart: Double
 
-    public init(start: Double, end: Double, grade: Double, elevationAtStart: Double = 0) {
+    // The elevation in meters at the end of the segment. Defaults to zero.
+    public var elevationAtEnd: Double
+
+    public init(start: Double, end: Double, elevationAtStart: Double = 0, elevationAtEnd: Double = 0) {
+        precondition(end > start)
         self.start = start
         self.end = end
-        self.grade = grade
         self.elevationAtStart = elevationAtStart
+        self.elevationAtEnd = elevationAtEnd
     }
 }
 
@@ -32,10 +34,11 @@ extension GradeSegment: Equatable {
         if lhs.end != rhs.end {
             return false
         }
-        if (lhs.grade - rhs.grade).magnitude > 0.0025 {
+        if abs(lhs.elevationAtStart - rhs.elevationAtStart) > 0.01 {
             return false
         }
-        if abs(lhs.elevationAtStart - rhs.elevationAtStart) > 0.1 {
+
+        if abs(lhs.elevationAtEnd - rhs.elevationAtEnd) > 0.01 {
             return false
         }
         return true
@@ -44,14 +47,42 @@ extension GradeSegment: Equatable {
 
 extension GradeSegment: Hashable {}
 
-extension GradeSegment {
-    /// The elevation in meters at the end of the segment.
-    public var elevationAtEnd: Double {
-        elevationAtStart + length * grade
+public extension GradeSegment {
+    init(start: Double, end: Double, grade: Double, elevationAtStart: Double = 0) {
+        precondition(end > start)
+        self.init(start: start, end: end, elevationAtStart: elevationAtStart, elevationAtEnd: elevationAtStart + atan(grade) *  (end - start))
+    }
+
+    /// The normalized grade in percent in the range -1...1.
+    var grade: Double {
+        guard length > .zero else { return .zero }
+        // the length is the hypothenuse of the elevation triangle, see https://theclimbingcyclist.com/gradients-and-cycling-an-introduction for more details
+        // grade = gain / horizontal length
+        let a = (pow(length, 2) - pow(elevationGain, 2)).squareRoot()
+        return elevationGain / a
     }
 
     /// The length in meters of the segment.
-    public var length: Double {
+    var length: Double {
         end - start
+    }
+
+    /// The elevation gain  in meters of the segment.
+    var elevationGain: Double {
+        elevationAtEnd - elevationAtStart
+    }
+
+    mutating func adjust(grade: Double) {
+        self = adjusted(grade: grade)
+    }
+
+    func adjusted(grade: Double) -> Self {
+        return .init(start: start, end: end, elevationAtStart: elevationAtStart, elevationAtEnd: elevationAtStart + atan(grade) * length)
+    }
+
+    mutating func merge(_ other: Self) {
+        guard (grade - other.grade).magnitude < 0.003 else { return }
+        end = other.end
+        elevationAtEnd = other.elevationAtEnd
     }
 }

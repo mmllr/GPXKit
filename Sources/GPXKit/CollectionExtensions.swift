@@ -122,14 +122,16 @@ public extension [GradeSegment] {
             var segment = self[idx]
             if let previous = result.last {
                 let deltaSlope = segment.grade - previous.grade
+                if segment.elevationAtStart != previous.elevationAtEnd {
+                    segment.elevationAtStart = previous.elevationAtEnd
+                }
                 if abs(deltaSlope) > maxDelta {
                     if deltaSlope > 0 {
-                        segment.grade = previous.grade + maxDelta
+                        segment.adjust(grade: previous.grade + maxDelta)
                     } else if deltaSlope < 0 {
-                        segment.grade = previous.grade - maxDelta
+                        segment.adjust(grade: previous.grade - maxDelta)
                     }
                 }
-                segment.elevationAtStart = previous.elevationAtStart + segment.grade * segment.length
             }
             result.append(segment)
         }

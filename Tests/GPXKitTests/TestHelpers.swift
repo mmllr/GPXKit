@@ -86,12 +86,11 @@ extension Coordinate {
 
     func offset(distance: Double, grade: Double) -> Self {
         // elevation = grade * distance
-        return offset(east: distance, elevation: distance * grade)
+        return offset(east: distance, elevation: distance * atan(grade))
     }
 
     func offset(elevation: Double, grade: Double) -> Self {
-        // distance = elevation / grade
-        return offset(east: elevation / grade, elevation: elevation)
+        return offset(east: (pow(elevation, 2) + pow( elevation / grade, 2)).squareRoot(), elevation: elevation)
     }
 
     init(_ testPoint: TestGPXPoint) {
