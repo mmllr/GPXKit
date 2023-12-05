@@ -129,7 +129,7 @@ public extension [GradeSegment] {
                         segment.grade = previous.grade - maxDelta
                     }
                 }
-                segment.elevationAtStart = previous.elevationAtEnd
+                segment.elevationAtStart = previous.elevationAtStart + segment.grade * segment.length
             }
             result.append(segment)
         }
