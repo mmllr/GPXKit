@@ -116,7 +116,7 @@ public extension RandomAccessCollection where Element == Coordinate, Index == In
 }
 
 public extension [GradeSegment] {
-    func flatten(maxDelta: Double) -> Self {
+    func flatten(maxDelta: Double) throws -> Self {
         var result: [Element] = []
         for idx in self.indices {
             var segment = self[idx]
@@ -136,9 +136,9 @@ public extension [GradeSegment] {
                 let deltaSlope = segment.grade - previous.grade
                 if abs(deltaSlope) > maxDelta {
                     if deltaSlope >= 0 {
-                        segment.adjust(grade: previous.grade + maxDelta)
+                        try segment.adjust(grade: previous.grade + maxDelta)
                     } else if deltaSlope < 0 {
-                        segment.adjust(grade: previous.grade - maxDelta)
+                        try segment.adjust(grade: previous.grade - maxDelta)
                     }
                 }
 //                assert((segment.grade - previous.grade).magnitude - maxDelta < 0.1)

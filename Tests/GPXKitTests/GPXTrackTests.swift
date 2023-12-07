@@ -62,13 +62,13 @@ final class GPXTrackTests: XCTestCase {
         XCTAssertNoDifference(expected, sut.bounds)
     }
 
-    func testGradeSegments() {
+    func testGradeSegments() throws {
         let start = Coordinate.leipzig.offset(elevation: 100)
         let first: Coordinate = start.offset(distance: 100, grade: 0.1)
         let second: Coordinate = first.offset(distance: 100, grade: 0.2)
         let third: Coordinate = second.offset(distance: 100, grade: -0.3)
         let fourth: Coordinate = third.offset(distance: 50, grade: 0.06)
-        sut = GPXTrack(title: "Track", trackPoints: [
+        sut = try GPXTrack(title: "Track", trackPoints: [
             start,
             first,
             second,
@@ -76,11 +76,11 @@ final class GPXTrackTests: XCTestCase {
             fourth
         ].map { TrackPoint(coordinate: $0) }, elevationSmoothing: .segmentation(50))
 
-        let expected: [GradeSegment] = [
-            .init(start: 0, end: 100, elevationAtStart: 100, elevationAtEnd: 109.98),
-            .init(start: 100, end: 200, elevationAtStart: 109.98, elevationAtEnd: 129.64),
-            .init(start: 200, end: 300, elevationAtStart: 129.64, elevationAtEnd: 100.58),
-            .init(start: 300, end: sut.graph.distance, elevationAtStart: 100.58, elevationAtEnd: 103.55)
+        let expected: [GradeSegment] = try [
+            XCTUnwrap(.init(start: 0, end: 100, elevationAtStart: 100, elevationAtEnd: 109.98)),
+            XCTUnwrap(.init(start: 100, end: 200, elevationAtStart: 109.98, elevationAtEnd: 129.64)),
+            XCTUnwrap(.init(start: 200, end: 300, elevationAtStart: 129.64, elevationAtEnd: 100.58)),
+            XCTUnwrap(.init(start: 300, end: sut.graph.distance, elevationAtStart: 100.58, elevationAtEnd: 103.55))
         ]
         XCTAssertNoDifference(expected, sut.graph.gradeSegments)
     }

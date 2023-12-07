@@ -25,7 +25,9 @@ public extension [DistanceHeight] {
             let (prev, cur) = value
             let length = (cur.distance - prev.distance)
             guard length > 0 else { return }
-            acc.append(.init(start: prev.distance, end: prev.distance + length, elevationAtStart: prev.elevation, elevationAtEnd: cur.elevation))
+            if let segment = GradeSegment(start: prev.distance, end: prev.distance + length, elevationAtStart: prev.elevation, elevationAtEnd: cur.elevation) {
+                acc.append(segment)
+            }
         }
     }
 }

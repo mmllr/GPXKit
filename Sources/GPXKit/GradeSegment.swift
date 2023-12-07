@@ -4,7 +4,8 @@
 
 import Foundation
 
-/// A value describing a grade of a track. A ``TrackGraph`` has an array of ``GradeSegment`` from start to its distance each with a given length and the grade at this distance.
+/// A value describing a grade of a track. A ``TrackGraph`` has an array of ``GradeSegment`` from start to its distance
+/// each with a given length and the grade at this distance.
 public struct GradeSegment: Sendable {
     /// The start in meters of the segment.
     public var start: Double
@@ -17,8 +18,11 @@ public struct GradeSegment: Sendable {
     // The elevation in meters at the end of the segment. Defaults to zero.
     public var elevationAtEnd: Double
 
-    public init(start: Double, end: Double, elevationAtStart: Double = 0, elevationAtEnd: Double = 0) {
-        precondition(end > start)
+    public init?(start: Double, end: Double, elevationAtStart: Double = 0, elevationAtEnd: Double = 0) {
+        guard
+            start < end,
+            (end - start) * 0.3 >= abs(elevationAtEnd - elevationAtStart)
+        else { return nil }
         self.start = start
         self.end = end
         self.elevationAtStart = elevationAtStart
@@ -27,7 +31,7 @@ public struct GradeSegment: Sendable {
 }
 
 extension GradeSegment: Equatable {
-    public static func ==(lhs: GradeSegment, rhs: GradeSegment) -> Bool {
+    public static func == (lhs: GradeSegment, rhs: GradeSegment) -> Bool {
         if lhs.start != rhs.start {
             return false
         }
@@ -47,16 +51,28 @@ extension GradeSegment: Equatable {
 
 extension GradeSegment: Hashable {}
 
+extension ClosedRange<Double> {
+    static let allowedGrades: Self = (-0.30)...0.3
+}
+
 public extension GradeSegment {
-    init(start: Double, end: Double, grade: Double, elevationAtStart: Double = 0) {
-        precondition(end > start)
-        self.init(start: start, end: end, elevationAtStart: elevationAtStart, elevationAtEnd: elevationAtStart + atan(grade) *  (end - start))
+    struct InvalidGradeError: Error {}
+
+    init?(start: Double, end: Double, grade: Double, elevationAtStart: Double = 0) {
+        guard ClosedRange.allowedGrades.contains(grade) else { return nil }
+        self.init(
+            start: start,
+            end: end,
+            elevationAtStart: elevationAtStart,
+            elevationAtEnd: elevationAtStart + atan(grade) * (end - start)
+        )
     }
 
     /// The normalized grade in percent in the range -1...1.
     var grade: Double {
         guard length > .zero else { return .zero }
-        // the length is the hypothenuse of the elevation triangle, see https://theclimbingcyclist.com/gradients-and-cycling-an-introduction for more details
+        // the length is the hypothenuse of the elevation triangle, see
+        // https://theclimbingcyclist.com/gradients-and-cycling-an-introduction for more details
         // grade = gain / horizontal length
         let a = (pow(length, 2) - pow(elevationGain, 2)).squareRoot()
         return elevationGain / a
@@ -72,12 +88,18 @@ public extension GradeSegment {
         elevationAtEnd - elevationAtStart
     }
 
-    mutating func adjust(grade: Double) {
-        self = adjusted(grade: grade)
+    mutating func adjust(grade: Double) throws {
+        guard let new = adjusted(grade: grade) else { throw InvalidGradeError() }
+        self = new
     }
 
-    func adjusted(grade: Double) -> Self {
-        return .init(start: start, end: end, elevationAtStart: elevationAtStart, elevationAtEnd: elevationAtStart + atan(grade) * length)
+    func adjusted(grade: Double) -> Self? {
+        return .init(
+            start: start,
+            end: end,
+            elevationAtStart: elevationAtStart,
+            elevationAtEnd: elevationAtStart + atan(grade) * length
+        )
     }
 
     mutating func merge(_ other: Self) {

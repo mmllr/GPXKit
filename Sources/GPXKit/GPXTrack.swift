@@ -26,6 +26,24 @@ public struct GPXTrack: Hashable, Sendable {
     /// Keywords describing a gpx track
     public var keywords: [String]
 
+    /// Initializes a GPXTrack.
+    /// - Parameters:
+    ///   - date: The date stamp of the track. Defaults to nil.
+    ///   - waypoints: Array of ``Waypoint`` values. Defaults to nil.
+    ///   - title: String describing the track.
+    ///   - trackPoints: Array of ``TrackPoint``s describing the route.
+    ///   - keywords: Array of `String`s with keywords. Default is an empty array (no keywords).
+    public init(date: Date? = nil, waypoints: [Waypoint]? = nil, title: String, description: String? = nil, trackPoints: [TrackPoint], keywords: [String] = []) {
+        self.date = date
+        self.waypoints = waypoints
+        self.title = title
+        self.description = description
+        self.trackPoints = trackPoints
+        self.graph = TrackGraph(coords: trackPoints.map(\.coordinate))
+        self.bounds = trackPoints.bounds()
+        self.keywords = keywords
+    }
+
     /// Initializes a GPXTrack. You don't need to construct this value by yourself, as it is done by GXPKits track parsing logic.
     /// - Parameters:
     ///   - date: The date stamp of the track. Defaults to nil.
@@ -34,13 +52,13 @@ public struct GPXTrack: Hashable, Sendable {
     ///   - trackPoints: Array of ``TrackPoint``s describing the route.
     ///   - keywords: Array of `String`s with keywords. Default is an empty array (no keywords).
     ///   - elevationSmoothing: The ``ElevationSmoothing`` in meters for the grade segments. Defaults to ``ElevationSmoothing/segmentation(_:)`` with 50 meters.
-    public init(date: Date? = nil, waypoints: [Waypoint]? = nil, title: String, description: String? = nil, trackPoints: [TrackPoint], keywords: [String] = [], elevationSmoothing: ElevationSmoothing = .segmentation(50)) {
+    public init(date: Date? = nil, waypoints: [Waypoint]? = nil, title: String, description: String? = nil, trackPoints: [TrackPoint], keywords: [String] = [], elevationSmoothing: ElevationSmoothing = .segmentation(50)) throws {
         self.date = date
         self.waypoints = waypoints
         self.title = title
         self.description = description
         self.trackPoints = trackPoints
-        self.graph = TrackGraph(points: trackPoints, elevationSmoothing: elevationSmoothing)
+        self.graph = try TrackGraph(points: trackPoints, elevationSmoothing: elevationSmoothing)
         self.bounds = trackPoints.bounds()
         self.keywords = keywords
     }

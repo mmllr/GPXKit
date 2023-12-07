@@ -32,8 +32,8 @@ public struct TrackGraph: Hashable, Sendable {
     /// - Parameters:
     ///   - points: Array of `TrackPoint` values.
     ///   - gradeSegmentLength: The length of the grade segments in meters. Defaults to 25 meters. Adjacent segments with the same grade will be joined together.
-    public init(points: [TrackPoint], elevationSmoothing: ElevationSmoothing = .segmentation(50)) {
-        self.init(coords: points.map { $0.coordinate }, elevationSmoothing: elevationSmoothing)
+    public init(points: [TrackPoint], elevationSmoothing: ElevationSmoothing = .segmentation(50)) throws {
+        try self.init(coords: points.map { $0.coordinate }, elevationSmoothing: elevationSmoothing)
     }
 
     /// Initializer
@@ -49,7 +49,11 @@ public struct TrackGraph: Hashable, Sendable {
         self.distance = distance
         self.elevationGain = elevationGain
         self.heightMap = heightMap
-        self.gradeSegments = [.init(start: 0, end: distance, grade: elevationGain/distance, elevationAtStart: 0)]
+        if let segment = GradeSegment(start: 0, end: distance, elevationAtStart: segments.first?.coordinate.elevation ?? 0, elevationAtEnd: segments.last?.coordinate.elevation ?? 0) {
+            self.gradeSegments = [segment]
+        } else {
+            self.gradeSegments = []
+        }
     }
 }
 
@@ -67,10 +71,10 @@ public extension TrackGraph {
     /// Convenience initialize for creating a ``TrackGraph``  from ``Coordinate``s.
     /// - Parameter coords: Array of ``Coordinate`` values.
     /// - Parameter elevationSmoothing: The ``ElevationSmoothing`` for calculating the elevation grades..
-    init(coords: [Coordinate], elevationSmoothing: ElevationSmoothing) {
+    init(coords: [Coordinate], elevationSmoothing: ElevationSmoothing) throws {
         switch elevationSmoothing {
         case .combined(let smoothingSampleCount, let maxGradeDelta):
-            self.init(coords: coords, smoothingSampleCount: smoothingSampleCount, allowedGradeDelta: maxGradeDelta)
+            try self.init(coords: coords, smoothingSampleCount: smoothingSampleCount, allowedGradeDelta: maxGradeDelta)
         case .segmentation, .smoothing:
             let zippedCoords = zip(coords, coords.dropFirst())
             let distances: [Double] = [0.0] + zippedCoords.map {
@@ -86,7 +90,7 @@ public extension TrackGraph {
                 let distanceSoFar = (acc.last?.distance ?? 0) + segment.distanceInMeters
                 acc.append(DistanceHeight(distance: distanceSoFar, elevation: segment.coordinate.elevation))
             }
-            let gradeSegments = heightmap.calculateGradeSegments(elevationSmoothing)
+            let gradeSegments = try heightmap.calculateGradeSegments(elevationSmoothing)
             self.init(segments: segments, distance: distance, elevationGain: elevationGain, heightMap: heightmap, gradeSegments: gradeSegments)
         }
     }
@@ -115,7 +119,7 @@ public extension TrackGraph {
     ///   - coords: An array ``Coordinate`` values. Will be smoothed with the smoothingSampleCount parameter.
     ///   - smoothingSampleCount: Number of neighbouring ``Coordinate`` values to take into account for smoothed elevation.
     ///   - allowedGradeDelta: The maximum allowed grade between adjacent ``GradeSegment`` values. In normalized range [0,1].
-    init(coords: [Coordinate], smoothingSampleCount: Int, allowedGradeDelta: Double) {
+    init(coords: [Coordinate], smoothingSampleCount: Int, allowedGradeDelta: Double) throws {
         let coords = coords.smoothedElevation(sampleCount: smoothingSampleCount)
         let zippedCoords = zip(coords, coords.dropFirst())
         let distances: [Double] = [0.0] + zippedCoords.map {
@@ -131,7 +135,7 @@ public extension TrackGraph {
             acc.append(DistanceHeight(distance: distanceSoFar, elevation: segment.coordinate.elevation))
         }
         self.heightMap = heightmap
-        self.gradeSegments = heightmap.gradeSegments().flatten(maxDelta: allowedGradeDelta)
+        self.gradeSegments = try heightmap.gradeSegments().flatten(maxDelta: allowedGradeDelta)
     }
 }
 
@@ -183,14 +187,14 @@ private extension Collection<Coordinate> {
 }
 
 private extension Array where Element == DistanceHeight {
-    func calculateGradeSegments(_ segmentation: ElevationSmoothing) -> [GradeSegment] {
+    func calculateGradeSegments(_ segmentation: ElevationSmoothing) throws -> [GradeSegment] {
         switch segmentation {
         case .segmentation(let length):
             return calculateGradeSegments(segmentLength: length)
         case .smoothing(let smoothingValue):
             return calculateGradeSegments(smoothingValue)
         case .combined(smoothingSampleCount: _, maxGradeDelta: let maxGradeDelta):
-            return self.gradeSegments().flatten(maxDelta: maxGradeDelta)
+            return try self.gradeSegments().flatten(maxDelta: maxGradeDelta)
         }
     }
 
@@ -199,8 +203,10 @@ private extension Array where Element == DistanceHeight {
 
         let trackDistance = self[endIndex - 1].distance
         guard trackDistance >= segmentLength else {
-            if let prevHeight = height(at: 0), let currentHeight = height(at: trackDistance) {
-                return [.init(start: 0, end: trackDistance, grade: (currentHeight - prevHeight) / trackDistance, elevationAtStart: prevHeight)]
+            if let prevHeight = height(at: 0),
+               let currentHeight = height(at: trackDistance),
+               let segment = GradeSegment(start: 0, end: trackDistance, elevationAtStart: prevHeight, elevationAtEnd: currentHeight) {
+                return [segment]
             }
             return []
         }
@@ -208,13 +214,17 @@ private extension Array where Element == DistanceHeight {
         var previousHeight: Double = self[0].elevation
         for distance in stride(from: segmentLength, to: trackDistance, by: segmentLength) {
             guard let height = height(at: distance) else { break }
-            gradeSegments.append(.init(start: distance - segmentLength, end: distance, elevationAtStart: previousHeight, elevationAtEnd: height))
+            if let segment = GradeSegment(start: distance - segmentLength, end: distance, elevationAtStart: previousHeight, elevationAtEnd: height) {
+                gradeSegments.append(segment)
+            }
             previousHeight = height
         }
         if let last = gradeSegments.last,
            last.end < trackDistance {
-            if let prevHeight = height(at: last.end), let currentHeight = height(at: trackDistance) {
-                gradeSegments.append(.init(start: last.end, end: trackDistance, elevationAtStart: prevHeight, elevationAtEnd: currentHeight))
+            if let prevHeight = height(at: last.end),
+               let currentHeight = height(at: trackDistance),
+            let segment = GradeSegment(start: last.end, end: trackDistance, elevationAtStart: prevHeight, elevationAtEnd: currentHeight) {
+                gradeSegments.append(segment)
             }
         }
         return gradeSegments.reduce(into: []) { joined, segment in
@@ -247,7 +257,7 @@ private extension Array where Element == DistanceHeight {
 
             updateHeightMap.append(.init(distance: self[idx].distance, elevation: elevation))
         }
-        let result = zip(updateHeightMap, updateHeightMap.dropFirst()).map { cur, next in
+        let result = zip(updateHeightMap, updateHeightMap.dropFirst()).compactMap { cur, next in
             return GradeSegment(start: cur.distance, end: next.distance, grade: (next.elevation - cur.elevation) / (next.distance - cur.distance), elevationAtStart: cur.elevation)
         }
         return result

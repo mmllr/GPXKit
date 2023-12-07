@@ -13,6 +13,8 @@ public enum GPXParserError: Error, Equatable {
     /// The provided xml could not be parsed. Contains the underlying NSError from the XMLParser along with the xml
     /// files line number where the error occurred.
     case parseError(NSError, Int)
+    /// The elevation smoothing failed. See ``ElevationSmoothing`` for details.
+    case smoothingError
 }
 
 internal enum GPXTags: String {
@@ -56,13 +58,17 @@ public final class GPXFileParser {
 
     /// Parses the GPX xml.
     /// - Returns: A ``Result`` of the ``GPXTrack`` in the success or an ``GPXParserError`` in the failure case.
-    /// - Parameter elevationSmoothing: The ``ElevationSmoothing`` in meters for the grade segments. Defaults to ``ElevationSmoothing/segmentation(_:) `` with 50 meters..
+    /// - Parameter elevationSmoothing: The ``ElevationSmoothing`` in meters for the grade segments. Defaults to ``ElevationSmoothing/segmentation(_:)`` with 50 meters..
     public func parse(elevationSmoothing: ElevationSmoothing = .segmentation(50)) -> Result<GPXTrack, GPXParserError> {
         let parser = BasicXMLParser(xml: xml)
         switch parser.parse() {
         case let .success(root):
-            let track = parseRoot(node: root, elevationSmoothing: elevationSmoothing)
-            return .success(track)
+            do {
+                let track = try parseRoot(node: root, elevationSmoothing: elevationSmoothing)
+                return .success(track)
+            } catch {
+                return .failure(.smoothingError)
+            }
         case let .failure(error):
             switch error {
             case .noContent:
@@ -73,9 +79,9 @@ public final class GPXFileParser {
         }
     }
 
-    private func parseRoot(node: XMLNode, elevationSmoothing: ElevationSmoothing) -> GPXTrack {
+    private func parseRoot(node: XMLNode, elevationSmoothing: ElevationSmoothing) throws -> GPXTrack {
         guard let trackNode = node.childFor(.track) ?? node.childFor(.route) else {
-            return GPXTrack(
+            return try GPXTrack(
                 date: node.childFor(.metadata)?.childFor(.time)?.date,
                 waypoints: parseWaypoints(node.childrenOfType(.waypoint)),
                 title: "",
@@ -87,7 +93,7 @@ public final class GPXFileParser {
         }
         let title = trackNode.childFor(.name)?.content ?? ""
         let isRoute = trackNode.name == GPXTags.route.rawValue
-        return GPXTrack(
+        return try GPXTrack(
             date: node.childFor(.metadata)?.childFor(.time)?.date,
             waypoints: parseWaypoints(node.childrenOfType(.waypoint)),
             title: title,
