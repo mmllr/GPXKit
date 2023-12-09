@@ -103,7 +103,8 @@ public extension Array where Element == Coordinate {
 
 public extension RandomAccessCollection where Element == Coordinate, Index == Int {
     func smoothedElevation(sampleCount: Int = 5) -> [Element] {
-        let smoothingSize = (sampleCount / 2).clamped(to: 2 ... (self.count / 2))
+        guard self.count > 1 else { return Array(self) }
+        let smoothingSize = (sampleCount / 2).clamped(to: .safe(lower: 2, upper: self.count / 2))
 
         return self.indices.reduce(into: [Element]()) { result, idx in
             let range = Swift.max(self.startIndex, idx - smoothingSize)...Swift.min(idx + smoothingSize, self.endIndex-1)
@@ -153,5 +154,11 @@ public extension [GradeSegment] {
 fileprivate extension Comparable {
     func clamped(to limits: ClosedRange<Self>) -> Self {
         min(max(self, limits.lowerBound), limits.upperBound)
+    }
+}
+
+extension ClosedRange {
+    static func safe(lower: Bound, upper: Bound) -> Self {
+        Swift.min(lower, upper) ... Swift.max(lower, upper)
     }
 }

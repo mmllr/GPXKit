@@ -94,4 +94,21 @@ final class ArrayExtensionsTests: XCTestCase {
 
         XCTAssertNoDifference(0, actual.filter { $0.grade.isNaN }.count)
     }
+
+    func testSmoothingElevationOnSmallCollections() {
+        let start = Coordinate.leipzig.offset(elevation: 200)
+        let end = start.offset(
+            north: Double.random(in: 100 ... 1000),
+            east: Double.random(in: 100 ... 1000),
+            elevation: Double.random(in: 500 ... 550)
+        )
+
+        XCTAssertNoDifference([], [Coordinate]().smoothedElevation(sampleCount: Int.random(in: 2...200)))
+        XCTAssertNoDifference([start], [start].smoothedElevation(sampleCount: Int.random(in: 5...200)))
+
+        let coords: [Coordinate] = [start, end]
+        let avg = coords.map(\.elevation).reduce(0, +) / Double(coords.count)
+
+        XCTAssertNoDifference([.init(latitude: start.latitude, longitude: start.longitude, elevation: avg), .init(latitude: end.latitude, longitude: end.longitude, elevation: avg)], coords.smoothedElevation(sampleCount: 50))
+    }
 }
