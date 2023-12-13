@@ -107,46 +107,83 @@ public extension RandomAccessCollection where Element == Coordinate, Index == In
         let smoothingSize = (sampleCount / 2).clamped(to: .safe(lower: 2, upper: self.count / 2))
 
         return self.indices.reduce(into: [Element]()) { result, idx in
-            let range = Swift.max(self.startIndex, idx - smoothingSize)...Swift.min(idx + smoothingSize, self.endIndex-1)
+            let range = range(idx: idx, smoothingSize: smoothingSize, isLap: self.isLap)
             var updated = self[idx]
-            updated.elevation = self[range].map(\.elevation).reduce(0, +) / Double(range.count)
+            updated.elevation = averageElevation(range: range)
 
             result.append(updated)
         }
+    }
+    
+    /// Returns `true` if the distance between the first and the last is less than 50 meters. Returns `false` for empty collections.
+    var isLap: Bool {
+        guard let first, let last else { return false }
+        return first.distance(to: last) < 50
+    }
+
+    private func range(idx: Int, smoothingSize: Int, isLap: Bool) -> ClosedRange<Int> {
+        if isLap {
+            idx - smoothingSize ... idx + smoothingSize
+        } else {
+            Swift.max(self.startIndex, idx - smoothingSize)...Swift.min(idx + smoothingSize, self.endIndex-1)
+        }
+    }
+
+    private func averageElevation(range: ClosedRange<Int>) -> Double {
+        if range.lowerBound >= self.startIndex && range.upperBound < self.endIndex {
+            return self[range].map(\.elevation).reduce(0, +) / Double(range.count)
+        }
+        var average: Double = 0
+        for idx in range {
+            if idx < self.startIndex {
+                average += self[(idx + self.count) % self.count].elevation
+            } else if idx >= self.endIndex {
+                average += self[idx % self.count].elevation
+            } else {
+                average += self[idx].elevation
+            }
+        }
+        return average / Double(range.count)
     }
 }
 
 public extension [GradeSegment] {
     func flatten(maxDelta: Double) throws -> Self {
+        guard !isEmpty else { return self }
         var result: [Element] = []
         for idx in self.indices {
             var segment = self[idx]
             if let previous = result.last {
-                if segment.elevationAtStart != previous.elevationAtEnd {
-                    let delta = (segment.elevationAtStart - previous.elevationAtEnd)
-                    segment.elevationAtStart -= delta
-                    segment.elevationAtEnd -= delta
-                    // TODO: Test me!
-                    if segment.elevationAtStart < 0 {
-                        segment.elevationAtStart = 0
-                    }
-                    if segment.elevationAtEnd < 0 {
-                        segment.elevationAtEnd = 0
-                    }
-                }
-                let deltaSlope = segment.grade - previous.grade
-                if abs(deltaSlope) > maxDelta {
-                    if deltaSlope >= 0 {
-                        try segment.adjust(grade: previous.grade + maxDelta)
-                    } else if deltaSlope < 0 {
-                        try segment.adjust(grade: previous.grade - maxDelta)
-                    }
-                }
-//                assert((segment.grade - previous.grade).magnitude - maxDelta < 0.1)
+                try segment.alignGrades(previous: previous, maxDelta: maxDelta)
             }
             result.append(segment)
         }
         return result
+    }
+}
+
+extension GradeSegment {
+    mutating func alignGrades(previous: GradeSegment, maxDelta: Double) throws {
+        if elevationAtStart != previous.elevationAtEnd {
+            let delta = (elevationAtStart - previous.elevationAtEnd)
+            elevationAtStart -= delta
+            elevationAtEnd -= delta
+        }
+        let deltaSlope = grade - previous.grade
+        if abs(deltaSlope) > maxDelta {
+            if deltaSlope >= 0 {
+                try adjust(grade: previous.grade + maxDelta)
+            } else if deltaSlope < 0 {
+                try adjust(grade: previous.grade - maxDelta)
+            }
+            // TODO: Test me!
+            if elevationAtStart < 0 {
+                elevationAtStart = 0
+            }
+            if elevationAtEnd < 0 {
+                elevationAtEnd = 0
+            }
+        }
     }
 }
 
