@@ -75,7 +75,7 @@ public extension TrackGraph {
         switch elevationSmoothing {
         case .combined(let smoothingSampleCount, let maxGradeDelta):
             try self.init(coords: coords, smoothingSampleCount: smoothingSampleCount, allowedGradeDelta: maxGradeDelta)
-        case .segmentation, .smoothing:
+        case .segmentation, .smoothing, .none:
             let zippedCoords = zip(coords, coords.dropFirst())
             let distances: [Double] = [0.0] + zippedCoords.map {
                 $0.distance(to: $1)
@@ -189,6 +189,8 @@ private extension Collection<Coordinate> {
 private extension Array where Element == DistanceHeight {
     func calculateGradeSegments(_ segmentation: ElevationSmoothing) throws -> [GradeSegment] {
         switch segmentation {
+        case .none:
+            return gradeSegments()
         case .segmentation(let length):
             return calculateGradeSegments(segmentLength: length)
         case .smoothing(let smoothingValue):

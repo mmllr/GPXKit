@@ -1,6 +1,7 @@
 import Foundation
 
 public enum ElevationSmoothing: Sendable, Hashable {
+    case none
     // length in meters
     case segmentation(Double)
     case smoothing(Int)
