@@ -176,7 +176,7 @@ extension XCTest {
         XCTAssertNoDifference(expected.title, actual.title, file: file, line: line)
         XCTAssertNoDifference(expected.description, actual.description, file: file, line: line)
         XCTAssertNoDifference(expected.keywords, actual.keywords, file: file, line: line)
-        XCTAssertNoDifference(expected.trackPoints, actual.trackPoints, file: file, line: line)
+        XCTAssertNoDifference(expected.tracks, actual.tracks, file: file, line: line)
         XCTAssertNoDifference(expected.graph, actual.graph, file: file, line: line)
         XCTAssertNoDifference(expected.bounds, actual.bounds, file: file, line: line)
     }

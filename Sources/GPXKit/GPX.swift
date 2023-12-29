@@ -19,28 +19,29 @@ public struct GPX: Hashable, Sendable {
     public var title: String
     /// Description of the gpx track
     public var description: String?
-    /// Array of latitude/longitude/elevation stream values
-    public var trackPoints: [GPXPoint]
+    /// Array of tracks
+    public var tracks: [GPXTrack]
     /// `TrackGraph` containing elevation gain, overall distance and the height map of a track.
     public var graph: TrackGraph
     /// The bounding box enclosing the track
     public var bounds: GeoBounds
     /// Keywords describing a gpx track
     public var keywords: [String]
-
+    
     /// Initializes a GPXTrack.
     /// - Parameters:
     ///   - date: The date stamp of the track. Defaults to nil.
     ///   - waypoints: Array of ``Waypoint`` values. Defaults to nil.
     ///   - title: String describing the track.
-    ///   - trackPoints: Array of ``GPXPoint``s describing the route.
+    ///   - tracks: Array of ``GPXTrack``s describing the routes.
     ///   - keywords: Array of `String`s with keywords. Default is an empty array (no keywords).
-    public init(date: Date? = nil, waypoints: [Waypoint]? = nil, title: String, description: String? = nil, trackPoints: [GPXPoint], keywords: [String] = []) {
+    public init(date: Date? = nil, waypoints: [Waypoint]? = nil, title: String, description: String? = nil, tracks: [GPXTrack], keywords: [String] = []) {
+        let trackPoints = tracks.flatMap{$0.trackPoints}
         self.date = date
         self.waypoints = waypoints
         self.title = title
         self.description = description
-        self.trackPoints = trackPoints
+        self.tracks = tracks
         self.graph = TrackGraph(coords: trackPoints.map(\.coordinate))
         self.bounds = trackPoints.bounds()
         self.keywords = keywords
@@ -51,17 +52,22 @@ public struct GPX: Hashable, Sendable {
     ///   - date: The date stamp of the track. Defaults to nil.
     ///   - waypoints: Array of ``Waypoint`` values. Defaults to nil.
     ///   - title: String describing the track.
-    ///   - trackPoints: Array of ``GPXPoint``s describing the route.
+    ///   - tracks: Array of ``GPXTrack``s describing the routes.
     ///   - keywords: Array of `String`s with keywords. Default is an empty array (no keywords).
     ///   - elevationSmoothing: The ``ElevationSmoothing`` in meters for the grade segments. Defaults to ``ElevationSmoothing/segmentation(_:)`` with 50 meters.
-    public init(date: Date? = nil, waypoints: [Waypoint]? = nil, title: String, description: String? = nil, trackPoints: [GPXPoint], keywords: [String] = [], elevationSmoothing: ElevationSmoothing = .segmentation(50)) throws {
+    public init(date: Date? = nil, waypoints: [Waypoint]? = nil, title: String, description: String? = nil, tracks: [GPXTrack], keywords: [String] = [], elevationSmoothing: ElevationSmoothing = .segmentation(50)) throws {
+        let trackPoints = tracks.flatMap{$0.trackPoints}
         self.date = date
         self.waypoints = waypoints
         self.title = title
         self.description = description
-        self.trackPoints = trackPoints
+        self.tracks = tracks
         self.graph = try TrackGraph(points: trackPoints, elevationSmoothing: elevationSmoothing)
         self.bounds = trackPoints.bounds()
         self.keywords = keywords
+    }
+    
+    public var trackPoints : [GPXPoint] {
+        return self.tracks.flatMap{$0.trackPoints}
     }
 }

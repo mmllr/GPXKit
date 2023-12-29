@@ -20,8 +20,8 @@ final class CombineExtensionTests: XCTestCase {
                     XCTFail(error.localizedDescription)
                 }
                 expectation.fulfill()
-            } receiveValue: { track in
-                self.assertTracksAreEqual(testTrack, track)
+            } receiveValue: { gpx in
+                self.assertTracksAreEqual(testTrack, gpx)
             }
 
         wait(for: [expectation], timeout: 10)
@@ -39,8 +39,8 @@ final class CombineExtensionTests: XCTestCase {
                     XCTFail(error.localizedDescription)
                 }
                 expectation.fulfill()
-            } receiveValue: { track in
-                self.assertTracksAreEqual(testTrack, track)
+            } receiveValue: { gpx in
+                self.assertTracksAreEqual(testTrack, gpx)
             }
 
         wait(for: [expectation], timeout: 10)

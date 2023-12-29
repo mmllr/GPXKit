@@ -66,9 +66,9 @@ public final class GPXExporter {
     }
 
     private var trackXML: String {
-        guard !track.trackPoints.isEmpty else { return "" }
+        guard !track.getTrackPoints().isEmpty else { return "" }
         return GPXTags.trackSegment.embed(
-            track.trackPoints.map { point in
+            track.getTrackPoints().map { point in
                 let attributes = [
                     GPXAttributes.latitude.assign("\"\(point.coordinate.latitude)\""),
                     GPXAttributes.longitude.assign("\"\(point.coordinate.longitude)\"")
