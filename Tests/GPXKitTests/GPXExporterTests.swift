@@ -42,7 +42,7 @@ final class GPXExporterTests: XCTestCase {
 
     func testExportingAnEmptyTrackWithDateAndTitleResultsInAnEmptyGPXFile() {
         let date = Date()
-        let track: GPXTrack = GPXTrack(date: date, title: "Track title", description: "Track description", trackPoints: [])
+        let track: GPX = GPX(date: date, title: "Track title", description: "Track description", trackPoints: [])
         sut = GPXExporter(track: track)
 
         let expectedContent: GPXKit.XMLNode = XMLNode(
@@ -65,7 +65,7 @@ final class GPXExporterTests: XCTestCase {
 
     func testItWillNotExportANilDescription() {
         let date = Date()
-        let track: GPXTrack = GPXTrack(date: date, title: "Track title", description: nil, trackPoints: [])
+        let track: GPX = GPX(date: date, title: "Track title", description: nil, trackPoints: [])
         sut = GPXExporter(track: track)
 
         let expectedContent: GPXKit.XMLNode = XMLNode(
@@ -86,7 +86,7 @@ final class GPXExporterTests: XCTestCase {
     }
 
     func testExportingAnEmptyTrackWithoutDateResultsInAnEmptyGPXFileWithoutTitleAndDate() {
-        let track: GPXTrack = GPXTrack(date: nil, title: "Track title", description: "Description", trackPoints: [], keywords: ["one", "two"])
+        let track: GPX = GPX(date: nil, title: "Track title", description: "Description", trackPoints: [], keywords: ["one", "two"])
         sut = GPXExporter(track: track)
 
         let expectedContent: GPXKit.XMLNode = XMLNode(
@@ -109,7 +109,7 @@ final class GPXExporterTests: XCTestCase {
 
     func testExportingANonEmptyTrackWithDates() {
         let date = Date()
-        let track: GPXTrack = GPXTrack(
+        let track: GPX = GPX(
                 date: date,
                 title: "Track title",
                 description: "Non empty track",
@@ -153,7 +153,7 @@ final class GPXExporterTests: XCTestCase {
     }
 
     func testItWillNotExportTheDatesFromTrack() {
-        let track = GPXTrack(date: Date(),
+        let track = GPX(date: Date(),
                 title: "test track",
                 trackPoints: [
                     TrackPoint(coordinate: .random, date: Date()),
@@ -182,7 +182,7 @@ final class GPXExporterTests: XCTestCase {
     }
 
     func testItWillNotExportNilWaypoints() {
-        let track: GPXTrack = GPXTrack(date: Date(), waypoints: nil, title: "Track title", trackPoints: [])
+        let track: GPX = GPX(date: Date(), waypoints: nil, title: "Track title", trackPoints: [])
         sut = GPXExporter(track: track, shouldExportDate: false)
         let expectedContent: GPXKit.XMLNode = XMLNode(
             name: GPXTags.gpx.rawValue,
@@ -204,7 +204,7 @@ final class GPXExporterTests: XCTestCase {
             Waypoint(coordinate: .dehner, name: "Dehner", comment: "Dehner comment", description: "Dehner description"),
             Waypoint(coordinate: .kreisel, name: "Kreisel", comment: "Kreisel comment", description: "Kreisel description")
         ]
-        let track: GPXTrack = GPXTrack(date: Date(), waypoints: waypoints, title: "Track title", trackPoints: [])
+        let track: GPX = GPX(date: Date(), waypoints: waypoints, title: "Track title", trackPoints: [])
         sut = GPXExporter(track: track, shouldExportDate: false)
         let expectedContent: GPXKit.XMLNode = XMLNode(
             name: GPXTags.gpx.rawValue,

@@ -167,8 +167,8 @@ extension XCTest {
     }
 
     func assertTracksAreEqual(
-        _ expected: GPXTrack,
-        _ actual: GPXTrack,
+        _ expected: GPX,
+        _ actual: GPX,
         file: StaticString = #filePath,
         line: UInt = #line
     ) {

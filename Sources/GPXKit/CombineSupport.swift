@@ -7,7 +7,7 @@ extension GPXFileParser {
     /// Publisher for bridging into Combine.
     ///
     /// An AnyPublisher with Output `GPXTrack` and Failure of `GPXParserError`.
-    public var publisher: AnyPublisher<GPXTrack, GPXParserError> {
+    public var publisher: AnyPublisher<GPX, GPXParserError> {
         Future { promise in
             promise(self.parse())
         }.eraseToAnyPublisher()
@@ -28,7 +28,7 @@ extension GPXFileParser {
     ///        /// handle parsing error
     ///    }
     /// ```
-    public class func load(from url: URL) -> AnyPublisher<GPXTrack, GPXParserError> {
+    public class func load(from url: URL) -> AnyPublisher<GPX, GPXParserError> {
         guard let parser = GPXFileParser(url: url) else { return Fail(error: GPXParserError.invalidGPX).eraseToAnyPublisher() }
         return parser.publisher
     }
@@ -48,7 +48,7 @@ extension GPXFileParser {
     ///        /// handle parsing error
     ///    }
     /// ```
-    public class func load(from data: Data) -> AnyPublisher<GPXTrack, GPXParserError> {
+    public class func load(from data: Data) -> AnyPublisher<GPX, GPXParserError> {
         guard let parser = GPXFileParser(data: data) else { return Fail(error: GPXParserError.invalidGPX).eraseToAnyPublisher() }
         return parser.publisher
     }

@@ -8,7 +8,7 @@ import FoundationXML
 class GPXParserTests: XCTestCase {
     private var sut: GPXFileParser!
     private var parseError: GPXParserError?
-    private var result: GPXTrack?
+    private var result: GPX?
 
     private func parseXML(_ xml: String) {
         sut = GPXFileParser(xmlString: xml)
@@ -89,7 +89,7 @@ class GPXParserTests: XCTestCase {
             ),
         ]
 
-        try assertTracksAreEqual(GPXTrack(
+        try assertTracksAreEqual(GPX(
             date: expectedDate(for: "2020-03-18T12:39:47Z"),
             title: "Haus- und Seenrunde Ausdauer",
             trackPoints: expected
@@ -118,7 +118,7 @@ class GPXParserTests: XCTestCase {
             ),
         ]
 
-        try assertTracksAreEqual(GPXTrack(
+        try assertTracksAreEqual(GPX(
             date: expectedDate(for: "2020-03-18T12:39:47Z"),
             title: "Haus- und Seenrunde Ausdauer",
             description: "Track description",
@@ -148,7 +148,7 @@ class GPXParserTests: XCTestCase {
             ),
         ]
 
-        try assertTracksAreEqual(GPXTrack(
+        try assertTracksAreEqual(GPX(
             date: expectedDate(for: "2020-03-18T12:39:47Z"),
             title: "Haus- und Seenrunde Ausdauer",
             description: "Track description",
@@ -188,7 +188,7 @@ class GPXParserTests: XCTestCase {
             ),
         ]
 
-        try assertTracksAreEqual(GPXTrack(
+        try assertTracksAreEqual(GPX(
             date: nil,
             title: "Haus- und Seenrunde Ausdauer",
             trackPoints: expected
@@ -223,7 +223,7 @@ class GPXParserTests: XCTestCase {
             ),
         ]
 
-        try assertTracksAreEqual(GPXTrack(
+        try assertTracksAreEqual(GPX(
             date: nil,
             title: "Haus- und Seenrunde Ausdauer",
             trackPoints: expected
@@ -441,7 +441,7 @@ class GPXParserTests: XCTestCase {
             ),
         ]
 
-        try assertTracksAreEqual(GPXTrack(
+        try assertTracksAreEqual(GPX(
             date: nil,
             title: "Haus- und Seenrunde Ausdauer",
             trackPoints: expected
@@ -480,7 +480,7 @@ class GPXParserTests: XCTestCase {
         ]
 
         try assertTracksAreEqual(
-            GPXTrack(
+            GPX(
                 date: nil,
                 title: "",
                 trackPoints: expected
@@ -598,7 +598,7 @@ class GPXParserTests: XCTestCase {
             ]
 
             try assertTracksAreEqual(
-                GPXTrack(
+                GPX(
                     date: nil,
                     title: "",
                     trackPoints: expected

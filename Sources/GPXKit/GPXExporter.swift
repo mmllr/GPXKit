@@ -5,7 +5,7 @@ import FoundationXML
 
 /// A class for exporting a `GPXTrack` to an xml string.
 public final class GPXExporter {
-    private let track: GPXTrack
+    private let track: GPX
     private let exportDate: Bool
 
     /// Initializes a GPXExporter
@@ -14,7 +14,7 @@ public final class GPXExporter {
     ///   - shouldExportDate: Flag indicating whether it should export the timestamps in the track. Set it to false if you want to omit the values. This would decrease the exported xml's file size and protects privacy. Defaults to true.
     ///
     /// If the track cannot be exported, the resulting ``GPXExporter/xmlString`` property of the exporter is an empty GPX track xml.
-    public init(track: GPXTrack, shouldExportDate: Bool = true) {
+    public init(track: GPX, shouldExportDate: Bool = true) {
         self.track = track
         self.exportDate = shouldExportDate
     }

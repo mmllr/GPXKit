@@ -4,7 +4,7 @@ import GPXKit
 import CustomDump
 
 final class GPXTrackTests: XCTestCase {
-    var sut: GPXTrack!
+    var sut: GPX!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -16,7 +16,7 @@ final class GPXTrackTests: XCTestCase {
     }
 
     private func givenTrack(with coordinates: [Coordinate]) {
-        sut = GPXTrack(
+        sut = GPX(
             title: "Track",
             trackPoints: coordinates.map { TrackPoint(coordinate: $0) }
         )
@@ -68,7 +68,7 @@ final class GPXTrackTests: XCTestCase {
         let second: Coordinate = first.offset(distance: 100, grade: 0.2)
         let third: Coordinate = second.offset(distance: 100, grade: -0.3)
         let fourth: Coordinate = third.offset(distance: 50, grade: 0.06)
-        sut = try GPXTrack(title: "Track", trackPoints: [
+        sut = try GPX(title: "Track", trackPoints: [
             start,
             first,
             second,
