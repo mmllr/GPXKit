@@ -151,6 +151,64 @@ final class GPXExporterTests: XCTestCase {
             XCTFail(error.localizedDescription)
         }
     }
+    
+    func testExportingAMultipleTracksWithMultipleSegments() {
+        let date = Date()
+        let gpx: GPX = GPX(
+                date: date,
+                title: "Track title",
+                description: "Non empty track",
+                tracks: [
+                    GPXTrack(trackSegments: [
+                        GPXSegment(trackPoints: givenTrackPoints(3)),
+                        GPXSegment(trackPoints: givenTrackPoints(3))
+                    ]),
+                    GPXTrack(trackSegments: [
+                        GPXSegment(trackPoints: givenTrackPoints(3)),
+                        GPXSegment(trackPoints: givenTrackPoints(3))
+                    ])
+                ],
+                keywords: ["keyword1", "keyword2", "keyword3"])
+        sut = GPXExporter(track: gpx)
+
+        parseResult(sut.xmlString)
+
+        let expectedContent: GPXKit.XMLNode = XMLNode(
+                name: GPXTags.gpx.rawValue,
+                attributes: expectedHeaderAttributes,
+                children: [
+                    XMLNode(name: GPXTags.metadata.rawValue, children: [
+                        XMLNode(name: GPXTags.time.rawValue, content: expectedString(for: date)),
+                        XMLNode(name: GPXTags.keywords.rawValue, content: "keyword1 keyword2 keyword3")
+                    ]),
+                    XMLNode(name: GPXTags.track.rawValue, children: [
+                        XMLNode(name: GPXTags.name.rawValue, content: gpx.title),
+                        XMLNode(name: GPXTags.description.rawValue, content: "Non empty track"),
+                        XMLNode(name: GPXTags.trackSegment.rawValue,
+                                children: gpx.tracks[0].trackSegments[0].trackPoints.map {
+                                    $0.expectedXMLNode(withDate: true)
+                                }),
+                        XMLNode(name: GPXTags.trackSegment.rawValue,
+                                children: gpx.tracks[0].trackSegments[1].trackPoints.map {
+                                    $0.expectedXMLNode(withDate: true)
+                                })
+                    ]),
+                    XMLNode(name: GPXTags.track.rawValue, children: [
+                        XMLNode(name: GPXTags.name.rawValue, content: gpx.title),
+                        XMLNode(name: GPXTags.description.rawValue, content: "Non empty track"),
+                        XMLNode(name: GPXTags.trackSegment.rawValue,
+                                children: gpx.tracks[1].trackSegments[0].trackPoints.map {
+                                    $0.expectedXMLNode(withDate: true)
+                                }),
+                        XMLNode(name: GPXTags.trackSegment.rawValue,
+                                children: gpx.tracks[1].trackSegments[1].trackPoints.map {
+                                    $0.expectedXMLNode(withDate: true)
+                                })
+                    ])
+                ])
+
+        assertNodesAreEqual(expectedContent, result)
+    }
 
     func testItWillNotExportTheDatesFromTrack() {
         let gpx = GPX(date: Date(),
