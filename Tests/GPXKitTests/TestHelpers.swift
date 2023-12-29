@@ -54,11 +54,11 @@ func expectedString(for date: Date) -> String {
     return iso8601Formatter.string(from: date)
 }
 
-func givenTrackPoints(_ count: Int) -> [TrackPoint] {
+func givenTrackPoints(_ count: Int) -> [GPXPoint] {
     let date = Date()
 
     return (1..<count).map { sec in
-        TrackPoint(coordinate: .random, date: date + TimeInterval(sec))
+        GPXPoint(coordinate: .random, date: date + TimeInterval(sec))
     }
 }
 
@@ -125,7 +125,7 @@ extension TestGPXPoint {
 }
 
 
-extension TrackPoint {
+extension GPXPoint {
     func expectedXMLNode(withDate: Bool = false) -> GPXKit.XMLNode {
         XMLNode(name: GPXTags.trackPoint.rawValue,
                 attributes: [

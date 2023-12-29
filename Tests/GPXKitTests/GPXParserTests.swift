@@ -79,11 +79,11 @@ class GPXParserTests: XCTestCase {
         parseXML(testXMLWithoutExtensions)
 
         let expected = [
-            TrackPoint(
+            GPXPoint(
                 coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 114.2),
                 date: expectedDate(for: "2020-07-03T13:20:50.000Z")
             ),
-            TrackPoint(
+            GPXPoint(
                 coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
                 date: expectedDate(for: "2020-03-18T12:45:48Z")
             ),
@@ -100,7 +100,7 @@ class GPXParserTests: XCTestCase {
         parseXML(testXMLData)
 
         let expected = [
-            TrackPoint(
+            GPXPoint(
                 coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 114.2),
                 date: expectedDate(for: "2020-03-18T12:39:47Z"),
                 power: Measurement<UnitPower>(value: 42, unit: .watts),
@@ -108,7 +108,7 @@ class GPXParserTests: XCTestCase {
                 heartrate: 97,
                 temperature: Measurement<UnitTemperature>(value: 21, unit: .celsius)
             ),
-            TrackPoint(
+            GPXPoint(
                 coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
                 date: expectedDate(for: "2020-03-18T12:39:48Z"),
                 power: Measurement<UnitPower>(value: 272, unit: .watts),
@@ -130,7 +130,7 @@ class GPXParserTests: XCTestCase {
         parseXML(namespacedTestXMLData)
 
         let expected = [
-            TrackPoint(
+            GPXPoint(
                 coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 114.2),
                 date: expectedDate(for: "2020-03-18T12:39:47Z"),
                 power: Measurement<UnitPower>(value: 166, unit: .watts),
@@ -138,7 +138,7 @@ class GPXParserTests: XCTestCase {
                 heartrate: 90,
                 temperature: Measurement<UnitTemperature>(value: 22, unit: .celsius)
             ),
-            TrackPoint(
+            GPXPoint(
                 coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
                 date: expectedDate(for: "2020-03-18T12:39:48Z"),
                 power: Measurement<UnitPower>(value: 230, unit: .watts),
@@ -178,11 +178,11 @@ class GPXParserTests: XCTestCase {
         """)
 
         let expected = [
-            TrackPoint(
+            GPXPoint(
                 coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 114.2),
                 date: nil
             ),
-            TrackPoint(
+            GPXPoint(
                 coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
                 date: nil
             ),
@@ -213,11 +213,11 @@ class GPXParserTests: XCTestCase {
         """)
 
         let expected = [
-            TrackPoint(
+            GPXPoint(
                 coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 0),
                 date: nil
             ),
-            TrackPoint(
+            GPXPoint(
                 coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 0),
                 date: nil
             ),
@@ -431,11 +431,11 @@ class GPXParserTests: XCTestCase {
         """)
 
         let expected = [
-            TrackPoint(
+            GPXPoint(
                 coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 114.2),
                 date: nil
             ),
-            TrackPoint(
+            GPXPoint(
                 coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114),
                 date: nil
             ),
@@ -469,11 +469,11 @@ class GPXParserTests: XCTestCase {
         """)
 
         let expected = [
-            TrackPoint(
+            GPXPoint(
                 coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 114.2),
                 date: nil
             ),
-            TrackPoint(
+            GPXPoint(
                 coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
                 date: nil
             ),
@@ -587,11 +587,11 @@ class GPXParserTests: XCTestCase {
             """)
 
             let expected = [
-                TrackPoint(
+                GPXPoint(
                     coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 114.2),
                     date: nil
                 ),
-                TrackPoint(
+                GPXPoint(
                     coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
                     date: nil
                 ),

@@ -1,7 +1,7 @@
 import Foundation
 
 /// A value describing a single data point in a `GPXTrack`. A `TrackPoint` has the latitude, longitude and elevation data along with meta data such as a timestamp or power values.
-public struct TrackPoint: Hashable, Sendable {
+public struct GPXPoint: Hashable, Sendable {
     /// The ``Coordinate`` (latitude, longitude and elevation in meters)
     public var coordinate: Coordinate
     /// Optional date for a given point. This is the date stamp from a gpx file, recorded from a bicycle computer or running watch.
@@ -34,7 +34,7 @@ public struct TrackPoint: Hashable, Sendable {
     }
 }
 
-extension TrackPoint: GeoCoordinate {
+extension GPXPoint: GeoCoordinate {
     public var latitude: Double { coordinate.latitude }
     public var longitude: Double { coordinate.longitude }
 }

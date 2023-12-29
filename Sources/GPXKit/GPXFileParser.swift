@@ -120,10 +120,10 @@ public final class GPXFileParser {
         return node.childFor(.time)?.date
     }
 
-    private func parseSegment(_ segmentNodes: [XMLNode]) -> [TrackPoint] {
+    private func parseSegment(_ segmentNodes: [XMLNode]) -> [GPXPoint] {
         guard !segmentNodes.isEmpty else { return [] }
         
-        var trackPoints = segmentNodes.map{$0.childrenOfType(.trackPoint).compactMap(TrackPoint.init)}.flatMap { $0 }
+        var trackPoints = segmentNodes.map{$0.childrenOfType(.trackPoint).compactMap(GPXPoint.init)}.flatMap { $0 }
         checkForInvalidElevationAtStartAndEnd(trackPoints: &trackPoints)
         return correctElevationGaps(trackPoints: trackPoints)
             .map {
@@ -143,11 +143,11 @@ public final class GPXFileParser {
             }
     }
 
-    private func parseRoute(_ routeNode: XMLNode?) -> [TrackPoint] {
+    private func parseRoute(_ routeNode: XMLNode?) -> [GPXPoint] {
         guard let node = routeNode else {
             return []
         }
-        var trackPoints = node.childrenOfType(.routePoint).compactMap(TrackPoint.init)
+        var trackPoints = node.childrenOfType(.routePoint).compactMap(GPXPoint.init)
         checkForInvalidElevationAtStartAndEnd(trackPoints: &trackPoints)
         return correctElevationGaps(trackPoints: trackPoints)
             .map {
@@ -167,7 +167,7 @@ public final class GPXFileParser {
             }
     }
 
-    private func checkForInvalidElevationAtStartAndEnd(trackPoints: inout [TrackPoint]) {
+    private func checkForInvalidElevationAtStartAndEnd(trackPoints: inout [GPXPoint]) {
         if
             trackPoints.first?.coordinate.elevation == .greatestFiniteMagnitude,
             let firstValidElevation = trackPoints.first(where: { $0.coordinate.elevation != .greatestFiniteMagnitude })?
@@ -184,7 +184,7 @@ public final class GPXFileParser {
         }
     }
 
-    private func correctElevationGaps(trackPoints: [TrackPoint]) -> [TrackPoint] {
+    private func correctElevationGaps(trackPoints: [GPXPoint]) -> [GPXPoint] {
         struct Grade {
             var start: Coordinate
             var grade: Double
@@ -204,9 +204,9 @@ public final class GPXFileParser {
             let elevationDelta = end.coordinate.elevation - start.coordinate.elevation
             return Grade(start: start.coordinate, grade: elevationDelta / dist)
         }
-        var corrected: [[TrackPoint]] = zip(chunks.filter(\.0), grades).map { chunk, grade in
+        var corrected: [[GPXPoint]] = zip(chunks.filter(\.0), grades).map { chunk, grade in
             return chunk.1.map {
-                TrackPoint(
+                GPXPoint(
                     coordinate: .init(
                         latitude: $0.latitude,
                         longitude: $0.longitude,
@@ -221,7 +221,7 @@ public final class GPXFileParser {
             }
         }
 
-        var result: [TrackPoint] = []
+        var result: [GPXPoint] = []
         for chunk in chunks {
             if !corrected.isEmpty, chunk.0 {
                 result.append(contentsOf: corrected.removeFirst())
@@ -254,7 +254,7 @@ internal extension Waypoint {
     }
 }
 
-internal extension TrackPoint {
+internal extension GPXPoint {
     init?(trackNode: XMLNode) {
         guard
             let lat = trackNode.latitude,

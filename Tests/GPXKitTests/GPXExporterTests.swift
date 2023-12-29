@@ -156,10 +156,10 @@ final class GPXExporterTests: XCTestCase {
         let track = GPX(date: Date(),
                 title: "test track",
                 trackPoints: [
-                    TrackPoint(coordinate: .random, date: Date()),
-                    TrackPoint(coordinate: .random, date: Date()),
-                    TrackPoint(coordinate: .random, date: Date()),
-                    TrackPoint(coordinate: .random, date: Date()),
+                    GPXPoint(coordinate: .random, date: Date()),
+                    GPXPoint(coordinate: .random, date: Date()),
+                    GPXPoint(coordinate: .random, date: Date()),
+                    GPXPoint(coordinate: .random, date: Date()),
                 ])
         sut = GPXExporter(track: track, shouldExportDate: false)
         let expectedContent: GPXKit.XMLNode = XMLNode(

@@ -8,7 +8,8 @@ public enum ElevationSmoothing: Sendable, Hashable {
     case combined(smoothingSampleCount: Int, maxGradeDelta: Double)
 }
 
-/// A value describing a track of geo locations. It has the recorded ``TrackPoint``s, along with metadata of the track, such as recorded date, title, elevation gain, distance, height-map and bounds.
+
+/// A value describing a track of geo locations. It has the recorded ``GPXPoint``s, along with metadata of the track, such as recorded date, title, elevation gain, distance, height-map and bounds.
 public struct GPX: Hashable, Sendable {
     /// Optional date stamp of the gpx track
     public var date: Date?
@@ -19,7 +20,7 @@ public struct GPX: Hashable, Sendable {
     /// Description of the gpx track
     public var description: String?
     /// Array of latitude/longitude/elevation stream values
-    public var trackPoints: [TrackPoint]
+    public var trackPoints: [GPXPoint]
     /// `TrackGraph` containing elevation gain, overall distance and the height map of a track.
     public var graph: TrackGraph
     /// The bounding box enclosing the track
@@ -32,9 +33,9 @@ public struct GPX: Hashable, Sendable {
     ///   - date: The date stamp of the track. Defaults to nil.
     ///   - waypoints: Array of ``Waypoint`` values. Defaults to nil.
     ///   - title: String describing the track.
-    ///   - trackPoints: Array of ``TrackPoint``s describing the route.
+    ///   - trackPoints: Array of ``GPXPoint``s describing the route.
     ///   - keywords: Array of `String`s with keywords. Default is an empty array (no keywords).
-    public init(date: Date? = nil, waypoints: [Waypoint]? = nil, title: String, description: String? = nil, trackPoints: [TrackPoint], keywords: [String] = []) {
+    public init(date: Date? = nil, waypoints: [Waypoint]? = nil, title: String, description: String? = nil, trackPoints: [GPXPoint], keywords: [String] = []) {
         self.date = date
         self.waypoints = waypoints
         self.title = title
@@ -50,10 +51,10 @@ public struct GPX: Hashable, Sendable {
     ///   - date: The date stamp of the track. Defaults to nil.
     ///   - waypoints: Array of ``Waypoint`` values. Defaults to nil.
     ///   - title: String describing the track.
-    ///   - trackPoints: Array of ``TrackPoint``s describing the route.
+    ///   - trackPoints: Array of ``GPXPoint``s describing the route.
     ///   - keywords: Array of `String`s with keywords. Default is an empty array (no keywords).
     ///   - elevationSmoothing: The ``ElevationSmoothing`` in meters for the grade segments. Defaults to ``ElevationSmoothing/segmentation(_:)`` with 50 meters.
-    public init(date: Date? = nil, waypoints: [Waypoint]? = nil, title: String, description: String? = nil, trackPoints: [TrackPoint], keywords: [String] = [], elevationSmoothing: ElevationSmoothing = .segmentation(50)) throws {
+    public init(date: Date? = nil, waypoints: [Waypoint]? = nil, title: String, description: String? = nil, trackPoints: [GPXPoint], keywords: [String] = [], elevationSmoothing: ElevationSmoothing = .segmentation(50)) throws {
         self.date = date
         self.waypoints = waypoints
         self.title = title

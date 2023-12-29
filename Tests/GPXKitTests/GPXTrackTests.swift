@@ -18,7 +18,7 @@ final class GPXTrackTests: XCTestCase {
     private func givenTrack(with coordinates: [Coordinate]) {
         sut = GPX(
             title: "Track",
-            trackPoints: coordinates.map { TrackPoint(coordinate: $0) }
+            trackPoints: coordinates.map { GPXPoint(coordinate: $0) }
         )
     }
 
@@ -74,7 +74,7 @@ final class GPXTrackTests: XCTestCase {
             second,
             third,
             fourth
-        ].map { TrackPoint(coordinate: $0) }, elevationSmoothing: .segmentation(50))
+        ].map { GPXPoint(coordinate: $0) }, elevationSmoothing: .segmentation(50))
 
         let expected: [GradeSegment] = try [
             XCTUnwrap(.init(start: 0, end: 100, elevationAtStart: 100, elevationAtEnd: 109.98)),

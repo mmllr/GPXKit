@@ -22,8 +22,8 @@ final class TrackGraphTests: XCTestCase {
         super.tearDown()
     }
 
-    func givenAPoint(latitude: Double, longitude: Double, elevation: Double) -> TrackPoint {
-        return TrackPoint(
+    func givenAPoint(latitude: Double, longitude: Double, elevation: Double) -> GPXPoint {
+        return GPXPoint(
             coordinate: Coordinate(latitude: latitude, longitude: longitude, elevation: elevation),
             date: Date()
         )
@@ -102,7 +102,7 @@ final class TrackGraphTests: XCTestCase {
     }
 
     func testInitializationFromGPX() throws {
-        let points: [TrackPoint] = [
+        let points: [GPXPoint] = [
             givenAPoint(latitude: 51.2763320, longitude: 12.3767670, elevation: 1),
             givenAPoint(latitude: 51.2763700, longitude: 12.3767550, elevation: 1),
             givenAPoint(latitude: 51.2764100, longitude: 12.3767400, elevation: 1),
@@ -432,7 +432,7 @@ final class TrackGraphTests: XCTestCase {
             second,
             third,
             fourth,
-        ].map { TrackPoint(coordinate: $0) }, elevationSmoothing: .segmentation(50))
+        ].map { GPXPoint(coordinate: $0) }, elevationSmoothing: .segmentation(50))
 
         let expected: [GradeSegment] = try [
             XCTUnwrap(.init(start: 0, end: 100, grade: 0.1, elevationAtStart: 100)),

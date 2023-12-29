@@ -32,7 +32,7 @@ public struct TrackGraph: Hashable, Sendable {
     /// - Parameters:
     ///   - points: Array of `TrackPoint` values.
     ///   - gradeSegmentLength: The length of the grade segments in meters. Defaults to 25 meters. Adjacent segments with the same grade will be joined together.
-    public init(points: [TrackPoint], elevationSmoothing: ElevationSmoothing = .segmentation(50)) throws {
+    public init(points: [GPXPoint], elevationSmoothing: ElevationSmoothing = .segmentation(50)) throws {
         try self.init(coords: points.map { $0.coordinate }, elevationSmoothing: elevationSmoothing)
     }
 
