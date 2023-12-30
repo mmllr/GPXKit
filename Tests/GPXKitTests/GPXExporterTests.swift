@@ -42,7 +42,7 @@ final class GPXExporterTests: XCTestCase {
 
     func testExportingAnEmptyTrackWithDateAndTitleResultsInAnEmptyGPXFile() {
         let date = Date()
-        let gpx: GPX = GPX(date: date, title: "Track title", description: "Track description", tracks: [])
+        let gpx: GPX = GPX(date: date, title: "Track title", description: "Track description", tracks: [GPXTrack(trackSegments: [])])
         sut = GPXExporter(track: gpx)
 
         let expectedContent: GPXKit.XMLNode = XMLNode(
@@ -65,7 +65,7 @@ final class GPXExporterTests: XCTestCase {
 
     func testItWillNotExportANilDescription() {
         let date = Date()
-        let gpx: GPX = GPX(date: date, title: "Track title", description: nil, tracks: [])
+        let gpx: GPX = GPX(date: date, title: "Track title", description: nil, tracks: [GPXTrack(trackSegments: [])])
         sut = GPXExporter(track: gpx)
 
         let expectedContent: GPXKit.XMLNode = XMLNode(
@@ -86,7 +86,7 @@ final class GPXExporterTests: XCTestCase {
     }
 
     func testExportingAnEmptyTrackWithoutDateResultsInAnEmptyGPXFileWithoutTitleAndDate() {
-        let gpx: GPX = GPX(date: nil, title: "Track title", description: "Description", tracks: [], keywords: ["one", "two"])
+        let gpx: GPX = GPX(date: nil, title: "Track title", description: "Description", tracks: [GPXTrack(trackSegments: [])], keywords: ["one", "two"])
         sut = GPXExporter(track: gpx)
 
         let expectedContent: GPXKit.XMLNode = XMLNode(
@@ -241,7 +241,7 @@ final class GPXExporterTests: XCTestCase {
     }
 
     func testItWillNotExportNilWaypoints() {
-        let gpx: GPX = GPX(date: Date(), waypoints: nil, title: "Track title", tracks: [])
+        let gpx: GPX = GPX(date: Date(), waypoints: nil, title: "Track title", tracks: [GPXTrack(trackSegments: [])])
         sut = GPXExporter(track: gpx, shouldExportDate: false)
         let expectedContent: GPXKit.XMLNode = XMLNode(
             name: GPXTags.gpx.rawValue,
@@ -263,7 +263,7 @@ final class GPXExporterTests: XCTestCase {
             Waypoint(coordinate: .dehner, name: "Dehner", comment: "Dehner comment", description: "Dehner description"),
             Waypoint(coordinate: .kreisel, name: "Kreisel", comment: "Kreisel comment", description: "Kreisel description")
         ]
-        let gpx: GPX = GPX(date: Date(), waypoints: waypoints, title: "Track title", tracks: [])
+        let gpx: GPX = GPX(date: Date(), waypoints: waypoints, title: "Track title", tracks: [GPXTrack(trackSegments: [])])
         sut = GPXExporter(track: gpx, shouldExportDate: false)
         let expectedContent: GPXKit.XMLNode = XMLNode(
             name: GPXTags.gpx.rawValue,
