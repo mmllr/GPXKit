@@ -173,8 +173,6 @@ extension XCTest {
         line: UInt = #line
     ) {
         assertDatesEqual(expected.date, actual.date, file: file, line: line)
-        XCTAssertNoDifference(expected.title, actual.title, file: file, line: line)
-        XCTAssertNoDifference(expected.description, actual.description, file: file, line: line)
         XCTAssertNoDifference(expected.keywords, actual.keywords, file: file, line: line)
         XCTAssertNoDifference(expected.tracks, actual.tracks, file: file, line: line)
         XCTAssertNoDifference(expected.graph, actual.graph, file: file, line: line)

@@ -142,7 +142,6 @@ let namespacedTestXMLData = """
         """
 
 let testTrack = GPX(date: expectedDate(for: "2020-03-18T12:39:47Z"),
-                         title: "Haus- und Seenrunde Ausdauer",
                          tracks: [GPXTrack(name: "Haus- und Seenrunde Ausdauer",
                             trackSegments: [GPXSegment(trackPoints: [
                             GPXPoint(coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 114.2),
@@ -153,8 +152,6 @@ let testTrack = GPX(date: expectedDate(for: "2020-03-18T12:39:47Z"),
 )
 
 let testTrackWithoutTime = GPX(date: nil,
-                                    title: "Test track without time",
-                                    description: "Description",
                                tracks: [GPXTrack(name: "Test track without time", description: "Description", trackSegments: [GPXSegment(trackPoints: [
                                         GPXPoint(coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 114.2),
                                                    date: nil),

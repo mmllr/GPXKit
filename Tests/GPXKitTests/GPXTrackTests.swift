@@ -17,7 +17,6 @@ final class GPXTrackTests: XCTestCase {
 
     private func givenTrack(with coordinates: [Coordinate]) {
         sut = GPX(
-            title: "Track",
             tracks: [GPXTrack(trackSegments: [GPXSegment(trackPoints: coordinates.map { GPXPoint(coordinate: $0) })])]
         )
     }
@@ -69,7 +68,7 @@ final class GPXTrackTests: XCTestCase {
         let third: Coordinate = second.offset(distance: 100, grade: -0.3)
         let fourth: Coordinate = third.offset(distance: 50, grade: 0.06)
         
-        sut = try GPX(title: "Track", tracks: [GPXTrack(trackSegments: [GPXSegment(trackPoints: [
+        sut = try GPX(tracks: [GPXTrack(trackSegments: [GPXSegment(trackPoints: [
             start,
             first,
             second,

@@ -45,8 +45,6 @@ class GPXParserTests: XCTestCase {
         """)
 
         let sut = try XCTUnwrap(result)
-        XCTAssertNoDifference("", sut.title)
-        XCTAssertNoDifference(nil, sut.description)
         XCTAssertNoDifference(expectedDate(for: "2020-03-17T11:27:02Z"), sut.date)
         XCTAssertNoDifference([], sut.trackPoints)
         XCTAssertNoDifference([], sut.graph.heightMap)
@@ -71,8 +69,8 @@ class GPXParserTests: XCTestCase {
             """
         )
 
-        XCTAssertNoDifference("Frühjahrsgeschlender ach wie schön!", result?.title)
-        XCTAssertNoDifference("Track description", result?.description)
+        XCTAssertNoDifference("Frühjahrsgeschlender ach wie schön!", result?.tracks[0].name!)
+        XCTAssertNoDifference("Track description", result?.tracks[0].description!)
     }
 
     func testParsingTrackSegmentsWithoutExtensions() throws {
@@ -91,7 +89,6 @@ class GPXParserTests: XCTestCase {
 
         try assertTracksAreEqual(GPX(
             date: expectedDate(for: "2020-03-18T12:39:47Z"),
-            title: "Haus- und Seenrunde Ausdauer",
             tracks: [GPXTrack(name: "Haus- und Seenrunde Ausdauer", trackSegments: [GPXSegment(trackPoints: expected)])]
         ), XCTUnwrap(result))
     }
@@ -120,8 +117,6 @@ class GPXParserTests: XCTestCase {
 
         try assertTracksAreEqual(GPX(
             date: expectedDate(for: "2020-03-18T12:39:47Z"),
-            title: "Haus- und Seenrunde Ausdauer",
-            description: "Track description",
             tracks: [GPXTrack(name: "Haus- und Seenrunde Ausdauer", description: "Track description", trackSegments: [GPXSegment(trackPoints: expected)])]
         ), XCTUnwrap(result))
     }
@@ -150,8 +145,6 @@ class GPXParserTests: XCTestCase {
 
         try assertTracksAreEqual(GPX(
             date: expectedDate(for: "2020-03-18T12:39:47Z"),
-            title: "Haus- und Seenrunde Ausdauer",
-            description: "Track description",
             tracks: [GPXTrack(name: "Haus- und Seenrunde Ausdauer", description: "Track description", trackSegments: [GPXSegment(trackPoints: expected)])]
         ), XCTUnwrap(result))
     }
@@ -190,7 +183,6 @@ class GPXParserTests: XCTestCase {
 
         try assertTracksAreEqual(GPX(
             date: nil,
-            title: "Haus- und Seenrunde Ausdauer",
             tracks: [GPXTrack(name: "Haus- und Seenrunde Ausdauer", trackSegments: [GPXSegment(trackPoints: expected)])]
         ), XCTUnwrap(result))
     }
@@ -225,7 +217,6 @@ class GPXParserTests: XCTestCase {
 
         try assertTracksAreEqual(GPX(
             date: nil,
-            title: "Haus- und Seenrunde Ausdauer",
             tracks: [GPXTrack(name: "Haus- und Seenrunde Ausdauer", trackSegments: [GPXSegment(trackPoints: expected)])]
         ), XCTUnwrap(result))
     }
@@ -443,7 +434,6 @@ class GPXParserTests: XCTestCase {
 
         try assertTracksAreEqual(GPX(
             date: nil,
-            title: "Haus- und Seenrunde Ausdauer",
             tracks: [GPXTrack(trackSegments: [GPXSegment(trackPoints: expected)])]
         ), XCTUnwrap(result))
     }
@@ -482,7 +472,6 @@ class GPXParserTests: XCTestCase {
         try assertTracksAreEqual(
             GPX(
                 date: nil,
-                title: "",
                 tracks: [GPXTrack(trackSegments: [GPXSegment(trackPoints: expected)])]
             ),
             XCTUnwrap(result)
@@ -599,7 +588,6 @@ class GPXParserTests: XCTestCase {
             try assertTracksAreEqual(
                 GPX(
                     date: nil,
-                    title: "",
                     tracks: expected
                 ),
                 XCTUnwrap(result)

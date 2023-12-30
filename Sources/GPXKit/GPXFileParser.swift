@@ -86,8 +86,6 @@ public final class GPXFileParser {
             return try GPX(
                 date: node.childFor(.metadata)?.childFor(.time)?.date,
                 waypoints: parseWaypoints(node.childrenOfType(.waypoint)),
-                title: "",
-                description: nil,
                 tracks: [],
                 keywords: parseKeywords(node: node),
                 elevationSmoothing: elevationSmoothing
@@ -105,12 +103,9 @@ public final class GPXFileParser {
                 }
             }
         }
-        let title = trackNodes[0].childFor(.name)?.content ?? ""
         return try GPX(
             date: node.childFor(.metadata)?.childFor(.time)?.date,
             waypoints: parseWaypoints(node.childrenOfType(.waypoint)),
-            title: title,
-            description: trackNodes[0].childFor(.description)?.content,
             tracks: tracks,
             keywords: parseKeywords(node: node),
             elevationSmoothing: elevationSmoothing
