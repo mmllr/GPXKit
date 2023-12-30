@@ -136,10 +136,14 @@ public final class GPXFileParser {
 
     private func parseTrack(_ trackNode: XMLNode?) -> GPXTrack? {
         guard let node = trackNode else {return nil}
+
+        let name = node.childFor(.name)?.content
+        let description = node.childFor(.description)?.content
         let segmentsNodes = node.childrenOfType(.trackSegment)
-        if segmentsNodes.isEmpty {return nil}
+
+        if segmentsNodes.isEmpty && name == nil {return nil}
+
         var segments : [GPXSegment] = []
-        
         for segmentNode in segmentsNodes {
             var trackPoints = segmentNode.childrenOfType(.trackPoint).compactMap(GPXPoint.init)
             checkForInvalidElevationAtStartAndEnd(trackPoints: &trackPoints)
@@ -162,7 +166,7 @@ public final class GPXFileParser {
             segments.append(GPXSegment(trackPoints: trackPoints))
         }
         
-        return GPXTrack(trackSegments: segments)
+        return GPXTrack(name: name, description: description, trackSegments: segments)
     }
 
     private func parseRoute(_ routeNode: XMLNode?) -> GPXTrack? {

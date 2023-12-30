@@ -92,7 +92,7 @@ class GPXParserTests: XCTestCase {
         try assertTracksAreEqual(GPX(
             date: expectedDate(for: "2020-03-18T12:39:47Z"),
             title: "Haus- und Seenrunde Ausdauer",
-            tracks: [GPXTrack(trackSegments: [GPXSegment(trackPoints: expected)])]
+            tracks: [GPXTrack(name: "Haus- und Seenrunde Ausdauer", trackSegments: [GPXSegment(trackPoints: expected)])]
         ), XCTUnwrap(result))
     }
 
@@ -122,7 +122,7 @@ class GPXParserTests: XCTestCase {
             date: expectedDate(for: "2020-03-18T12:39:47Z"),
             title: "Haus- und Seenrunde Ausdauer",
             description: "Track description",
-            tracks: [GPXTrack(trackSegments: [GPXSegment(trackPoints: expected)])]
+            tracks: [GPXTrack(name: "Haus- und Seenrunde Ausdauer", description: "Track description", trackSegments: [GPXSegment(trackPoints: expected)])]
         ), XCTUnwrap(result))
     }
 
@@ -152,7 +152,7 @@ class GPXParserTests: XCTestCase {
             date: expectedDate(for: "2020-03-18T12:39:47Z"),
             title: "Haus- und Seenrunde Ausdauer",
             description: "Track description",
-            tracks: [GPXTrack(trackSegments: [GPXSegment(trackPoints: expected)])]
+            tracks: [GPXTrack(name: "Haus- und Seenrunde Ausdauer", description: "Track description", trackSegments: [GPXSegment(trackPoints: expected)])]
         ), XCTUnwrap(result))
     }
 
@@ -191,7 +191,7 @@ class GPXParserTests: XCTestCase {
         try assertTracksAreEqual(GPX(
             date: nil,
             title: "Haus- und Seenrunde Ausdauer",
-            tracks: [GPXTrack(trackSegments: [GPXSegment(trackPoints: expected)])]
+            tracks: [GPXTrack(name: "Haus- und Seenrunde Ausdauer", trackSegments: [GPXSegment(trackPoints: expected)])]
         ), XCTUnwrap(result))
     }
 
@@ -226,7 +226,7 @@ class GPXParserTests: XCTestCase {
         try assertTracksAreEqual(GPX(
             date: nil,
             title: "Haus- und Seenrunde Ausdauer",
-            tracks: [GPXTrack(trackSegments: [GPXSegment(trackPoints: expected)])]
+            tracks: [GPXTrack(name: "Haus- und Seenrunde Ausdauer", trackSegments: [GPXSegment(trackPoints: expected)])]
         ), XCTUnwrap(result))
     }
 

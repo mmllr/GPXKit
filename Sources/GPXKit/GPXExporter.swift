@@ -63,11 +63,15 @@ public final class GPXExporter {
 
     private var tracksXML: String {
         return gpx.tracks.map { track in
-            return GPXTags.track.embed([
-                GPXTags.name.embed(gpx.title),
-                gpx.description.flatMap { GPXTags.description.embed( $0) } ?? "",
-                
-                track.trackSegments.map { segment in
+            var metadata = [String]()
+            if let name = track.name, !name.isEmpty {
+                metadata.append(GPXTags.name.embed(name))
+            }
+            if let description = track.description, !description.isEmpty {
+                metadata.append(GPXTags.description.embed(description))
+            }
+            return GPXTags.track.embed(( metadata +
+                [track.trackSegments.map { segment in
                     return GPXTags.trackSegment.embed([
 
                         segment.trackPoints.map { point in
@@ -88,8 +92,7 @@ public final class GPXExporter {
 
                     ].joined(separator: "\n"))
                 }.joined(separator: "\n")
-
-            ].joined(separator: "\n"))
+            ]).joined(separator: "\n"))
         }.joined(separator: "\n")
     }
     
