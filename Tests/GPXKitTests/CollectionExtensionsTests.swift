@@ -16,7 +16,7 @@ final class ArrayExtensionsTests: XCTestCase {
         XCTAssertNoDifference([.leipzig], coords.removeIf(closerThan: 1))
     }
 
-    func testRemovingNearbyCoordinatesWithtwoElement() {
+    func testRemovingNearbyCoordinatesWithTwoElement() {
         let coords: [Coordinate] = [.leipzig, .dehner]
 
         XCTAssertNoDifference([.leipzig, .dehner], coords.removeIf(closerThan: 1))
