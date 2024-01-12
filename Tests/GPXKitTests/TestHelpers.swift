@@ -179,6 +179,7 @@ extension XCTest {
         XCTAssertNoDifference(expected.trackPoints, actual.trackPoints, file: file, line: line)
         XCTAssertNoDifference(expected.graph, actual.graph, file: file, line: line)
         XCTAssertNoDifference(expected.bounds, actual.bounds, file: file, line: line)
+        XCTAssertNoDifference(expected.segments, actual.segments, file: file, line: line)
     }
 
     /*
@@ -264,4 +265,12 @@ func expectedElevation(start: TestGPXPoint, end: TestGPXPoint, distanceFromStart
     guard let startElevation = start.elevation, let endElevation = end.elevation else { return nil }
     let deltaHeight = endElevation - startElevation
     return startElevation + deltaHeight * (distanceFromStart / start.distance(to: end))
+}
+
+extension Collection<TrackPoint> {
+    func expectedDistance() -> Double {
+        zip(self, self.dropFirst()).map {
+            $0.coordinate.distance(to: $1.coordinate)
+        }.reduce(0, +)
+    }
 }

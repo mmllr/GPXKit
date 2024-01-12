@@ -10,6 +10,20 @@ public enum ElevationSmoothing: Sendable, Hashable {
 
 /// A value describing a track of geo locations. It has the recorded ``TrackPoint``s, along with metadata of the track, such as recorded date, title, elevation gain, distance, height-map and bounds.
 public struct GPXTrack: Hashable, Sendable {
+    public struct Segment: Hashable, Sendable {
+        /// The range of indices of the ``TrackPoint/trackPoints``.
+        public var range: Range<Int>
+        
+        /// The distance in meters of the segment.
+        public var distance: Double
+
+        public init(range: Range<Int>, distance: Double) {
+            self.range = range
+            self.distance = distance
+        }
+    }
+
+
     /// Optional date stamp of the gpx track
     public var date: Date?
     /// Waypoint defined for the gpx
@@ -27,6 +41,9 @@ public struct GPXTrack: Hashable, Sendable {
     /// Keywords describing a gpx track
     public var keywords: [String]
 
+    /// The ``Segment`` of the track. Contains at least one segment
+    public var segments: [Segment]
+
     /// Initializes a GPXTrack.
     /// - Parameters:
     ///   - date: The date stamp of the track. Defaults to nil.
@@ -34,7 +51,7 @@ public struct GPXTrack: Hashable, Sendable {
     ///   - title: String describing the track.
     ///   - trackPoints: Array of ``TrackPoint``s describing the route.
     ///   - keywords: Array of `String`s with keywords. Default is an empty array (no keywords).
-    public init(date: Date? = nil, waypoints: [Waypoint]? = nil, title: String, description: String? = nil, trackPoints: [TrackPoint], keywords: [String] = []) {
+    public init(date: Date? = nil, waypoints: [Waypoint]? = nil, title: String, description: String? = nil, trackPoints: [TrackPoint], keywords: [String] = [], segments: [Segment]? = nil) {
         self.date = date
         self.waypoints = waypoints
         self.title = title
@@ -43,6 +60,7 @@ public struct GPXTrack: Hashable, Sendable {
         self.graph = TrackGraph(coords: trackPoints.map(\.coordinate))
         self.bounds = trackPoints.bounds()
         self.keywords = keywords
+        self.segments = segments ?? [.init(range: trackPoints.indices, distance: self.graph.distance)]
     }
 
     /// Initializes a GPXTrack. You don't need to construct this value by yourself, as it is done by GXPKits track parsing logic.
@@ -53,7 +71,7 @@ public struct GPXTrack: Hashable, Sendable {
     ///   - trackPoints: Array of ``TrackPoint``s describing the route.
     ///   - keywords: Array of `String`s with keywords. Default is an empty array (no keywords).
     ///   - elevationSmoothing: The ``ElevationSmoothing`` in meters for the grade segments. Defaults to ``ElevationSmoothing/segmentation(_:)`` with 50 meters.
-    public init(date: Date? = nil, waypoints: [Waypoint]? = nil, title: String, description: String? = nil, trackPoints: [TrackPoint], keywords: [String] = [], elevationSmoothing: ElevationSmoothing = .segmentation(50)) throws {
+    public init(date: Date? = nil, waypoints: [Waypoint]? = nil, title: String, description: String? = nil, trackPoints: [TrackPoint], keywords: [String] = [], elevationSmoothing: ElevationSmoothing = .segmentation(50), segments: [Segment]? = nil) throws {
         self.date = date
         self.waypoints = waypoints
         self.title = title
@@ -62,5 +80,6 @@ public struct GPXTrack: Hashable, Sendable {
         self.graph = try TrackGraph(points: trackPoints, elevationSmoothing: elevationSmoothing)
         self.bounds = trackPoints.bounds()
         self.keywords = keywords
+        self.segments = segments ?? [Segment(range: trackPoints.indices, distance: self.graph.distance)]
     }
 }

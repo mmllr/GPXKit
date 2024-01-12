@@ -93,14 +93,16 @@ public final class GPXFileParser {
         }
         let title = trackNode.childFor(.name)?.content ?? ""
         let isRoute = trackNode.name == GPXTags.route.rawValue
+        let (trackPoints, segments) = isRoute ? parseRoute(trackNode) : parseSegment(trackNode.childrenOfType(.trackSegment))
         return try GPXTrack(
             date: node.childFor(.metadata)?.childFor(.time)?.date,
             waypoints: parseWaypoints(node.childrenOfType(.waypoint)),
             title: title,
             description: trackNode.childFor(.description)?.content,
-            trackPoints: isRoute ? parseRoute(trackNode) : parseSegment(trackNode.childrenOfType(.trackSegment)),
+            trackPoints: trackPoints,
             keywords: parseKeywords(node: node),
-            elevationSmoothing: elevationSmoothing
+            elevationSmoothing: elevationSmoothing,
+            segments: segments
         )
     }
 
@@ -120,12 +122,23 @@ public final class GPXFileParser {
         return node.childFor(.time)?.date
     }
 
-    private func parseSegment(_ segmentNodes: [XMLNode]) -> [TrackPoint] {
-        guard !segmentNodes.isEmpty else { return [] }
-        
-        var trackPoints = segmentNodes.map{$0.childrenOfType(.trackPoint).compactMap(TrackPoint.init)}.flatMap { $0 }
+    private func parseSegment(_ segmentNodes: [XMLNode]) -> ([TrackPoint], [GPXTrack.Segment]?) {
+        guard !segmentNodes.isEmpty else { return ([], nil) }
+
+        let segmented = segmentNodes.map {
+            $0.childrenOfType(.trackPoint).compactMap(TrackPoint.init)
+        }
+        var trackPoints = segmented.flatMap { $0 }
+        let segments = segmented.reduce(into: [GPXTrack.Segment]()) { acc, segNode in
+            guard let last = acc.last else {
+                acc.append(.init(range: 0..<segNode.count, distance: segNode.totalDistance))
+                return
+            }
+            let start = last.range.count
+            acc.append(.init(range: start ..< start + segNode.count, distance: segNode.totalDistance))
+        }
         checkForInvalidElevationAtStartAndEnd(trackPoints: &trackPoints)
-        return correctElevationGaps(trackPoints: trackPoints)
+        return (correctElevationGaps(trackPoints: trackPoints)
             .map {
                 .init(
                     coordinate: .init(
@@ -140,16 +153,16 @@ public final class GPXFileParser {
                     heartrate: $0.heartrate,
                     temperature: $0.temperature
                 )
-            }
+            }, segments)
     }
 
-    private func parseRoute(_ routeNode: XMLNode?) -> [TrackPoint] {
+    private func parseRoute(_ routeNode: XMLNode?) -> ([TrackPoint], [GPXTrack.Segment]?) {
         guard let node = routeNode else {
-            return []
+            return ([], nil)
         }
         var trackPoints = node.childrenOfType(.routePoint).compactMap(TrackPoint.init)
         checkForInvalidElevationAtStartAndEnd(trackPoints: &trackPoints)
-        return correctElevationGaps(trackPoints: trackPoints)
+        return (correctElevationGaps(trackPoints: trackPoints)
             .map {
                 .init(
                     coordinate: .init(
@@ -164,7 +177,7 @@ public final class GPXFileParser {
                     heartrate: $0.heartrate,
                     temperature: $0.temperature
                 )
-            }
+            }, nil)
     }
 
     private func checkForInvalidElevationAtStartAndEnd(trackPoints: inout [TrackPoint]) {
@@ -233,7 +246,7 @@ public final class GPXFileParser {
     }
 }
 
-internal extension Waypoint {
+extension Waypoint {
     init?(_ waypointNode: XMLNode) {
         guard
             let lat = waypointNode.latitude,
@@ -254,7 +267,7 @@ internal extension Waypoint {
     }
 }
 
-internal extension TrackPoint {
+extension TrackPoint {
     init?(trackNode: XMLNode) {
         guard
             let lat = trackNode.latitude,
@@ -278,7 +291,15 @@ internal extension TrackPoint {
     }
 }
 
-internal extension XMLNode {
+extension Collection<TrackPoint> {
+    var totalDistance: Double {
+        zip(self, self.dropFirst()).map {
+            $0.coordinate.distance(to: $1.coordinate)
+        }.reduce(0, +)
+    }
+}
+
+extension XMLNode {
     var latitude: Double? {
         Double(attributes[GPXAttributes.latitude.rawValue] ?? "")
     }

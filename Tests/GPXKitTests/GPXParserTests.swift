@@ -1,6 +1,6 @@
+import CustomDump
 import GPXKit
 import XCTest
-import CustomDump
 #if canImport(FoundationXML)
 import FoundationXML
 #endif
@@ -52,7 +52,6 @@ class GPXParserTests: XCTestCase {
         XCTAssertNoDifference([], sut.graph.heightMap)
         XCTAssertNoDifference([], sut.graph.segments)
         XCTAssertNoDifference([], sut.graph.climbs())
-
     }
 
     func testParsingTrackTitlesAndDescription() {
@@ -234,8 +233,8 @@ class GPXParserTests: XCTestCase {
         parseXML(sampleGPX)
 
         let date = try XCTUnwrap(result?.trackPoints.first?.date)
-        
-        XCTAssertNoDifference(1351121380, date.timeIntervalSince1970)
+
+        XCTAssertNoDifference(1_351_121_380, date.timeIntervalSince1970)
     }
 
     func testTrackLength() throws {
@@ -563,47 +562,126 @@ class GPXParserTests: XCTestCase {
             Waypoint(coordinate: .init(latitude: 53.06485377614443, longitude: 5.702670398232679, elevation: 8.3)),
         ], track.waypoints)
     }
-    
+
     func testParsingTrackWithMultipleSegments() throws {
-            parseXML("""
-            <?xml version="1.0" encoding="UTF-8"?>
-            <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
-                <metadata>
-                </metadata>
-                <trk>
-                    <type>1</type>
-                    <trkseg>
-                        <trkpt lat="51.2760600" lon="12.3769500">
-                            <ele>114.2</ele>
-                        </trkpt>
-                    </trkseg>
-                    <trkseg>
-                        <trkpt lat="51.2760420" lon="12.3769760">
-                            <ele>114.0</ele>
-                        </trkpt>
-                    </trkseg>
-                </trk>
-            </gpx>
-            """)
+        parseXML("""
+        <?xml version="1.0" encoding="UTF-8"?>
+        <gpx creator="StravaGPX"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1"
+        xmlns="http://www.topografix.com/GPX/1/1"
+        xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1"
+        xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
+        <metadata>
+        </metadata>
+        <trk>
+        <type>1</type>
+        <trkseg>
+            <trkpt lat="53.0736462" lon="13.1756965">
+                <ele>51.71003342</ele>
+                <time>2023-05-20T08:20:07Z</time>
+            </trkpt>
+            <trkpt lat="53.0736242" lon="13.1757405">
+                <ele>51.7000351</ele>
+                <time>2023-05-20T08:20:08Z</time>
+            </trkpt>
+            <trkpt lat="53.0735992" lon="13.1757855">
+                <ele>51.7000351</ele>
+                <time>2023-05-20T08:20:09Z</time>
+            </trkpt>
+            <trkpt lat="53.0735793" lon="13.1758284">
+                <ele>51.67003632</ele>
+                <time>2023-05-20T08:20:10Z</time>
+            </trkpt>
+            <trkpt lat="53.0735543" lon="13.1758994">
+                <ele>51.66003799</ele>
+                <time>2023-05-20T08:20:11Z</time>
+            </trkpt>
+        </trkseg>
+        <trkseg>
+            <trkpt lat="53.186896" lon="13.132096">
+                <ele>54.38999939</ele>
+                <time>2023-05-20T10:35:19Z</time>
+            </trkpt>
+            <trkpt lat="53.186909" lon="13.132093">
+                <ele>54.34999847</ele>
+                <time>2023-05-20T10:35:20Z</time>
+            </trkpt>
+            <trkpt lat="53.1869289" lon="13.1320901">
+                <ele>54.22999954</ele>
+                <time>2023-05-20T10:35:21Z</time>
+            </trkpt>
+            <trkpt lat="53.1869399" lon="13.1320881">
+                <ele>54.16999817</ele>
+                <time>2023-05-20T10:35:22Z</time>
+            </trkpt>
+            <trkpt lat="53.1869479" lon="13.1320822">
+                <ele>54.13999939</ele>
+                <time>2023-05-20T10:35:23Z</time>
+            </trkpt>
+        </trkseg>
+        </trk>
+        </gpx>
+        """)
 
-            let expected = [
-                TrackPoint(
-                    coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 114.2),
-                    date: nil
-                ),
-                TrackPoint(
-                    coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
-                    date: nil
-                ),
-            ]
+        let expected = [
+            TrackPoint(
+                coordinate: Coordinate(latitude: 53.0736462, longitude: 13.1756965, elevation: 51.71003342),
+                date: expectedDate(for: "2023-05-20T08:20:07Z")
+            ),
+            TrackPoint(
+                coordinate: Coordinate(latitude: 53.0736242, longitude: 13.1757405, elevation: 51.7000351),
+                date: expectedDate(for: "2023-05-20T08:20:08Z")
+            ),
+            TrackPoint(
+                coordinate: Coordinate(latitude: 53.0735992, longitude: 13.1757855, elevation: 51.7000351),
+                date: expectedDate(for: "2023-05-20T08:20:09Z")
+            ),
+            TrackPoint(
+                coordinate: Coordinate(latitude: 53.0735793, longitude: 13.1758284, elevation: 51.67003632),
+                date: expectedDate(for: "2023-05-20T08:20:10Z")
+            ),
+            TrackPoint(
+                coordinate: Coordinate(latitude: 53.0735543, longitude: 13.1758994, elevation: 51.66003799),
+                date: expectedDate(for: "2023-05-20T08:20:11Z")
+            ),
+            // 2nd segment
+            TrackPoint(
+                coordinate: Coordinate(latitude: 53.186896, longitude: 13.132096, elevation: 54.38999939),
+                date: expectedDate(for: "2023-05-20T10:35:19Z")
+            ),
+            TrackPoint(
+                coordinate: Coordinate(latitude: 53.186909, longitude: 13.132093, elevation: 54.34999847),
+                date: expectedDate(for: "2023-05-20T10:35:20Z")
+            ),
+            TrackPoint(
+                coordinate: Coordinate(latitude: 53.1869289, longitude: 13.1320901, elevation: 54.22999954),
+                date: expectedDate(for: "2023-05-20T10:35:21Z")
+            ),
+            TrackPoint(
+                coordinate: Coordinate(latitude: 53.1869399, longitude: 13.1320881, elevation: 54.16999817),
+                date: expectedDate(for: "2023-05-20T10:35:22Z")
+            ),
+            TrackPoint(
+                coordinate: Coordinate(latitude: 53.1869479, longitude: 13.1320822, elevation: 54.13999939),
+                date: expectedDate(for: "2023-05-20T10:35:23Z")
+            ),
+        ]
 
-            try assertTracksAreEqual(
-                GPXTrack(
-                    date: nil,
-                    title: "",
-                    trackPoints: expected
-                ),
-                XCTUnwrap(result)
-            )
-        }
+        try assertTracksAreEqual(
+            GPXTrack(
+                date: nil,
+                title: "",
+                trackPoints: expected,
+                segments: [
+                    .init(
+                        range: 0..<5, distance: expected[0..<5].expectedDistance()
+                        ),
+                    .init(
+                        range: 5..<10, distance: expected[5..<10].expectedDistance()
+                    )
+                ]
+            ),
+            XCTUnwrap(result)
+        )
     }
+}

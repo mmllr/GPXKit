@@ -67,23 +67,25 @@ public final class GPXExporter {
 
     private var trackXML: String {
         guard !track.trackPoints.isEmpty else { return "" }
-        return GPXTags.trackSegment.embed(
-            track.trackPoints.map { point in
-                let attributes = [
-                    GPXAttributes.latitude.assign("\"\(point.coordinate.latitude)\""),
-                    GPXAttributes.longitude.assign("\"\(point.coordinate.longitude)\"")
-                ].joined(separator: " ")
-                let children = [GPXTags.elevation.embed(String(format:"%.2f", point.coordinate.elevation)),
-                              exportDate ? point.date.flatMap {
-                    GPXTags.time.embed(ISO8601DateFormatter.exporting.string(from: $0))
-                } : nil
-                ].compactMap { $0 }.joined(separator: "\n")
-                return GPXTags.trackPoint.embed(
-                    attributes: attributes,
-                    children
-                )
-            }.joined(separator: "\n")
-        )
+        return track.segments.map {
+            GPXTags.trackSegment.embed(
+                track.trackPoints[$0.range].map { point in
+                    let attributes = [
+                        GPXAttributes.latitude.assign("\"\(point.coordinate.latitude)\""),
+                        GPXAttributes.longitude.assign("\"\(point.coordinate.longitude)\"")
+                    ].joined(separator: " ")
+                    let children = [GPXTags.elevation.embed(String(format:"%.2f", point.coordinate.elevation)),
+                                    exportDate ? point.date.flatMap {
+                        GPXTags.time.embed(ISO8601DateFormatter.exporting.string(from: $0))
+                    } : nil
+                    ].compactMap { $0 }.joined(separator: "\n")
+                    return GPXTags.trackPoint.embed(
+                        attributes: attributes,
+                        children
+                    )
+                }.joined(separator: "\n")
+            )
+        }.joined(separator: "\n")
     }
 
     private var headerAttributes: String {
