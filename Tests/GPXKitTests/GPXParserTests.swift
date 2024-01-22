@@ -105,7 +105,8 @@ class GPXParserTests: XCTestCase {
                 power: Measurement<UnitPower>(value: 42, unit: .watts),
                 cadence: 40,
                 heartrate: 97,
-                temperature: Measurement<UnitTemperature>(value: 21, unit: .celsius)
+                temperature: Measurement<UnitTemperature>(value: 21, unit: .celsius),
+                speed: Measurement(value: 1.23456, unit: .metersPerSecond)
             ),
             TrackPoint(
                 coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
@@ -113,7 +114,8 @@ class GPXParserTests: XCTestCase {
                 power: Measurement<UnitPower>(value: 272, unit: .watts),
                 cadence: 45,
                 heartrate: 87,
-                temperature: Measurement<UnitTemperature>(value: 20.5, unit: .celsius)
+                temperature: Measurement<UnitTemperature>(value: 20.5, unit: .celsius),
+                speed: Measurement(value: 0.12345, unit: .metersPerSecond)
             ),
         ]
 
@@ -135,7 +137,8 @@ class GPXParserTests: XCTestCase {
                 power: Measurement<UnitPower>(value: 166, unit: .watts),
                 cadence: 99,
                 heartrate: 90,
-                temperature: Measurement<UnitTemperature>(value: 22, unit: .celsius)
+                temperature: Measurement<UnitTemperature>(value: 22, unit: .celsius),
+                speed: Measurement<UnitSpeed>(value: 1.23456, unit: .metersPerSecond)
             ),
             TrackPoint(
                 coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
@@ -143,7 +146,8 @@ class GPXParserTests: XCTestCase {
                 power: Measurement<UnitPower>(value: 230, unit: .watts),
                 cadence: 101,
                 heartrate: 92,
-                temperature: Measurement<UnitTemperature>(value: 21, unit: .celsius)
+                temperature: Measurement<UnitTemperature>(value: 21, unit: .celsius),
+                speed: Measurement<UnitSpeed>(value: 0.123456, unit: .metersPerSecond)
             ),
         ]
 

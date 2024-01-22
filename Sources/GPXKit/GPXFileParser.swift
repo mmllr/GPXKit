@@ -38,6 +38,7 @@ internal enum GPXTags: String {
     case temperature = "atemp"
     case heartrate = "hr"
     case cadence = "cad"
+    case speed
 }
 
 internal enum GPXAttributes: String {
@@ -151,7 +152,8 @@ public final class GPXFileParser {
                     power: $0.power,
                     cadence: $0.cadence,
                     heartrate: $0.heartrate,
-                    temperature: $0.temperature
+                    temperature: $0.temperature,
+                    speed: $0.speed
                 )
             }, segments)
     }
@@ -175,7 +177,8 @@ public final class GPXFileParser {
                     power: $0.power,
                     cadence: $0.cadence,
                     heartrate: $0.heartrate,
-                    temperature: $0.temperature
+                    temperature: $0.temperature,
+                    speed: $0.speed
                 )
             }, nil)
     }
@@ -288,6 +291,7 @@ extension TrackPoint {
             .flatMap { UInt($0.content) }
         self.temperature = trackNode.childFor(.extensions)?.childFor(.trackPointExtension)?.childFor(.temperature)?
             .temperature
+        self.speed = trackNode.childFor(.extensions)?.childFor(.trackPointExtension)?.childFor(.speed)?.speed
     }
 }
 
@@ -329,6 +333,12 @@ extension XMLNode {
     var temperature: Measurement<UnitTemperature>? {
         Double(content).flatMap {
             Measurement<UnitTemperature>(value: $0, unit: .celsius)
+        }
+    }
+
+    var speed: Measurement<UnitSpeed>? {
+        Double(content).flatMap {
+            Measurement<UnitSpeed>(value: $0, unit: .metersPerSecond)
         }
     }
 

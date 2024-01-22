@@ -14,6 +14,8 @@ public struct TrackPoint: Hashable, Sendable {
     public var heartrate: UInt?
     /// Optional temperature value for a given point in a gpx file, which got recorded from a bicycle computer through a temperature sensor.
     public var temperature: Measurement<UnitTemperature>?
+    /// Optional speed value for a given point in a gpx file, which got recorded from a bicycle computer through a speed sensor.
+    public var speed: Measurement<UnitSpeed>?
 
     /// Initializer
     /// You don't need to construct this value by yourself, as it is done by GXPKits track parsing logic.
@@ -24,13 +26,15 @@ public struct TrackPoint: Hashable, Sendable {
     ///   - cadence: Optional cadence value for a point. Defaults to nil.
     ///   - heartrate: Optional heartrate value for a point. Defaults to nil.
     ///   - temperature: Optional temperature value for a point. Defaults to nil.
-    public init(coordinate: Coordinate, date: Date? = nil, power: Measurement<UnitPower>? = nil, cadence: UInt? = nil, heartrate: UInt? = nil, temperature: Measurement<UnitTemperature>? = nil) {
+    ///   - speed: Optional speed value for a point. Defaults to nil.
+    public init(coordinate: Coordinate, date: Date? = nil, power: Measurement<UnitPower>? = nil, cadence: UInt? = nil, heartrate: UInt? = nil, temperature: Measurement<UnitTemperature>? = nil, speed: Measurement<UnitSpeed>? = nil) {
         self.coordinate = coordinate
         self.date = date
         self.power = power
         self.cadence = cadence
         self.heartrate = heartrate
         self.temperature = temperature
+        self.speed = speed
     }
 }
 

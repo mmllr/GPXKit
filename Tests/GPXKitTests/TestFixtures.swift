@@ -81,6 +81,7 @@ let testXMLData = """
                                 <gpxtpx:atemp>21</gpxtpx:atemp>
                                 <gpxtpx:hr>97</gpxtpx:hr>
                                 <gpxtpx:cad>40</gpxtpx:cad>
+                                <gpxtpx:speed>1.23456</gpxtpx:speed>
                             </gpxtpx:TrackPointExtension>
                         </extensions>
                     </trkpt>
@@ -93,6 +94,7 @@ let testXMLData = """
                                 <gpxtpx:atemp>20.5</gpxtpx:atemp>
                                 <gpxtpx:hr>87</gpxtpx:hr>
                                 <gpxtpx:cad>45</gpxtpx:cad>
+                                <gpxtpx:speed>0.12345</gpxtpx:speed>
                             </gpxtpx:TrackPointExtension>
                         </extensions>
                     </trkpt>
@@ -121,6 +123,7 @@ let namespacedTestXMLData = """
                                 <ns3:atemp>22</ns3:atemp>
                                 <ns3:hr>90</ns3:hr>
                                 <ns3:cad>99</ns3:cad>
+                                <ns3:speed>1.23456</ns3:speed>
                             </ns3:TrackPointExtension>
                         </extensions>
                     </trkpt>
@@ -133,6 +136,7 @@ let namespacedTestXMLData = """
                                 <ns3:atemp>21</ns3:atemp>
                                 <ns3:hr>92</ns3:hr>
                                 <ns3:cad>101</ns3:cad>
+                                <ns3:speed>0.123456</ns3:speed>
                             </ns3:TrackPointExtension>
                         </extensions>
                     </trkpt>
@@ -192,6 +196,7 @@ let testXMLDataContainingWaypoint = """
                                 <gpxtpx:atemp>21</gpxtpx:atemp>
                                 <gpxtpx:hr>97</gpxtpx:hr>
                                 <gpxtpx:cad>40</gpxtpx:cad>
+                                <gpxtpx:speed>1.2345</gpxtpx:speed>
                             </gpxtpx:TrackPointExtension>
                         </extensions>
                     </trkpt>
@@ -204,6 +209,7 @@ let testXMLDataContainingWaypoint = """
                                 <gpxtpx:atemp>20</gpxtpx:atemp>
                                 <gpxtpx:hr>97</gpxtpx:hr>
                                 <gpxtpx:cad>40</gpxtpx:cad>
+                                <gpxtpx:speed>0.12345678</gpxtpx:speed>
                             </gpxtpx:TrackPointExtension>
                         </extensions>
                     </trkpt>
