@@ -86,6 +86,15 @@
               <li class="nav-group-task">
                 <a href="../Extensions/Collection.html">Collection</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/RandomAccessCollection.html">RandomAccessCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/%5BDistanceHeight%5D.html">[DistanceHeight]</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/%5BGradeSegment%5D.html">[GradeSegment]</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -112,10 +121,16 @@
                 <a href="../Structs/GPXTrack.html">GPXTrack</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Structs/GPXTrack/Segment.html">– Segment</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Structs/GeoBounds.html">GeoBounds</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/GradeSegment.html">GradeSegment</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/GradeSegment.html#/s:6GPXKit12GradeSegmentV07InvalidB5ErrorV">– InvalidGradeError</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/TrackGraph.html">TrackGraph</a>
@@ -167,7 +182,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The coordinate (latitude, longitude and elevation in meters)</p>
+                        <p>The <code><a href="../Structs/Coordinate.html">Coordinate</a></code> (latitude, longitude and elevation in meters)</p>
 
                       </div>
                       <div class="declaration">
@@ -319,9 +334,36 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:6GPXKit10TrackPointV10coordinate4date5power7cadence9heartrate11temperatureAcA10CoordinateV_10Foundation4DateVSgAL11MeasurementVySo11NSUnitPowerCGSgSuSgAvQySo0N11TemperatureCGSgtcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(coordinate:date:power:cadence:heartrate:temperature:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit10TrackPointV10coordinate4date5power7cadence9heartrate11temperatureAcA10CoordinateV_10Foundation4DateVSgAL11MeasurementVySo11NSUnitPowerCGSgSuSgAvQySo0N11TemperatureCGSgtcfc">init(coordinate:<wbr>date:<wbr>power:<wbr>cadence:<wbr>heartrate:<wbr>temperature:<wbr>)</a>
+                    <a name="/s:6GPXKit10TrackPointV5speed10Foundation11MeasurementVySo11NSUnitSpeedCGSgvp"></a>
+                    <a name="//apple_ref/swift/Property/speed" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit10TrackPointV5speed10Foundation11MeasurementVySo11NSUnitSpeedCGSgvp">speed</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Optional speed value for a given point in a gpx file, which got recorded from a bicycle computer through a speed sensor.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">speed</span><span class="p">:</span> <span class="kt">Measurement</span><span class="o">&lt;</span><span class="kt">UnitSpeed</span><span class="o">&gt;</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit10TrackPointV10coordinate4date5power7cadence9heartrate11temperature5speedAcA10CoordinateV_10Foundation4DateVSgAM11MeasurementVySo11NSUnitPowerCGSgSuSgAwRySo0O11TemperatureCGSgARySo0O5SpeedCGSgtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(coordinate:date:power:cadence:heartrate:temperature:speed:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit10TrackPointV10coordinate4date5power7cadence9heartrate11temperature5speedAcA10CoordinateV_10Foundation4DateVSgAM11MeasurementVySo11NSUnitPowerCGSgSuSgAwRySo0O11TemperatureCGSgARySo0O5SpeedCGSgtcfc">init(coordinate:<wbr>date:<wbr>power:<wbr>cadence:<wbr>heartrate:<wbr>temperature:<wbr>speed:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -337,7 +379,7 @@ You don&rsquo;t need to construct this value by yourself, as it is done by GXPKi
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">coordinate</span><span class="p">:</span> <span class="kt"><a href="../Structs/Coordinate.html">Coordinate</a></span><span class="p">,</span> <span class="nv">date</span><span class="p">:</span> <span class="kt">Date</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">power</span><span class="p">:</span> <span class="kt">Measurement</span><span class="o">&lt;</span><span class="kt">UnitPower</span><span class="o">&gt;</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">cadence</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">heartrate</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">temperature</span><span class="p">:</span> <span class="kt">Measurement</span><span class="o">&lt;</span><span class="kt">UnitTemperature</span><span class="o">&gt;</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">coordinate</span><span class="p">:</span> <span class="kt"><a href="../Structs/Coordinate.html">Coordinate</a></span><span class="p">,</span> <span class="nv">date</span><span class="p">:</span> <span class="kt">Date</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">power</span><span class="p">:</span> <span class="kt">Measurement</span><span class="o">&lt;</span><span class="kt">UnitPower</span><span class="o">&gt;</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">cadence</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">heartrate</span><span class="p">:</span> <span class="kt">UInt</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">temperature</span><span class="p">:</span> <span class="kt">Measurement</span><span class="o">&lt;</span><span class="kt">UnitTemperature</span><span class="o">&gt;</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">speed</span><span class="p">:</span> <span class="kt">Measurement</span><span class="o">&lt;</span><span class="kt">UnitSpeed</span><span class="o">&gt;</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -353,7 +395,7 @@ You don&rsquo;t need to construct this value by yourself, as it is done by GXPKi
                               </td>
                               <td>
                                 <div>
-                                  <p>The coordinate (latitude, longitude and elevation in meters)</p>
+                                  <p>The <code><a href="../Structs/Coordinate.html">Coordinate</a></code> (latitude, longitude and elevation in meters)</p>
                                 </div>
                               </td>
                             </tr>
@@ -414,6 +456,18 @@ You don&rsquo;t need to construct this value by yourself, as it is done by GXPKi
                               <td>
                                 <div>
                                   <p>Optional temperature value for a point. Defaults to nil.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>speed</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional speed value for a point. Defaults to nil.</p>
                                 </div>
                               </td>
                             </tr>
@@ -480,7 +534,7 @@ You don&rsquo;t need to construct this value by yourself, as it is done by GXPKi
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2023 <a class="link" href="" target="_blank" rel="external noopener"></a>. All rights reserved. (Last updated: 2023-09-21)</p>
+          <p>&copy; 2024 <a class="link" href="" target="_blank" rel="external noopener"></a>. All rights reserved. (Last updated: 2024-01-22)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
         </section>
       </article>

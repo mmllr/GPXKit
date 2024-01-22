@@ -86,6 +86,15 @@
               <li class="nav-group-task">
                 <a href="../Extensions/Collection.html">Collection</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/RandomAccessCollection.html">RandomAccessCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/%5BDistanceHeight%5D.html">[DistanceHeight]</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/%5BGradeSegment%5D.html">[GradeSegment]</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -112,10 +121,16 @@
                 <a href="../Structs/GPXTrack.html">GPXTrack</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Structs/GPXTrack/Segment.html">– Segment</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Structs/GeoBounds.html">GeoBounds</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/GradeSegment.html">GradeSegment</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/GradeSegment.html#/s:6GPXKit12GradeSegmentV07InvalidB5ErrorV">– InvalidGradeError</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/TrackGraph.html">TrackGraph</a>
@@ -153,6 +168,33 @@
           <section class="section task-group-section">
             <div class="task-group">
               <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit8GPXTrackV7SegmentV"></a>
+                    <a name="//apple_ref/swift/Struct/Segment" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit8GPXTrackV7SegmentV">Segment</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                        <a href="../Structs/GPXTrack/Segment.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Segment</span> <span class="p">:</span> <span class="kt">Hashable</span><span class="p">,</span> <span class="kt">Sendable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
                 <li class="item">
                   <div>
                     <code>
@@ -372,9 +414,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:6GPXKit8GPXTrackV4date9waypoints5title11description11trackPoints8keywords18elevationSmoothingAC10Foundation4DateVSg_SayAA8WaypointVGSgS2SSgSayAA10TrackPointVGSaySSGAA09ElevationK0Otcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(date:waypoints:title:description:trackPoints:keywords:elevationSmoothing:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit8GPXTrackV4date9waypoints5title11description11trackPoints8keywords18elevationSmoothingAC10Foundation4DateVSg_SayAA8WaypointVGSgS2SSgSayAA10TrackPointVGSaySSGAA09ElevationK0Otcfc">init(date:<wbr>waypoints:<wbr>title:<wbr>description:<wbr>trackPoints:<wbr>keywords:<wbr>elevationSmoothing:<wbr>)</a>
+                    <a name="/s:6GPXKit8GPXTrackV8segmentsSayAC7SegmentVGvp"></a>
+                    <a name="//apple_ref/swift/Property/segments" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit8GPXTrackV8segmentsSayAC7SegmentVGvp">segments</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -382,14 +424,41 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Initializes a GPXTrack. You don&rsquo;t need to construct this value by yourself, as it is done by GXPKits track parsing logic.</p>
+                        <p>The <code><a href="../Structs/GPXTrack/Segment.html">Segment</a></code> of the track. Contains at least one segment</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">date</span><span class="p">:</span> <span class="kt">Date</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">waypoints</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/Waypoint.html">Waypoint</a></span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">title</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">description</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">trackPoints</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/TrackPoint.html">TrackPoint</a></span><span class="p">],</span> <span class="nv">keywords</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span> <span class="nv">elevationSmoothing</span><span class="p">:</span> <span class="kt"><a href="../Enums/ElevationSmoothing.html">ElevationSmoothing</a></span> <span class="o">=</span> <span class="o">.</span><span class="nf">segmentation</span><span class="p">(</span><span class="mi">50</span><span class="p">))</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">segments</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/GPXTrack/Segment.html">Segment</a></span><span class="p">]</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit8GPXTrackV4date9waypoints5title11description11trackPoints8keywords8segmentsAC10Foundation4DateVSg_SayAA8WaypointVGSgS2SSgSayAA10TrackPointVGSaySSGSayAC7SegmentVGSgtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(date:waypoints:title:description:trackPoints:keywords:segments:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit8GPXTrackV4date9waypoints5title11description11trackPoints8keywords8segmentsAC10Foundation4DateVSg_SayAA8WaypointVGSgS2SSgSayAA10TrackPointVGSaySSGSayAC7SegmentVGSgtcfc">init(date:<wbr>waypoints:<wbr>title:<wbr>description:<wbr>trackPoints:<wbr>keywords:<wbr>segments:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializes a GPXTrack.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">date</span><span class="p">:</span> <span class="kt">Date</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">waypoints</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/Waypoint.html">Waypoint</a></span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">title</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">description</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">trackPoints</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/TrackPoint.html">TrackPoint</a></span><span class="p">],</span> <span class="nv">keywords</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span> <span class="nv">segments</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/GPXTrack/Segment.html">Segment</a></span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -417,7 +486,101 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>Array of <code>Waypoints</code>. Defaults to nil.</p>
+                                  <p>Array of <code><a href="../Structs/Waypoint.html">Waypoint</a></code> values. Defaults to nil.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>title</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>String describing the track.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>trackPoints</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Array of <code><a href="../Structs/TrackPoint.html">TrackPoint</a></code>s describing the route.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>keywords</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Array of <code>String</code>s with keywords. Default is an empty array (no keywords).</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit8GPXTrackV4date9waypoints5title11description11trackPoints8keywords18elevationSmoothing8segmentsAC10Foundation4DateVSg_SayAA8WaypointVGSgS2SSgSayAA10TrackPointVGSaySSGAA09ElevationK0OSayAC7SegmentVGSgtKcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(date:waypoints:title:description:trackPoints:keywords:elevationSmoothing:segments:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit8GPXTrackV4date9waypoints5title11description11trackPoints8keywords18elevationSmoothing8segmentsAC10Foundation4DateVSg_SayAA8WaypointVGSgS2SSgSayAA10TrackPointVGSaySSGAA09ElevationK0OSayAC7SegmentVGSgtKcfc">init(date:<wbr>waypoints:<wbr>title:<wbr>description:<wbr>trackPoints:<wbr>keywords:<wbr>elevationSmoothing:<wbr>segments:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializes a GPXTrack. You don&rsquo;t need to construct this value by yourself, as it is done by GXPKits track parsing logic.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">date</span><span class="p">:</span> <span class="kt">Date</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">waypoints</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/Waypoint.html">Waypoint</a></span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">title</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">description</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">trackPoints</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/TrackPoint.html">TrackPoint</a></span><span class="p">],</span> <span class="nv">keywords</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span> <span class="nv">elevationSmoothing</span><span class="p">:</span> <span class="kt"><a href="../Enums/ElevationSmoothing.html">ElevationSmoothing</a></span> <span class="o">=</span> <span class="o">.</span><span class="nf">segmentation</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span> <span class="nv">segments</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/GPXTrack/Segment.html">Segment</a></span><span class="p">]?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>date</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The date stamp of the track. Defaults to nil.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>waypoints</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Array of <code><a href="../Structs/Waypoint.html">Waypoint</a></code> values. Defaults to nil.</p>
                                 </div>
                               </td>
                             </tr>
@@ -460,12 +623,12 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>gradeSegmentLength</em>
+                                <em>elevationSmoothing</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The length in meters for the grade segments. Defaults to 50 meters.</p>
+                                  <p>The <code><a href="../Enums/ElevationSmoothing.html">ElevationSmoothing</a></code> in meters for the grade segments. Defaults to <code><a href="../Enums/ElevationSmoothing.html#/s:6GPXKit18ElevationSmoothingO12segmentationyACSdcACmF">segmentation(_:)</a></code> with 50 meters.</p>
                                 </div>
                               </td>
                             </tr>
@@ -480,7 +643,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2023 <a class="link" href="" target="_blank" rel="external noopener"></a>. All rights reserved. (Last updated: 2023-09-21)</p>
+          <p>&copy; 2024 <a class="link" href="" target="_blank" rel="external noopener"></a>. All rights reserved. (Last updated: 2024-01-22)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
         </section>
       </article>

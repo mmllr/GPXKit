@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>DistanceHeight Structure Reference</title>
+    <title>RandomAccessCollection Extension Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -13,8 +13,8 @@
     <script src="../js/jazzy.search.js" defer></script>
   </head>
   <body>
-    <a name="//apple_ref/swift/Struct/DistanceHeight" class="dashAnchor"></a>
-    <a title="DistanceHeight Structure Reference"></a>
+    <a name="//apple_ref/swift/Extension/RandomAccessCollection" class="dashAnchor"></a>
+    <a title="RandomAccessCollection Extension Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html"> Docs</a> (100% documented)</p>
@@ -29,7 +29,7 @@
       <p id="breadcrumbs">
         <a href="../index.html"> Reference</a>
         <img id="carat" src="../img/carat.png" alt=""/>
-        DistanceHeight Structure Reference
+        RandomAccessCollection Extension Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -154,26 +154,34 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>DistanceHeight</h1>
+            <h1>RandomAccessCollection</h1>
               <div class="declaration">
                 <div class="language">
                   
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">DistanceHeight</span> <span class="p">:</span> <span class="kt">Hashable</span><span class="p">,</span> <span class="kt">Sendable</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">extension</span> <span class="kt">RandomAccessCollection</span> <span class="k">where</span> <span class="kt">Element</span> <span class="o">==</span> <span class="kt"><a href="../Structs/Coordinate.html">Coordinate</a></span><span class="p">,</span> <span class="kt">Index</span> <span class="o">==</span> <span class="kt">Int</span></code></pre>
 
                 </div>
               </div>
-            <p>A value describing an entry in a <code><a href="../Structs/TrackGraph.html">TrackGraph</a></code>s height-map. It has the total distance in meters up to that point in the track along with the elevation in meters above sea level at that given point in a track (imagine the distance as the value along the x-axis in a 2D-coordinate graph, the elevation as the y-value).</p>
-
+            
           </section>
           <section class="section task-group-section">
             <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Available%20where%20%60Element%60%20%3D%3D%20%60Coordinate%60%2C%20%60Index%60%20%3D%3D%20%60Int%60"></a>
+                <a name="//apple_ref/swift/Section/Available where `Element` == `Coordinate`, `Index` == `Int`" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Available%20where%20%60Element%60%20%3D%3D%20%60Coordinate%60%2C%20%60Index%60%20%3D%3D%20%60Int%60"></a>
+                  <h3 class="section-name"><span>Available where <code>Element</code> == <code><a href="../Structs/Coordinate.html">Coordinate</a></code>, <code>Index</code> == <code>Int</code></span>
+</h3>
+                </div>
+              </div>
               <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:6GPXKit14DistanceHeightV8distanceSdvp"></a>
-                    <a name="//apple_ref/swift/Property/distance" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit14DistanceHeightV8distanceSdvp">distance</a>
+                    <a name="/s:Sk6GPXKitAA10CoordinateV7ElementRtzSi5IndexRtzrlE17smoothedElevation11sampleCountSayACGSi_tF"></a>
+                    <a name="//apple_ref/swift/Method/smoothedElevation(sampleCount:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:Sk6GPXKitAA10CoordinateV7ElementRtzSi5IndexRtzrlE17smoothedElevation11sampleCountSayACGSi_tF">smoothedElevation(sampleCount:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -181,14 +189,13 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Total distance from the tracks start location in meters</p>
-
+                        
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">distance</span><span class="p">:</span> <span class="kt">Double</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">smoothedElevation</span><span class="p">(</span><span class="nv">sampleCount</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">Element</span><span class="p">]</span></code></pre>
 
                         </div>
                       </div>
@@ -198,9 +205,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:6GPXKit14DistanceHeightV9elevationSdvp"></a>
-                    <a name="//apple_ref/swift/Property/elevation" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit14DistanceHeightV9elevationSdvp">elevation</a>
+                    <a name="/s:Sk6GPXKitAA10CoordinateV7ElementRtzSi5IndexRtzrlE5isLapSbvp"></a>
+                    <a name="//apple_ref/swift/Property/isLap" class="dashAnchor"></a>
+                    <a class="token" href="#/s:Sk6GPXKitAA10CoordinateV7ElementRtzSi5IndexRtzrlE5isLapSbvp">isLap</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -208,74 +215,16 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Elevation in meters above sea level at that position in the track</p>
+                        <p>Returns <code>true</code> if the distance between the first and the last is less than 50 meters. Returns <code>false</code> for empty collections.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">elevation</span><span class="p">:</span> <span class="kt">Double</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">isLap</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:6GPXKit14DistanceHeightV8distance9elevationACSd_Sdtcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(distance:elevation:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit14DistanceHeightV8distance9elevationACSd_Sdtcfc">init(distance:<wbr>elevation:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Initializes a <code>DistanceHeight</code> value. You don&rsquo;t need to construct this value by yourself, as it is done by GPXKits track parsing logic.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">distance</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span> <span class="nv">elevation</span><span class="p">:</span> <span class="kt">Double</span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>distance</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>Distance from the tracks start location in meters.</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>elevation</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>Elevation in meters above sea level at that track position.</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
                       </div>
                     </section>
                   </div>

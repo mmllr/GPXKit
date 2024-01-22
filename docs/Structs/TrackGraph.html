@@ -86,6 +86,15 @@
               <li class="nav-group-task">
                 <a href="../Extensions/Collection.html">Collection</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/RandomAccessCollection.html">RandomAccessCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/%5BDistanceHeight%5D.html">[DistanceHeight]</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/%5BGradeSegment%5D.html">[GradeSegment]</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -112,10 +121,16 @@
                 <a href="../Structs/GPXTrack.html">GPXTrack</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Structs/GPXTrack/Segment.html">– Segment</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Structs/GeoBounds.html">GeoBounds</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/GradeSegment.html">GradeSegment</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/GradeSegment.html#/s:6GPXKit12GradeSegmentV07InvalidB5ErrorV">– InvalidGradeError</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/TrackGraph.html">TrackGraph</a>
@@ -166,7 +181,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Array of <code><a href="../Structs/TrackSegment.html">TrackSegment</a></code>s. The segments describe a tracks position along with its relative distance to its predecessor.</p>
+                        <p>Array of <code><a href="../Structs/TrackSegment.html">TrackSegment</a></code> values. The segments describe a tracks position along with its relative distance to its predecessor.</p>
 
                       </div>
                       <div class="declaration">
@@ -291,9 +306,103 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:6GPXKit10TrackGraphV6points18elevationSmoothingACSayAA0B5PointVG_AA09ElevationF0Otcfc"></a>
+                    <a name="/s:6GPXKit10TrackGraphV8segments8distance13elevationGain9heightMap13gradeSegmentsACSayAA0B7SegmentVG_S2dSayAA14DistanceHeightVGSayAA05GradeL0VGtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(segments:distance:elevationGain:heightMap:gradeSegments:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit10TrackGraphV8segments8distance13elevationGain9heightMap13gradeSegmentsACSayAA0B7SegmentVG_S2dSayAA14DistanceHeightVGSayAA05GradeL0VGtcfc">init(segments:<wbr>distance:<wbr>elevationGain:<wbr>heightMap:<wbr>gradeSegments:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializes a <code>TrackGraph</code></p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">segments</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/TrackSegment.html">TrackSegment</a></span><span class="p">],</span> <span class="nv">distance</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span> <span class="nv">elevationGain</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span> <span class="nv">heightMap</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/DistanceHeight.html">DistanceHeight</a></span><span class="p">],</span> <span class="nv">gradeSegments</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/GradeSegment.html">GradeSegment</a></span><span class="p">])</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>segments</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Array of <code><a href="../Structs/TrackSegment.html">TrackSegment</a></code> values.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>distance</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The graphs distance in meters.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>elevationGain</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The graphs elevation gain in meters.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>heightMap</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An array of <code><a href="../Structs/DistanceHeight.html">DistanceHeight</a></code> values.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>gradeSegments</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An array of <code><a href="../Structs/GradeSegment.html">GradeSegment</a></code> values.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit10TrackGraphV6points18elevationSmoothingACSayAA0B5PointVG_AA09ElevationF0OtKcfc"></a>
                     <a name="//apple_ref/swift/Method/init(points:elevationSmoothing:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit10TrackGraphV6points18elevationSmoothingACSayAA0B5PointVG_AA09ElevationF0Otcfc">init(points:<wbr>elevationSmoothing:<wbr>)</a>
+                    <a class="token" href="#/s:6GPXKit10TrackGraphV6points18elevationSmoothingACSayAA0B5PointVG_AA09ElevationF0OtKcfc">init(points:<wbr>elevationSmoothing:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -308,7 +417,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">points</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/TrackPoint.html">TrackPoint</a></span><span class="p">],</span> <span class="nv">elevationSmoothing</span><span class="p">:</span> <span class="kt"><a href="../Enums/ElevationSmoothing.html">ElevationSmoothing</a></span> <span class="o">=</span> <span class="o">.</span><span class="nf">segmentation</span><span class="p">(</span><span class="mi">50</span><span class="p">))</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">points</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/TrackPoint.html">TrackPoint</a></span><span class="p">],</span> <span class="nv">elevationSmoothing</span><span class="p">:</span> <span class="kt"><a href="../Enums/ElevationSmoothing.html">ElevationSmoothing</a></span> <span class="o">=</span> <span class="o">.</span><span class="nf">segmentation</span><span class="p">(</span><span class="mi">50</span><span class="p">))</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -336,7 +445,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>The length of the grade segments in meters. Defaults to 25 meters. Adjacent segments with the same grade will be joined together.</p>
+                                  <p>The length of the grade segments in meters. Defaults to 50 meters. Adjacent segments with the same grade will be joined together.</p>
                                 </div>
                               </td>
                             </tr>
@@ -510,9 +619,9 @@ You don&rsquo;t need to construct this value by yourself, as it is done by GXPKi
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:6GPXKit10TrackGraphV6coords18elevationSmoothingACSayAA10CoordinateVG_AA09ElevationF0Otcfc"></a>
+                    <a name="/s:6GPXKit10TrackGraphV6coords18elevationSmoothingACSayAA10CoordinateVG_AA09ElevationF0OtKcfc"></a>
                     <a name="//apple_ref/swift/Method/init(coords:elevationSmoothing:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit10TrackGraphV6coords18elevationSmoothingACSayAA10CoordinateVG_AA09ElevationF0Otcfc">init(coords:<wbr>elevationSmoothing:<wbr>)</a>
+                    <a class="token" href="#/s:6GPXKit10TrackGraphV6coords18elevationSmoothingACSayAA10CoordinateVG_AA09ElevationF0OtKcfc">init(coords:<wbr>elevationSmoothing:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -527,7 +636,7 @@ You don&rsquo;t need to construct this value by yourself, as it is done by GXPKi
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="nf">init</span><span class="p">(</span><span class="nv">coords</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/Coordinate.html">Coordinate</a></span><span class="p">],</span> <span class="nv">elevationSmoothing</span><span class="p">:</span> <span class="kt"><a href="../Enums/ElevationSmoothing.html">ElevationSmoothing</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="nf">init</span><span class="p">(</span><span class="nv">coords</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/Coordinate.html">Coordinate</a></span><span class="p">],</span> <span class="nv">elevationSmoothing</span><span class="p">:</span> <span class="kt"><a href="../Enums/ElevationSmoothing.html">ElevationSmoothing</a></span><span class="p">)</span> <span class="k">throws</span></code></pre>
 
                         </div>
                       </div>
@@ -550,12 +659,108 @@ You don&rsquo;t need to construct this value by yourself, as it is done by GXPKi
                             <tr>
                               <td>
                                 <code>
-                                <em>gradeSegmentLength</em>
+                                <em>elevationSmoothing</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The Length of the grade segments in meters. Defaults to 25.</p>
+                                  <p>The <code><a href="../Enums/ElevationSmoothing.html">ElevationSmoothing</a></code> for calculating the elevation grades..</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit10TrackGraphV6coordsACSayAA10CoordinateVG_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(coords:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit10TrackGraphV6coordsACSayAA10CoordinateVG_tcfc">init(coords:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="nf">init</span><span class="p">(</span><span class="nv">coords</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/Coordinate.html">Coordinate</a></span><span class="p">])</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:6GPXKit10TrackGraphV6coords20smoothingSampleCount17allowedGradeDeltaACSayAA10CoordinateVG_SiSdtKcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(coords:smoothingSampleCount:allowedGradeDelta:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit10TrackGraphV6coords20smoothingSampleCount17allowedGradeDeltaACSayAA10CoordinateVG_SiSdtKcfc">init(coords:<wbr>smoothingSampleCount:<wbr>allowedGradeDelta:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializer for adjusting the heightmap.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="nf">init</span><span class="p">(</span><span class="nv">coords</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/Coordinate.html">Coordinate</a></span><span class="p">],</span> <span class="nv">smoothingSampleCount</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">allowedGradeDelta</span><span class="p">:</span> <span class="kt">Double</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>coords</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An array <code><a href="../Structs/Coordinate.html">Coordinate</a></code> values. Will be smoothed with the smoothingSampleCount parameter.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>smoothingSampleCount</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Number of neighbouring <code><a href="../Structs/Coordinate.html">Coordinate</a></code> values to take into account for smoothed elevation.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>allowedGradeDelta</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The maximum allowed grade between adjacent <code><a href="../Structs/GradeSegment.html">GradeSegment</a></code> values. In normalized range [0,1].</p>
                                 </div>
                               </td>
                             </tr>
@@ -625,7 +830,7 @@ You don&rsquo;t need to construct this value by yourself, as it is done by GXPKi
                               </td>
                               <td>
                                 <div>
-                                  <p>The maximum allowed distance between climb segments in meters. If Climb segments are closer they will get joined to one climb. Defaults to 0.</p>
+                                  <p>The maximum allowed distance between climb segments in meters. If <code><a href="../Structs/Climb.html">Climb</a></code> segments are closer they will get joined to one climb. Defaults to 0.</p>
                                 </div>
                               </td>
                             </tr>
@@ -644,7 +849,7 @@ You don&rsquo;t need to construct this value by yourself, as it is done by GXPKi
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2023 <a class="link" href="" target="_blank" rel="external noopener"></a>. All rights reserved. (Last updated: 2023-09-21)</p>
+          <p>&copy; 2024 <a class="link" href="" target="_blank" rel="external noopener"></a>. All rights reserved. (Last updated: 2024-01-22)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
         </section>
       </article>
