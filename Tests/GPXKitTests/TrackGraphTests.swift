@@ -522,7 +522,7 @@ final class TrackGraphTests: XCTestCase {
             second,
             third,
         ]
-        let sut = TrackGraph(coords: coords)
+        let sut = try TrackGraph(coords: coords)
 
         let expected = [
             DistanceHeight(distance: 0, elevation: 100),

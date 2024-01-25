@@ -11,6 +11,11 @@ public protocol GeoCoordinate {
     var longitude: Double { get }
 }
 
+public protocol HeightMappable {
+    /// Elevation above sea level in meters
+    var elevation: Double { get }
+}
+
 public extension GeoCoordinate {
     /// A range of valid latitude values (from -90 to 90 degrees)
     static var validLatitudeRange: ClosedRange<Double> { -90...90 }

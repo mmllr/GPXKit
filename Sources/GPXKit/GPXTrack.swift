@@ -57,7 +57,7 @@ public struct GPXTrack: Hashable, Sendable {
         self.title = title
         self.description = description
         self.trackPoints = trackPoints
-        self.graph = TrackGraph(coords: trackPoints.map(\.coordinate))
+        self.graph = TrackGraph(coordinates: trackPoints, elevationSmoothing: .none)
         self.bounds = trackPoints.bounds()
         self.keywords = keywords
         self.segments = segments ?? [.init(range: trackPoints.indices, distance: self.graph.distance)]

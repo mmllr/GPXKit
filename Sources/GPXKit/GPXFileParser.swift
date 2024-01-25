@@ -298,7 +298,7 @@ extension TrackPoint {
 extension Collection<TrackPoint> {
     var totalDistance: Double {
         zip(self, self.dropFirst()).map {
-            $0.coordinate.distance(to: $1.coordinate)
+            $0.calculateDistance(to: $1)
         }.reduce(0, +)
     }
 }

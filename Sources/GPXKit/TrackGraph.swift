@@ -33,7 +33,7 @@ public struct TrackGraph: Hashable, Sendable {
     ///   - points: Array of `TrackPoint` values.
     ///   - gradeSegmentLength: The length of the grade segments in meters. Defaults to 50 meters. Adjacent segments with the same grade will be joined together.
     public init(points: [TrackPoint], elevationSmoothing: ElevationSmoothing = .segmentation(50)) throws {
-        try self.init(coords: points.map { $0.coordinate }, elevationSmoothing: elevationSmoothing)
+        self.init(coordinates: points, elevationSmoothing: elevationSmoothing)
     }
 
     /// Initializer
@@ -76,42 +76,28 @@ public extension TrackGraph {
         case .combined(let smoothingSampleCount, let maxGradeDelta):
             try self.init(coords: coords, smoothingSampleCount: smoothingSampleCount, allowedGradeDelta: maxGradeDelta)
         case .segmentation, .smoothing, .none:
-            let zippedCoords = zip(coords, coords.dropFirst())
-            let distances: [Double] = [0.0] + zippedCoords.map {
-                $0.distance(to: $1)
-            }
-
-            let segments = zip(coords, distances).map {
-                TrackSegment(coordinate: $0, distanceInMeters: $1)
-            }
-            let distance = distances.reduce(0, +)
-            let elevationGain = coords.calculateElevationGain()
-            let heightmap = segments.reduce(into: [DistanceHeight]()) { acc, segment in
-                let distanceSoFar = (acc.last?.distance ?? 0) + segment.distanceInMeters
-                acc.append(DistanceHeight(distance: distanceSoFar, elevation: segment.coordinate.elevation))
-            }
-            let gradeSegments = try heightmap.calculateGradeSegments(elevationSmoothing)
-            self.init(segments: segments, distance: distance, elevationGain: elevationGain, heightMap: heightmap, gradeSegments: gradeSegments)
+            let graph = TrackGraph(coordinates: coords, elevationSmoothing: elevationSmoothing)
+            let gradeSegments = try graph.heightMap.calculateGradeSegments(elevationSmoothing)
+            self.init(segments: graph.segments, distance: graph.distance, elevationGain: graph.elevationGain, heightMap: graph.heightMap, gradeSegments: gradeSegments)
         }
     }
 
     init(coords: [Coordinate]) {
-        let zippedCoords = zip(coords, coords.dropFirst())
-        let distances: [Double] = [0.0] + zippedCoords.map {
-            $0.distance(to: $1)
-        }
+        self.init(coordinates: coords, elevationSmoothing: .none)
+    }
 
-        segments = zip(coords, distances).map {
-            TrackSegment(coordinate: $0, distanceInMeters: $1)
-        }
-        distance = distances.reduce(0, +)
-        elevationGain = coords.calculateElevationGain()
+    internal init<C: GeoCoordinate & DistanceCalculation & HeightMappable>(coordinates: [C], elevationSmoothing: ElevationSmoothing) {
+        let segments = coordinates.trackSegments()
+        distance = segments.calculateDistance()
+        self.segments = segments
+        elevationGain = coordinates.calculateElevationGain()
         let heightmap = segments.reduce(into: [DistanceHeight]()) { acc, segment in
             let distanceSoFar = (acc.last?.distance ?? 0) + segment.distanceInMeters
             acc.append(DistanceHeight(distance: distanceSoFar, elevation: segment.coordinate.elevation))
         }
         self.heightMap = heightmap
-        self.gradeSegments = heightmap.gradeSegments()
+        let gradeSegments = try? heightmap.calculateGradeSegments(elevationSmoothing)
+        self.gradeSegments = gradeSegments ?? heightmap.gradeSegments()
     }
 
     /// Initializer for adjusting the heightmap.
@@ -120,22 +106,9 @@ public extension TrackGraph {
     ///   - smoothingSampleCount: Number of neighbouring ``Coordinate`` values to take into account for smoothed elevation.
     ///   - allowedGradeDelta: The maximum allowed grade between adjacent ``GradeSegment`` values. In normalized range [0,1].
     init(coords: [Coordinate], smoothingSampleCount: Int, allowedGradeDelta: Double) throws {
-        let coords = coords.smoothedElevation(sampleCount: smoothingSampleCount)
-        let zippedCoords = zip(coords, coords.dropFirst())
-        let distances: [Double] = [0.0] + zippedCoords.map {
-            $0.distance(to: $1)
-        }
-        segments = zip(coords, distances).map {
-            TrackSegment(coordinate: $0, distanceInMeters: $1)
-        }
-        distance = distances.reduce(0, +)
-        elevationGain = coords.calculateElevationGain()
-        let heightmap = segments.reduce(into: [DistanceHeight]()) { acc, segment in
-            let distanceSoFar = (acc.last?.distance ?? 0) + segment.distanceInMeters
-            acc.append(DistanceHeight(distance: distanceSoFar, elevation: segment.coordinate.elevation))
-        }
-        self.heightMap = heightmap
-        self.gradeSegments = try heightmap.gradeSegments().flatten(maxDelta: allowedGradeDelta)
+        let graph = TrackGraph(coordinates: coords.smoothedElevation(sampleCount: smoothingSampleCount), elevationSmoothing: .none)
+        let gradeSegments = try graph.gradeSegments.flatten(maxDelta: allowedGradeDelta)
+        self.init(segments: graph.segments, distance: graph.distance, elevationGain: graph.elevationGain, heightMap: graph.heightMap, gradeSegments: gradeSegments)
     }
 }
 
@@ -156,28 +129,28 @@ public extension TrackGraph {
     }
 }
 
-private extension Collection<Coordinate> {
+private extension Collection where Element: HeightMappable {
     /// Calculates the elevation gain by applying a threshold to reduce vertical noise.
     ///
     /// See https://www.gpsvisualizer.com/tutorials/elevation_gain.html for more details
     /// - Parameters:
-    ///   - coordinates: An array of ``Coordinate`` values for which the elevation gain should be calculated
+    ///   - coordinates: An array of ``GeoCoordinate`` values for which the elevation gain should be calculated
     ///   - threshold: The elevation threshold in meters to be applied.
     /// - Returns: The elevation gain
     func calculateElevationGain(threshold: Double = 5) -> Double {
         guard self.count > 1, let first = self.first else { return 0 }
 
-        var reducedCoordinates: [Coordinate] = [first]
+        var reducedElevations: [Double] = [first.elevation]
         var lastCoord = first
 
         for coordinate in self.dropFirst() where abs(coordinate.elevation - lastCoord.elevation) > threshold {
-            reducedCoordinates.append(coordinate)
+            reducedElevations.append(coordinate.elevation)
             lastCoord = coordinate
         }
 
-        let zippedCoords = zip(reducedCoordinates, reducedCoordinates.dropFirst())
+        let zippedCoords = zip(reducedElevations, reducedElevations.dropFirst())
         return zippedCoords.reduce(0.0) { elevation, pair in
-            let delta = pair.1.elevation - pair.0.elevation
+            let delta = pair.1 - pair.0
             if delta > 0 {
                 return elevation + delta
             }

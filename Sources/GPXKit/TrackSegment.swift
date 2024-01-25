@@ -18,3 +18,9 @@ public struct TrackSegment: Hashable, Sendable {
         self.distanceInMeters = distanceInMeters
     }
 }
+
+extension Collection where Element == TrackSegment {
+    func calculateDistance() -> Double {
+        reduce(0) { $0 + $1.distanceInMeters }
+    }
+}

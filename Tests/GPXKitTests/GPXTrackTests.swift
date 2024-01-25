@@ -84,4 +84,33 @@ final class GPXTrackTests: XCTestCase {
         ]
         XCTAssertNoDifference(expected, sut.graph.gradeSegments)
     }
+
+    func testGraphHasTheDistancesFromTheTrackPointsSpeed() {
+        let start = Date.now
+        let points: [TrackPoint] = [
+            .init(coordinate: .dehner, date: start, speed: 1.mps),
+            .init(coordinate: .dehner.offset(distance: 10, grade: 0), date: start.addingTimeInterval(1), speed: 1.mps),
+            .init(coordinate: .dehner.offset(distance: 20, grade: 0), date: start.addingTimeInterval(2), speed: 1.mps),
+            .init(coordinate: .dehner.offset(distance: 25, grade: 0), date: start.addingTimeInterval(3), speed: 1.mps),
+            .init(coordinate: .dehner.offset(distance: 50, grade: 0), date: start.addingTimeInterval(4), speed: 1.mps),
+        ]
+
+        let sut = GPXTrack(title: "Track", trackPoints: points)
+
+        XCTAssertNoDifference(4, sut.graph.distance)
+        XCTAssertNoDifference([
+            DistanceHeight(distance: 0, elevation: 0),
+            DistanceHeight(distance: 1, elevation: 0),
+            DistanceHeight(distance: 2, elevation: 0),
+            DistanceHeight(distance: 3, elevation: 0),
+            DistanceHeight(distance: 4, elevation: 0),
+        ], sut.graph.heightMap)
+        XCTAssertNoDifference([
+            .init(coordinate: points[0].coordinate, distanceInMeters: 0),
+            .init(coordinate: points[1].coordinate, distanceInMeters: 1),
+            .init(coordinate: points[2].coordinate, distanceInMeters: 1),
+            .init(coordinate: points[3].coordinate, distanceInMeters: 1),
+            .init(coordinate: points[4].coordinate, distanceInMeters: 1),
+        ], sut.graph.segments)
+    }
 }

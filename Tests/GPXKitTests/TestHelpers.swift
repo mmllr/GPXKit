@@ -274,3 +274,15 @@ extension Collection<TrackPoint> {
         }.reduce(0, +)
     }
 }
+
+extension BinaryFloatingPoint {
+    var mps: Measurement<UnitSpeed> {
+        .init(value: Double(self), unit: .metersPerSecond)
+    }
+}
+
+extension BinaryInteger {
+    var mps: Measurement<UnitSpeed> {
+        .init(value: Double(self), unit: .metersPerSecond)
+    }
+}
