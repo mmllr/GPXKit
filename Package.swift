@@ -16,8 +16,8 @@ let package = Package(
             targets: ["GPXKit"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "1.1.2"),
-        .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0")
+        .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "1.2.0"),
+        .package(url: "https://github.com/apple/swift-algorithms", from: "1.2.0")
     ],
     targets: [
         .target(
