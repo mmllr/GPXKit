@@ -7,16 +7,19 @@ import FoundationXML
 public final class GPXExporter {
     private let track: GPXTrack
     private let exportDate: Bool
+    private let creatorName: String
 
     /// Initializes a GPXExporter
     /// - Parameters:
     ///   - track: The ``GPXTrack`` to export.
     ///   - shouldExportDate: Flag indicating whether it should export the timestamps in the track. Set it to false if you want to omit the values. This would decrease the exported xml's file size and protects privacy. Defaults to true.
+    ///   - creatorName: The value for the creator tag in the header. Defaults to GPXKit
     ///
     /// If the track cannot be exported, the resulting ``GPXExporter/xmlString`` property of the exporter is an empty GPX track xml.
-    public init(track: GPXTrack, shouldExportDate: Bool = true) {
+    public init(track: GPXTrack, shouldExportDate: Bool = true, creatorName: String = "GPXKit") {
         self.track = track
         self.exportDate = shouldExportDate
+        self.creatorName = creatorName
     }
 
     /// The exported GPX xml string. If the track cannot be exported, its value is an empty GPX track xml.
@@ -90,7 +93,7 @@ public final class GPXExporter {
 
     private var headerAttributes: String {
         return """
-            creator="GPXKit" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3"
+            creator="\(creatorName)" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3"
             """
     }
 }

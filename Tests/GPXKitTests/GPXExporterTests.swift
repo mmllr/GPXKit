@@ -19,15 +19,17 @@ final class GPXExporterTests: XCTestCase {
     }()
 
     private var result: GPXKit.XMLNode!
-    private let expectedHeaderAttributes = [
-        "creator": "GPXKit",
-        "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
-        "xsi:schemaLocation": "http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd",
-        "version": "1.1",
-        "xmlns": "http://www.topografix.com/GPX/1/1",
-        "xmlns:gpxtpx": "http://www.garmin.com/xmlschemas/TrackPointExtension/v1",
-        "xmlns:gpxx": "http://www.garmin.com/xmlschemas/GpxExtensions/v3",
-    ]
+    private func expectedHeaderAttributes(creator: String = "GPXKit") -> [String:String] {
+        [
+            "creator": creator,
+            "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+            "xsi:schemaLocation": "http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd",
+            "version": "1.1",
+            "xmlns": "http://www.topografix.com/GPX/1/1",
+            "xmlns:gpxtpx": "http://www.garmin.com/xmlschemas/TrackPointExtension/v1",
+            "xmlns:gpxx": "http://www.garmin.com/xmlschemas/GpxExtensions/v3",
+        ]
+    }
 
     private func parseResult(_ xmlString: String) {
         let xmlParser = BasicXMLParser(xml: xmlString)
@@ -48,7 +50,7 @@ final class GPXExporterTests: XCTestCase {
 
         let expectedContent: GPXKit.XMLNode = XMLNode(
             name: GPXTags.gpx.rawValue,
-            attributes: expectedHeaderAttributes,
+            attributes: expectedHeaderAttributes(),
             children: [
                 XMLNode(name: GPXTags.metadata.rawValue, children: [
                     XMLNode(name: GPXTags.time.rawValue, content: expectedString(for: date)),
@@ -72,7 +74,7 @@ final class GPXExporterTests: XCTestCase {
 
         let expectedContent: GPXKit.XMLNode = XMLNode(
             name: GPXTags.gpx.rawValue,
-            attributes: expectedHeaderAttributes,
+            attributes: expectedHeaderAttributes(),
             children: [
                 XMLNode(name: GPXTags.metadata.rawValue, children: [
                     XMLNode(name: GPXTags.time.rawValue, content: expectedString(for: date)),
@@ -96,11 +98,11 @@ final class GPXExporterTests: XCTestCase {
             trackPoints: [],
             keywords: ["one", "two"]
         )
-        sut = GPXExporter(track: track)
+        sut = GPXExporter(track: track, creatorName: "Custom creator name")
 
         let expectedContent: GPXKit.XMLNode = XMLNode(
             name: GPXTags.gpx.rawValue,
-            attributes: expectedHeaderAttributes,
+            attributes: expectedHeaderAttributes(creator: "Custom creator name"),
             children: [
                 XMLNode(name: GPXTags.metadata.rawValue, children: [
                     XMLNode(name: GPXTags.keywords.rawValue, content: "one two"),
@@ -132,7 +134,7 @@ final class GPXExporterTests: XCTestCase {
 
         let expectedContent: GPXKit.XMLNode = XMLNode(
             name: GPXTags.gpx.rawValue,
-            attributes: expectedHeaderAttributes,
+            attributes: expectedHeaderAttributes(),
             children: [
                 XMLNode(name: GPXTags.metadata.rawValue, children: [
                     XMLNode(name: GPXTags.time.rawValue, content: expectedString(for: date)),
@@ -180,7 +182,7 @@ final class GPXExporterTests: XCTestCase {
         sut = GPXExporter(track: track, shouldExportDate: false)
         let expectedContent: GPXKit.XMLNode = XMLNode(
             name: GPXTags.gpx.rawValue,
-            attributes: expectedHeaderAttributes,
+            attributes: expectedHeaderAttributes(),
             children: [
                 XMLNode(name: GPXTags.metadata.rawValue),
                 XMLNode(name: GPXTags.track.rawValue, children: [
@@ -205,7 +207,7 @@ final class GPXExporterTests: XCTestCase {
         sut = GPXExporter(track: track, shouldExportDate: false)
         let expectedContent: GPXKit.XMLNode = XMLNode(
             name: GPXTags.gpx.rawValue,
-            attributes: expectedHeaderAttributes,
+            attributes: expectedHeaderAttributes(),
             children: [
                 XMLNode(name: GPXTags.metadata.rawValue),
                 XMLNode(name: GPXTags.track.rawValue, children: [
@@ -233,7 +235,7 @@ final class GPXExporterTests: XCTestCase {
         sut = GPXExporter(track: track, shouldExportDate: false)
         let expectedContent: GPXKit.XMLNode = XMLNode(
             name: GPXTags.gpx.rawValue,
-            attributes: expectedHeaderAttributes,
+            attributes: expectedHeaderAttributes(),
             children: [
                 XMLNode(name: GPXTags.metadata.rawValue),
                 XMLNode(name: GPXTags.waypoint.rawValue, attributes: [
@@ -326,7 +328,7 @@ final class GPXExporterTests: XCTestCase {
 
         let expectedContent: GPXKit.XMLNode = XMLNode(
             name: GPXTags.gpx.rawValue,
-            attributes: expectedHeaderAttributes,
+            attributes: expectedHeaderAttributes(),
             children: [
                 XMLNode(name: GPXTags.metadata.rawValue, children: [
                     XMLNode(name: GPXTags.time.rawValue, content: expectedString(for: date)),
