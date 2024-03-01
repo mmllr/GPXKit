@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>ElevationSmoothing Enumeration Reference</title>
+    <title>HeightMappable Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -13,8 +13,8 @@
     <script src="../js/jazzy.search.js" defer></script>
   </head>
   <body>
-    <a name="//apple_ref/swift/Enum/ElevationSmoothing" class="dashAnchor"></a>
-    <a title="ElevationSmoothing Enumeration Reference"></a>
+    <a name="//apple_ref/swift/Protocol/HeightMappable" class="dashAnchor"></a>
+    <a title="HeightMappable Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html"> Docs</a> (100% documented)</p>
@@ -29,7 +29,7 @@
       <p id="breadcrumbs">
         <a href="../index.html"> Reference</a>
         <img id="carat" src="../img/carat.png" alt=""/>
-        ElevationSmoothing Enumeration Reference
+        HeightMappable Protocol Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -157,11 +157,11 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>ElevationSmoothing</h1>
+            <h1>HeightMappable</h1>
               <div class="declaration">
                 <div class="language">
                   
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">ElevationSmoothing</span> <span class="p">:</span> <span class="kt">Sendable</span><span class="p">,</span> <span class="kt">Hashable</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">HeightMappable</span></code></pre>
 
                 </div>
               </div>
@@ -173,9 +173,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:6GPXKit18ElevationSmoothingO4noneyA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/none" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit18ElevationSmoothingO4noneyA2CmF">none</a>
+                    <a name="/s:6GPXKit14HeightMappableP9elevationSdvp"></a>
+                    <a name="//apple_ref/swift/Property/elevation" class="dashAnchor"></a>
+                    <a class="token" href="#/s:6GPXKit14HeightMappableP9elevationSdvp">elevation</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -183,91 +183,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="k">none</span></code></pre>
+                        <p>Elevation above sea level in meters</p>
 
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:6GPXKit18ElevationSmoothingO12segmentationyACSdcACmF"></a>
-                    <a name="//apple_ref/swift/Element/segmentation(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit18ElevationSmoothingO12segmentationyACSdcACmF">segmentation(_:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">segmentation</span><span class="p">(</span><span class="kt">Double</span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:6GPXKit18ElevationSmoothingO9smoothingyACSicACmF"></a>
-                    <a name="//apple_ref/swift/Element/smoothing(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit18ElevationSmoothingO9smoothingyACSicACmF">smoothing(_:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">smoothing</span><span class="p">(</span><span class="kt">Int</span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:6GPXKit18ElevationSmoothingO8combinedyACSi_SdtcACmF"></a>
-                    <a name="//apple_ref/swift/Element/combined(smoothingSampleCount:maxGradeDelta:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:6GPXKit18ElevationSmoothingO8combinedyACSi_SdtcACmF">combined(smoothingSampleCount:<wbr>maxGradeDelta:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">combined</span><span class="p">(</span><span class="nv">smoothingSampleCount</span><span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="nv">maxGradeDelta</span><span class="p">:</span> <span class="kt">Double</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">elevation</span><span class="p">:</span> <span class="kt">Double</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
