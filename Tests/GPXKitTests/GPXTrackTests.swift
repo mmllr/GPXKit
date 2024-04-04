@@ -86,7 +86,7 @@ final class GPXTrackTests: XCTestCase {
     }
 
     func testGraphHasTheDistancesFromTheTrackPointsSpeed() {
-        let start = Date.now
+        let start = Date()
         let points: [TrackPoint] = [
             .init(coordinate: .dehner, date: start, speed: 1.mps),
             .init(coordinate: .dehner.offset(distance: 10, grade: 0), date: start.addingTimeInterval(1), speed: 1.mps),
