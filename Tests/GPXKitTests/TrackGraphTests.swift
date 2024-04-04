@@ -543,5 +543,6 @@ final class TrackGraphTests: XCTestCase {
                 elevationAtEnd: 100.56074178631758
             ),
         ], sut.gradeSegments)
+        XCTAssertNoDifference(sut.distance, sut.gradeSegments.last?.end)
     }
 }
