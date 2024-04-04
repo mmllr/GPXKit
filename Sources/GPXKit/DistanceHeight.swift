@@ -24,8 +24,9 @@ public extension [DistanceHeight] {
         adjacentPairs().reduce(into: [GradeSegment]()) { acc, value in
             let (prev, cur) = value
             let length = (cur.distance - prev.distance)
+            let start = acc.last?.end ?? .zero
             guard length > 0 else { return }
-            if let segment = GradeSegment(start: prev.distance, end: prev.distance + length, elevationAtStart: prev.elevation, elevationAtEnd: cur.elevation) {
+            if let segment = GradeSegment(start: start, end: start + length, elevationAtStart: prev.elevation, elevationAtEnd: cur.elevation) {
                 acc.append(segment)
             }
         }
