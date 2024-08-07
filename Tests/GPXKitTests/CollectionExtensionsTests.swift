@@ -7,19 +7,19 @@ final class ArrayExtensionsTests: XCTestCase {
     func testRemovingNearbyCoordinatesInEmptyCollection() {
         let coords: [Coordinate] = []
 
-        XCTAssertNoDifference([], coords.removeIf(closerThan: 1))
+        expectNoDifference([], coords.removeIf(closerThan: 1))
     }
 
     func testRemovingNearbyCoordinatesWithOneElement() {
         let coords: [Coordinate] = [.leipzig]
 
-        XCTAssertNoDifference([.leipzig], coords.removeIf(closerThan: 1))
+        expectNoDifference([.leipzig], coords.removeIf(closerThan: 1))
     }
 
     func testRemovingNearbyCoordinatesWithTwoElement() {
         let coords: [Coordinate] = [.leipzig, .dehner]
 
-        XCTAssertNoDifference([.leipzig, .dehner], coords.removeIf(closerThan: 1))
+        expectNoDifference([.leipzig, .dehner], coords.removeIf(closerThan: 1))
     }
 
     func testRemovingDuplicateCoordinates() {
@@ -34,7 +34,7 @@ final class ArrayExtensionsTests: XCTestCase {
         ]
 
         let result = coords.removeIf(closerThan: 50)
-        XCTAssertNoDifference([coords[0], coords[1], coords[3], .postPlatz], result)
+        expectNoDifference([coords[0], coords[1], coords[3], .postPlatz], result)
     }
 
     func testSmoothingElevation() {
@@ -83,7 +83,7 @@ final class ArrayExtensionsTests: XCTestCase {
         ]
 
         let actual = try XCTUnwrap(grades.flatten(maxDelta: 0.01))
-        XCTAssertNoDifference(expected, actual)
+        expectNoDifference(expected, actual)
     }
 
     func testFlatteningGradeSegmentsWithVeryLargeGradeDifferencesDoesNotResultInNotANumber() throws {
@@ -92,7 +92,7 @@ final class ArrayExtensionsTests: XCTestCase {
         let graph = TrackGraph(coords: .init(track.trackPoints.map(\.coordinate).prefix(50)))
         let actual = try XCTUnwrap(graph.gradeSegments.flatten(maxDelta: 0.01))
 
-        XCTAssertNoDifference(0, actual.filter { $0.grade.isNaN }.count)
+        expectNoDifference(0, actual.filter { $0.grade.isNaN }.count)
     }
 
     func testSmoothingElevationOnSmallCollections() {
@@ -103,12 +103,12 @@ final class ArrayExtensionsTests: XCTestCase {
             elevation: Double.random(in: 500 ... 550)
         )
 
-        XCTAssertNoDifference([], [Coordinate]().smoothedElevation(sampleCount: Int.random(in: 2...200)))
-        XCTAssertNoDifference([start], [start].smoothedElevation(sampleCount: Int.random(in: 5...200)))
+        expectNoDifference([], [Coordinate]().smoothedElevation(sampleCount: Int.random(in: 2...200)))
+        expectNoDifference([start], [start].smoothedElevation(sampleCount: Int.random(in: 5...200)))
 
         let coords: [Coordinate] = [start, end]
         let avg = coords.map(\.elevation).reduce(0, +) / Double(coords.count)
 
-        XCTAssertNoDifference([.init(latitude: start.latitude, longitude: start.longitude, elevation: avg), .init(latitude: end.latitude, longitude: end.longitude, elevation: avg)], coords.smoothedElevation(sampleCount: 50))
+        expectNoDifference([.init(latitude: start.latitude, longitude: start.longitude, elevation: avg), .init(latitude: end.latitude, longitude: end.longitude, elevation: avg)], coords.smoothedElevation(sampleCount: 50))
     }
 }

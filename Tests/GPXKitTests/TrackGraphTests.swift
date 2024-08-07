@@ -82,7 +82,7 @@ final class TrackGraphTests: XCTestCase {
 
         sut = try TrackGraph(coords: coordinates, elevationSmoothing: .segmentation(50))
 
-        XCTAssertNoDifference(0, sut.elevationGain)
+        expectNoDifference(0, sut.elevationGain)
     }
 
     func testTotalElevationWithDifferentElevation() throws {
@@ -98,7 +98,7 @@ final class TrackGraphTests: XCTestCase {
         sut = try TrackGraph(coords: coordinates, elevationSmoothing: .segmentation(50))
 
         // 10 + 95 + 268
-        XCTAssertNoDifference(373, sut.elevationGain)
+        expectNoDifference(373, sut.elevationGain)
     }
 
     func testInitializationFromGPX() throws {
@@ -119,7 +119,7 @@ final class TrackGraphTests: XCTestCase {
             Coordinate(latitude: 51.2764520, longitude: 12.3767260, elevation: 1),
             Coordinate(latitude: 51.2765020, longitude: 12.3767050, elevation: 1),
         ]
-        XCTAssertNoDifference(expectedCoordinates, sut.segments.map { $0.coordinate })
+        expectNoDifference(expectedCoordinates, sut.segments.map { $0.coordinate })
     }
 
     func testTheInitialElevationIsSubstractedFromTheElevationGain() throws {
@@ -135,7 +135,7 @@ final class TrackGraphTests: XCTestCase {
         sut = try TrackGraph(coords: coordinates, elevationSmoothing: .segmentation(50))
 
         // 10 + 95 + 268
-        XCTAssertNoDifference(50, sut.elevationGain)
+        expectNoDifference(50, sut.elevationGain)
     }
 
     func testElevationGainIsTheSumOfAllElevationDifferences() throws {
@@ -150,19 +150,19 @@ final class TrackGraphTests: XCTestCase {
 
         sut = try TrackGraph(coords: coordinates, elevationSmoothing: .segmentation(50))
 
-        XCTAssertNoDifference(30 + 80 + 10, sut.elevationGain)
+        expectNoDifference(30 + 80 + 10, sut.elevationGain)
     }
 
     func testEmptyTrackGraphHasNoClimbs() throws {
         sut = try TrackGraph(coords: [], elevationSmoothing: .segmentation(50))
 
-        XCTAssertNoDifference([], sut.climbs())
+        expectNoDifference([], sut.climbs())
     }
 
     func testClimbsWithOnePointInTrackIsEmpty() throws {
         sut = try TrackGraph(coords: [.leipzig], elevationSmoothing: .segmentation(50))
 
-        XCTAssertNoDifference([], sut.climbs())
+        expectNoDifference([], sut.climbs())
     }
 
     func testATrackWithTwoPointsHasOneClimb() throws {
@@ -185,7 +185,7 @@ final class TrackGraphTests: XCTestCase {
             )
         )
 
-        XCTAssertNoDifference([expected], sut.climbs())
+        expectNoDifference([expected], sut.climbs())
     }
 
     func testDownhillSectionsWillNotBeInTheClimbs() throws {
@@ -194,7 +194,7 @@ final class TrackGraphTests: XCTestCase {
             elevationSmoothing: .segmentation(50)
         )
 
-        XCTAssertNoDifference([], sut.climbs())
+        expectNoDifference([], sut.climbs())
     }
 
     func testMultipleAdjacentClimbSegmentsWithDifferentGradesWillBeJoinedTogether() throws {
@@ -220,7 +220,7 @@ final class TrackGraphTests: XCTestCase {
                 expectedScore(start: sut.heightMap[2], end: sut.heightMap[3])
         )
 
-        XCTAssertNoDifference([expected], sut.climbs())
+        expectNoDifference([expected], sut.climbs())
     }
 
     func testItJoinsAdjacentSegmentsWithTheSameGrade() throws {
@@ -228,7 +228,7 @@ final class TrackGraphTests: XCTestCase {
             .kreisel.offset(north: Double($0) * 1000, elevation: Double($0) * 100)
         }, elevationSmoothing: .segmentation(50))
 
-        XCTAssertNoDifference([
+        expectNoDifference([
             Climb(
                 start: sut.heightMap.first!.distance,
                 end: sut.heightMap.last!.distance,
@@ -276,7 +276,7 @@ final class TrackGraphTests: XCTestCase {
             score: expectedScore(start: sut.heightMap[3], end: sut.heightMap[4])
         )
 
-        XCTAssertNoDifference([expectedA, expectedB], sut.climbs())
+        expectNoDifference([expectedA, expectedB], sut.climbs())
     }
 
     func testItFiltersOutClimbsWithGradeLessThanMinimumGrade() throws {
@@ -297,7 +297,7 @@ final class TrackGraphTests: XCTestCase {
             score: expectedScore(start: sut.heightMap[0], end: sut.heightMap[1])
         )
 
-        XCTAssertNoDifference([expected], sut.climbs(minimumGrade: 0.05))
+        expectNoDifference([expected], sut.climbs(minimumGrade: 0.05))
     }
 
     func testJoiningClimbsWithinMaxJoinDistance() throws {
@@ -323,9 +323,9 @@ final class TrackGraphTests: XCTestCase {
             )
         )
 
-        XCTAssertNoDifference([expected], sut.climbs(minimumGrade: 0.05, maxJoinDistance: 200.0))
+        expectNoDifference([expected], sut.climbs(minimumGrade: 0.05, maxJoinDistance: 200.0))
 
-        XCTAssertNoDifference([
+        expectNoDifference([
             Climb(
                 start: sut.heightMap[0].distance,
                 end: sut.heightMap[1].distance,
@@ -352,7 +352,7 @@ final class TrackGraphTests: XCTestCase {
     func testGradeSegmentsForEmptyGraphIsEmptyArray() throws {
         let sut = try TrackGraph(coords: [], elevationSmoothing: .segmentation(50))
 
-        XCTAssertNoDifference([], sut.gradeSegments)
+        expectNoDifference([], sut.gradeSegments)
     }
 
     func testGraphWithTheSameGrade() throws {
@@ -361,7 +361,7 @@ final class TrackGraphTests: XCTestCase {
             elevationSmoothing: .segmentation(25)
         )
 
-        XCTAssertNoDifference(
+        expectNoDifference(
             [GradeSegment(start: 0, end: sut.distance, elevationAtStart: 0, elevationAtEnd: 100)],
             sut.gradeSegments
         )
@@ -380,7 +380,7 @@ final class TrackGraphTests: XCTestCase {
             XCTUnwrap(.init(start: 0, end: 100, grade: 0.1, elevationAtStart: 0)),
             XCTUnwrap(.init(start: 100, end: sut.distance, grade: 0.2, elevationAtStart: 10)),
         ]
-        XCTAssertNoDifference(expected, sut.gradeSegments)
+        expectNoDifference(expected, sut.gradeSegments)
     }
 
     func testGraphShorterThanSegmentDistance() throws {
@@ -392,7 +392,7 @@ final class TrackGraphTests: XCTestCase {
         let expected: [GradeSegment] = try [
             XCTUnwrap(GradeSegment(start: 0, end: sut.distance, elevationAtStart: 0, elevationAtEnd: 14.57)),
         ]
-        XCTAssertNoDifference(expected, sut.gradeSegments)
+        expectNoDifference(expected, sut.gradeSegments)
     }
 
     func testNegativeGrades() throws {
@@ -417,7 +417,7 @@ final class TrackGraphTests: XCTestCase {
                 elevationAtEnd: 100.56
             )),
         ]
-        XCTAssertNoDifference(expected, sut.gradeSegments)
+        expectNoDifference(expected, sut.gradeSegments)
     }
 
     func testGradeSegmentsWhenInitializedFromDefaultInitializer() throws {
@@ -445,7 +445,7 @@ final class TrackGraphTests: XCTestCase {
                 elevationAtStart: 100.58
             )),
         ]
-        XCTAssertNoDifference(expected, sut.gradeSegments)
+        expectNoDifference(expected, sut.gradeSegments)
     }
 
     func testElevationAtDistanceTestBeyondTheTracksBounds() throws {
@@ -476,7 +476,7 @@ final class TrackGraphTests: XCTestCase {
         ]
         let sut = try TrackGraph(coords: coords, elevationSmoothing: .segmentation(50))
 
-        XCTAssertNoDifference(start.elevation, sut.elevation(at: 0))
+        expectNoDifference(start.elevation, sut.elevation(at: 0))
         XCTAssertEqual(first.elevation, try XCTUnwrap(sut.elevation(at: start.distance(to: first))), accuracy: 0.001)
         XCTAssertEqual(second.elevation, try XCTUnwrap(sut.elevation(at: start.distance(to: second))), accuracy: 0.001)
         XCTAssertEqual(third.elevation, try XCTUnwrap(sut.elevation(at: start.distance(to: third))), accuracy: 0.001)
@@ -530,10 +530,10 @@ final class TrackGraphTests: XCTestCase {
             DistanceHeight(distance: 199.77620423940783, elevation: 129.70642123410428),
             DistanceHeight(distance: 299.6643063591117, elevation: 100.56074178631758),
         ]
-        XCTAssertNoDifference(expected, sut.heightMap)
-        XCTAssertNoDifference(29.706421234104283, sut.elevationGain)
-        try XCTAssertNoDifference(XCTUnwrap(expected.last).distance, sut.distance)
-        XCTAssertNoDifference([
+        expectNoDifference(expected, sut.heightMap)
+        expectNoDifference(29.706421234104283, sut.elevationGain)
+        try expectNoDifference(XCTUnwrap(expected.last).distance, sut.distance)
+        expectNoDifference([
             GradeSegment(start: 0, end: 99.88810211970392, grade: 0.1, elevationAtStart: 100),
             GradeSegment(start: 99.88810211970392, end: 199.77620423940783, grade: 0.2, elevationAtStart: 110),
             GradeSegment(
@@ -543,6 +543,6 @@ final class TrackGraphTests: XCTestCase {
                 elevationAtEnd: 100.56074178631758
             ),
         ], sut.gradeSegments)
-        XCTAssertNoDifference(sut.distance, sut.gradeSegments.last?.end)
+        expectNoDifference(sut.distance, sut.gradeSegments.last?.end)
     }
 }

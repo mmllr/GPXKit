@@ -27,7 +27,7 @@ final class GPXTrackTests: XCTestCase {
     func testBoundingBoxForEmptyTrack() {
         givenTrack(with: [])
 
-        XCTAssertNoDifference(.empty, sut.bounds)
+        expectNoDifference(.empty, sut.bounds)
     }
 
     func testBoundingBoxWithOnePointHasThePointAsBoundingBox() {
@@ -40,7 +40,7 @@ final class GPXTrackTests: XCTestCase {
             maxLatitude: coord.latitude,
             maxLongitude: coord.longitude
         )
-        XCTAssertNoDifference(expected, sut.bounds)
+        expectNoDifference(expected, sut.bounds)
     }
 
     func testBoundsHasTheMinimumAndMaximumCoordinates() {
@@ -59,7 +59,7 @@ final class GPXTrackTests: XCTestCase {
             maxLatitude: 79,
             maxLongitude: 120
         )
-        XCTAssertNoDifference(expected, sut.bounds)
+        expectNoDifference(expected, sut.bounds)
     }
 
     func testGradeSegments() throws {
@@ -82,7 +82,7 @@ final class GPXTrackTests: XCTestCase {
             XCTUnwrap(.init(start: 200, end: 300, elevationAtStart: 129.64, elevationAtEnd: 100.58)),
             XCTUnwrap(.init(start: 300, end: sut.graph.distance, elevationAtStart: 100.58, elevationAtEnd: 103.55))
         ]
-        XCTAssertNoDifference(expected, sut.graph.gradeSegments)
+        expectNoDifference(expected, sut.graph.gradeSegments)
     }
 
     func testGraphHasTheDistancesFromTheTrackPointsSpeed() {
@@ -97,15 +97,15 @@ final class GPXTrackTests: XCTestCase {
 
         let sut = GPXTrack(title: "Track", trackPoints: points)
 
-        XCTAssertNoDifference(4, sut.graph.distance)
-        XCTAssertNoDifference([
+        expectNoDifference(4, sut.graph.distance)
+        expectNoDifference([
             DistanceHeight(distance: 0, elevation: 0),
             DistanceHeight(distance: 1, elevation: 0),
             DistanceHeight(distance: 2, elevation: 0),
             DistanceHeight(distance: 3, elevation: 0),
             DistanceHeight(distance: 4, elevation: 0),
         ], sut.graph.heightMap)
-        XCTAssertNoDifference([
+        expectNoDifference([
             .init(coordinate: points[0].coordinate, distanceInMeters: 0),
             .init(coordinate: points[1].coordinate, distanceInMeters: 1),
             .init(coordinate: points[2].coordinate, distanceInMeters: 1),

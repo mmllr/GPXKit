@@ -19,7 +19,7 @@ extension TrackGraphTests {
             CLLocationCoordinate2D(latitude: 51.2765020, longitude: 12.3767050),
         ]
 
-        XCTAssertNoDifference(coordinates, sut.coreLocationCoordinates)
+        expectNoDifference(coordinates, sut.coreLocationCoordinates)
     }
 }
 

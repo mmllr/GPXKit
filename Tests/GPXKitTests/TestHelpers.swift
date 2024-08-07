@@ -20,19 +20,19 @@ struct TestGPXPoint: Hashable, GeoCoordinate {
     }
 }
 
-fileprivate var iso8601Formatter: ISO8601DateFormatter = {
+nonisolated(unsafe) fileprivate let iso8601Formatter: ISO8601DateFormatter = {
     let formatter = ISO8601DateFormatter()
     formatter.formatOptions = .withInternetDateTime
     return formatter
 }()
 
-fileprivate var importFormatter: ISO8601DateFormatter = {
+nonisolated(unsafe)fileprivate let importFormatter: ISO8601DateFormatter = {
     let formatter = ISO8601DateFormatter()
     formatter.formatOptions = .withInternetDateTime
     return formatter
 }()
 
-fileprivate var fractionalFormatter: ISO8601DateFormatter = {
+nonisolated(unsafe) fileprivate let fractionalFormatter: ISO8601DateFormatter = {
     let formatter = ISO8601DateFormatter()
     if #available(macOS 10.13, iOS 12, watchOS 5, tvOS 11.0, *) {
         formatter.formatOptions = [.withFractionalSeconds, .withInternetDateTime]
@@ -149,37 +149,42 @@ extension XCTest {
         _ expected: Date?,
         _ actual: Date?,
         granularity: Calendar.Component = .nanosecond,
-        file: StaticString = #filePath,
-        line: UInt = #line
+        fileID: StaticString = #fileID,
+        filePath: StaticString = #filePath,
+        line: UInt = #line,
+        column: UInt = #column
     ) {
         guard let lhs = expected, let rhs = actual else {
-            XCTAssertNoDifference(expected, actual,
+            expectNoDifference(expected, actual,
                            "Dates are not equal - expected: \(String(describing: expected)), actual: \(String(describing: actual))",
-                           file: file,
-                           line: line )
+                           fileID: fileID,
+                            filePath: filePath,
+                           line: line, column: column )
             return
         }
         XCTAssertTrue(
             Calendar.autoupdatingCurrent
                 .isDate(lhs, equalTo: rhs, toGranularity: granularity),
-            "Expected dates to be equal - expected: \(lhs), actual: \(rhs)", file: file, line: line
+            "Expected dates to be equal - expected: \(lhs), actual: \(rhs)", file: filePath, line: line
         )
     }
 
     func assertTracksAreEqual(
         _ expected: GPXTrack,
         _ actual: GPXTrack,
-        file: StaticString = #filePath,
-        line: UInt = #line
+        fileID: StaticString = #fileID,
+        filePath: StaticString = #filePath,
+        line: UInt = #line,
+        column: UInt = #column
     ) {
-        assertDatesEqual(expected.date, actual.date, file: file, line: line)
-        XCTAssertNoDifference(expected.title, actual.title, file: file, line: line)
-        XCTAssertNoDifference(expected.description, actual.description, file: file, line: line)
-        XCTAssertNoDifference(expected.keywords, actual.keywords, file: file, line: line)
-        XCTAssertNoDifference(expected.trackPoints, actual.trackPoints, file: file, line: line)
-        XCTAssertNoDifference(expected.graph, actual.graph, file: file, line: line)
-        XCTAssertNoDifference(expected.bounds, actual.bounds, file: file, line: line)
-        XCTAssertNoDifference(expected.segments, actual.segments, file: file, line: line)
+        assertDatesEqual(expected.date, actual.date, fileID: fileID, filePath: filePath, line: line, column: column)
+        expectNoDifference(expected.title, actual.title, fileID: fileID, filePath: filePath, line: line, column: column)
+        expectNoDifference(expected.description, actual.description, fileID: fileID, filePath: filePath, line: line, column: column)
+        expectNoDifference(expected.keywords, actual.keywords, fileID: fileID, filePath: filePath, line: line, column: column)
+        expectNoDifference(expected.trackPoints, actual.trackPoints, fileID: fileID, filePath: filePath, line: line, column: column)
+        expectNoDifference(expected.graph, actual.graph, fileID: fileID, filePath: filePath, line: line, column: column)
+        expectNoDifference(expected.bounds, actual.bounds, fileID: fileID, filePath: filePath, line: line, column: column)
+        expectNoDifference(expected.segments, actual.segments, fileID: fileID, filePath: filePath, line: line, column: column)
     }
 
     /*
@@ -193,32 +198,36 @@ extension XCTest {
     func assertNodesAreEqual(
         _ expected: GPXKit.XMLNode,
         _ actual: GPXKit.XMLNode,
-        file: StaticString = #filePath,
-        line: UInt = #line
+        fileID: StaticString = #fileID,
+        filePath: StaticString = #filePath,
+        line: UInt = #line,
+        column: UInt = #column
     ) {
-        XCTAssertNoDifference(expected.content, actual.content, file: file, line: line)
-        XCTAssertNoDifference(expected.content, actual.content, file: file, line: line)
-        XCTAssertNoDifference(expected.attributes, actual.attributes, file: file, line: line)
-        XCTAssertNoDifference(expected.children, actual.children, file: file, line: line)
+        expectNoDifference(expected.content, actual.content, fileID: fileID, filePath: filePath, line: line, column: column)
+        expectNoDifference(expected.content, actual.content, fileID: fileID, filePath: filePath, line: line, column: column)
+        expectNoDifference(expected.attributes, actual.attributes, fileID: fileID, filePath: filePath, line: line, column: column)
+        expectNoDifference(expected.children, actual.children, fileID: fileID, filePath: filePath, line: line, column: column)
     }
 
     func assertGeoCoordinateEqual(
         _ expected: GeoCoordinate,
         _ actual: GeoCoordinate,
         accuracy: Double = 0.0001,
-        file: StaticString = #filePath,
-        line: UInt = #line
+        fileID: StaticString = #fileID,
+        filePath: StaticString = #filePath,
+        line: UInt = #line,
+        column: UInt = #column
     ) {
         XCTAssertEqual(expected.latitude,
                        actual.latitude,
                        accuracy: accuracy,
                        "Expected latitude: \(expected.latitude), got \(actual.latitude)",
-                       file: file, line: line)
+                       file: filePath, line: line)
         XCTAssertEqual(expected.longitude,
                        actual.longitude,
                        accuracy: accuracy,
                        "Expected longitude: \(expected.longitude), got \(actual.longitude)",
-                       file: file,
+                       file: filePath,
                        line: line)
     }
 
@@ -226,12 +235,14 @@ extension XCTest {
         _ expected: T,
         _ acutal: T,
         accuracy: Double = 0.00001,
-        file: StaticString = #filePath,
-        line: UInt = #line
+        fileID: StaticString = #fileID,
+        filePath: StaticString = #filePath,
+        line: UInt = #line,
+        column: UInt = #column
     ) where T.Element: GeoCoordinate {
-        XCTAssertNoDifference(expected.count, acutal.count)
+        expectNoDifference(expected.count, acutal.count, fileID: fileID, filePath: filePath, line: line, column: column)
         zip(expected, acutal).forEach { lhs, rhs in
-            assertGeoCoordinateEqual(lhs, rhs, accuracy: accuracy, file: file, line: line)
+            assertGeoCoordinateEqual(lhs, rhs, accuracy: accuracy, fileID: fileID, filePath: filePath, line: line, column: column)
         }
     }
 
