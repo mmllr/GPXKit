@@ -7,19 +7,19 @@ extension String {
     static let trackPointExtensionURL: Self = "http://www.garmin.com/xmlschemas/TrackPointExtension/v1"
 }
 
-public struct XMLNode: Equatable, Hashable {
+struct XMLNode: Equatable, Hashable {
     var name: String
     var attributes: [String: String] = [:]
     var content: String = ""
-    public var children: [XMLNode] = []
+    var children: [XMLNode] = []
 }
 
-public enum BasicXMLParserError: Error, Equatable {
+enum BasicXMLParserError: Error, Equatable {
     case noContent
     case parseError(NSError, Int)
 }
 
-public class BasicXMLParser: NSObject, XMLParserDelegate {
+class BasicXMLParser: NSObject, XMLParserDelegate {
     private let parser: XMLParser
     private var resultStack: [XMLNode] = [XMLNode(name: "", attributes: [:], content: "", children: [])]
     private var result: XMLNode? {
@@ -27,12 +27,12 @@ public class BasicXMLParser: NSObject, XMLParserDelegate {
     }
     private var prefixes: Set<String> = []
 
-    public init(xml: String) {
+    init(xml: String) {
         parser = XMLParser(data: xml.data(using: .utf8) ?? Data())
         parser.shouldReportNamespacePrefixes = true
     }
 
-    public func parse() -> Result<XMLNode, BasicXMLParserError> {
+    func parse() -> Result<XMLNode, BasicXMLParserError> {
         parser.delegate = self
         let parseResult = autoreleasepool {
             self.parser.parse()
@@ -47,7 +47,7 @@ public class BasicXMLParser: NSObject, XMLParserDelegate {
     }
 
     // swiftlint:disable:next line_length
-    public func parser(_: XMLParser, didStartElement elementName: String, namespaceURI _: String?, qualifiedName _: String?, attributes attributeDict: [String: String] = [:]) {
+    func parser(_: XMLParser, didStartElement elementName: String, namespaceURI _: String?, qualifiedName _: String?, attributes attributeDict: [String: String] = [:]) {
 
         var name: String = elementName
         for pref in prefixes {
@@ -61,22 +61,22 @@ public class BasicXMLParser: NSObject, XMLParserDelegate {
         resultStack.append(newNode)
     }
 
-    public func parser(_: XMLParser, didEndElement _: String, namespaceURI _: String?, qualifiedName _: String?) {
+    func parser(_: XMLParser, didEndElement _: String, namespaceURI _: String?, qualifiedName _: String?) {
         resultStack[resultStack.count - 2].children.append(resultStack.last!)
         resultStack.removeLast()
     }
 
-    public func parser(_: XMLParser, foundCharacters string: String) {
+    func parser(_: XMLParser, foundCharacters string: String) {
 		let contentSoFar = resultStack.last?.content ?? ""
 		resultStack[resultStack.count - 1].content = contentSoFar + string.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
-    public func parser(_ parser: XMLParser,
+    func parser(_ parser: XMLParser,
                          parseErrorOccurred parseError: Error) {
         print(parseError.localizedDescription)
     }
 
-    public func parser(_ parser: XMLParser,
+    func parser(_ parser: XMLParser,
     didStartMappingPrefix prefix: String,
                          toURI namespaceURI: String) {
         guard !prefix.isEmpty else { return }
