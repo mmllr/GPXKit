@@ -3,7 +3,7 @@
 import PackageDescription
 
 let settings: [SwiftSetting] = [
-    .enableExperimentalFeature("StrictConcurrency")
+    .enableExperimentalFeature("StrictConcurrency"),
 ]
 
 let package = Package(
@@ -12,16 +12,17 @@ let package = Package(
         .iOS(.v13),
         .macOS(.v10_13),
         .watchOS(.v6),
-        .tvOS(.v12)
+        .tvOS(.v12),
     ],
     products: [
         .library(
             name: "GPXKit",
-            targets: ["GPXKit"]),
+            targets: ["GPXKit"]
+        ),
     ],
     dependencies: [
         .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "1.3.3"),
-        .package(url: "https://github.com/apple/swift-algorithms", from: "1.2.0")
+        .package(url: "https://github.com/apple/swift-algorithms", from: "1.2.0"),
     ],
     targets: [
         .target(
@@ -35,7 +36,7 @@ let package = Package(
             name: "GPXKitTests",
             dependencies: [
                 "GPXKit",
-                .product(name: "CustomDump", package: "swift-custom-dump")
+                .product(name: "CustomDump", package: "swift-custom-dump"),
             ],
             swiftSettings: settings
         ),
@@ -43,8 +44,8 @@ let package = Package(
 )
 
 #if swift(>=5.6)
-// Add the documentation compiler plugin if possible
-package.dependencies.append(
-    .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.3.0")
-)
+    // Add the documentation compiler plugin if possible
+    package.dependencies.append(
+        .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.4.3")
+    )
 #endif
