@@ -13,7 +13,7 @@ public struct GPXTrack: Hashable, Sendable {
     public struct Segment: Hashable, Sendable {
         /// The range of indices of the ``TrackPoint/trackPoints``.
         public var range: Range<Int>
-        
+
         /// The distance in meters of the segment.
         public var distance: Double
 
@@ -22,7 +22,6 @@ public struct GPXTrack: Hashable, Sendable {
             self.distance = distance
         }
     }
-
 
     /// Optional date stamp of the gpx track
     public var date: Date?
@@ -57,10 +56,10 @@ public struct GPXTrack: Hashable, Sendable {
         self.title = title
         self.description = description
         self.trackPoints = trackPoints
-        self.graph = TrackGraph(coordinates: trackPoints, elevationSmoothing: .none)
-        self.bounds = trackPoints.bounds()
+        graph = TrackGraph(coordinates: trackPoints, elevationSmoothing: .none)
+        bounds = trackPoints.bounds()
         self.keywords = keywords
-        self.segments = segments ?? [.init(range: trackPoints.indices, distance: self.graph.distance)]
+        self.segments = segments ?? [.init(range: trackPoints.indices, distance: graph.distance)]
     }
 
     /// Initializes a GPXTrack. You don't need to construct this value by yourself, as it is done by GXPKits track parsing logic.
@@ -77,9 +76,9 @@ public struct GPXTrack: Hashable, Sendable {
         self.title = title
         self.description = description
         self.trackPoints = trackPoints
-        self.graph = try TrackGraph(points: trackPoints, elevationSmoothing: elevationSmoothing)
-        self.bounds = trackPoints.bounds()
+        graph = try TrackGraph(points: trackPoints, elevationSmoothing: elevationSmoothing)
+        bounds = trackPoints.bounds()
         self.keywords = keywords
-        self.segments = segments ?? [Segment(range: trackPoints.indices, distance: self.graph.distance)]
+        self.segments = segments ?? [Segment(range: trackPoints.indices, distance: graph.distance)]
     }
 }
