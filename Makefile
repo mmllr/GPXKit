@@ -13,4 +13,4 @@ build-release:
 	swift build -c release --disable-sandbox
 
 test:
-	swift test
+	swift test --enable-swift-testing
