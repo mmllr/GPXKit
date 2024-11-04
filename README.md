@@ -3,7 +3,7 @@
 A library for parsing and exporting GPX files with no dependencies besides Foundation.
 
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fmmllr%2FGPXKit%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/mmllr/GPXKit)  
-[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fmmllr%2FGPXKit%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/mmllr/GPXKit)  
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fmmllr%2FGPXKit%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/mmllr/GPXKit)
 
 ## Features
 
@@ -25,7 +25,7 @@ A library for parsing and exporting GPX files with no dependencies besides Found
 To use the `GPXKit` library in a SwiftPM project, add the following line to the dependencies in your `Package.swift` file:
 
 ```swift
-.package(url: "https://github.com/mmllr/GPXKit", from: "2.2.7")
+.package(url: "https://github.com/mmllr/GPXKit", from: "2.3.0")
 ```
 
 ## Usage examples
@@ -51,12 +51,13 @@ func doSomethingWith(_ track: GPXTrack) {
     let trackGraph = track.graph
     print("Track length: \(formatter.string(from: Measurement<UnitLength>(value: trackGraph.distance, unit: .meters)))")
     print("Track elevation: \(formatter.string(from: Measurement<UnitLength>(value: trackGraph.elevationGain, unit: .meters)))")
-    
+
     for point in track.trackPoints {
         print("Lat: \(point.coordinate.latitude), lon: \(point.coordinate.longitude)")
     }
 }
 ```
+
 ### Exporting a track
 
 ```swift
@@ -76,9 +77,10 @@ let url = /// url with gpx
 GPXFileParser.load(from: url)
    .publisher
    .map { track in
-      // do something with parsed track 
+      // do something with parsed track
    }
 ```
+
 See tests for more usage examples.
 
 ### Climb detection
@@ -94,13 +96,6 @@ let climbs = track.graph.climbs(epsilon: 4.0, minimumGrade: 3.0, maxJoinDistance
 ## Documentation
 
 Project documentation is available at [Swift Package Index](https://swiftpackageindex.com/mmllr/GPXKit/documentation/gpxkit)
-
-Run the following commands from the projects root to generate the documentation:
-```
-[sudo] gem install jazzy
-jazzy
-```
-Browse the documentation under the doc folder.
 
 ## Contributing
 
