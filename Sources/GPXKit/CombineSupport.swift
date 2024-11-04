@@ -1,13 +1,17 @@
+//
+// GPXKit - MIT License - Copyright © 2024 Markus Müller. All rights reserved.
+//
+
 import Foundation
 #if canImport(Combine)
 import Combine
 
 @available(iOS 13, macOS 10.15, watchOS 6, tvOS 13, *)
-extension GPXFileParser {
+public extension GPXFileParser {
     /// Publisher for bridging into Combine.
     ///
     /// An AnyPublisher with Output `GPXTrack` and Failure of `GPXParserError`.
-    public var publisher: AnyPublisher<GPXTrack, GPXParserError> {
+    var publisher: AnyPublisher<GPXTrack, GPXParserError> {
         Future { promise in
             promise(self.parse())
         }.eraseToAnyPublisher()
@@ -28,7 +32,7 @@ extension GPXFileParser {
     ///        /// handle parsing error
     ///    }
     /// ```
-    public class func load(from url: URL) -> AnyPublisher<GPXTrack, GPXParserError> {
+    class func load(from url: URL) -> AnyPublisher<GPXTrack, GPXParserError> {
         guard let parser = GPXFileParser(url: url) else { return Fail(error: GPXParserError.invalidGPX).eraseToAnyPublisher() }
         return parser.publisher
     }
@@ -48,7 +52,7 @@ extension GPXFileParser {
     ///        /// handle parsing error
     ///    }
     /// ```
-    public class func load(from data: Data) -> AnyPublisher<GPXTrack, GPXParserError> {
+    class func load(from data: Data) -> AnyPublisher<GPXTrack, GPXParserError> {
         guard let parser = GPXFileParser(data: data) else { return Fail(error: GPXParserError.invalidGPX).eraseToAnyPublisher() }
         return parser.publisher
     }

@@ -1,3 +1,7 @@
+//
+// GPXKit - MIT License - Copyright © 2024 Markus Müller. All rights reserved.
+//
+
 import Foundation
 
 /// Basic type for storing a geo location.
@@ -22,13 +26,13 @@ public struct Coordinate: GeoCoordinate, HeightMappable, Hashable, Sendable {
 
     public static func == (lhs: Coordinate, rhs: Coordinate) -> Bool {
         (lhs.latitude - rhs.latitude).magnitude < 0.000001 &&
-                (lhs.longitude - rhs.longitude).magnitude < 0.000001 &&
-                (lhs.elevation - rhs.elevation).magnitude < 0.00001
+            (lhs.longitude - rhs.longitude).magnitude < 0.000001 &&
+            (lhs.elevation - rhs.elevation).magnitude < 0.00001
     }
 }
 
 extension Coordinate: DistanceCalculation {
     func calculateDistance(to other: Coordinate) -> Double {
-        self.distance(to: other)
+        distance(to: other)
     }
 }

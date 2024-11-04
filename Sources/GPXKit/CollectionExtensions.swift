@@ -1,3 +1,7 @@
+//
+// GPXKit - MIT License - Copyright © 2024 Markus Müller. All rights reserved.
+//
+
 import Foundation
 
 public extension Collection where Element: GeoCoordinate {
@@ -16,8 +20,8 @@ public extension Collection where Element: GeoCoordinate {
 }
 
 #if canImport(MapKit) && canImport(CoreLocation) && !os(watchOS)
-import MapKit
 import CoreLocation
+import MapKit
 
 public extension Collection where Element: GeoCoordinate {
     /// Creates a `MKPolyline` form a collection of `GeoCoordinates`
@@ -29,7 +33,7 @@ public extension Collection where Element: GeoCoordinate {
     }
 
     /// Creates a `CGPath` form a collection of `GeoCoordinates` using an MKMPolylineRenderer. Nil if no path could be created.
-    /// 
+    ///
     /// Important: Only available on iOS and macOS targets.
     var path: CGPath? {
         let renderer = MKPolylineRenderer(polyline: polyLine)
@@ -43,9 +47,9 @@ public extension Collection where Element: GeoCoordinate {
 import CoreGraphics
 
 public extension Collection where Element: GeoCoordinate {
-
     /// Creates a path from the collection of `GeoCoordinate`s. Useful if you want to draw a 2D image of a track.
-    /// - Parameter normalized: Flag indicating if the paths values should be normalized into the range 0...1. If true, the resulting values in the path are mapped to value in 0...1 coordinates space, otherwise the values from the geo coordinates. Defaults to true.
+    /// - Parameter normalized: Flag indicating if the paths values should be normalized into the range 0...1. If true, the resulting values
+    /// in the path are mapped to value in 0...1 coordinates space, otherwise the values from the geo coordinates. Defaults to true.
     /// - Returns: A CGPath containing a projected 2D-representation of the geo coordinates.
     func path(normalized: Bool = true) -> CGPath {
         var min = CGPoint(x: CGFloat.greatestFiniteMagnitude, y: CGFloat.greatestFiniteMagnitude)
@@ -74,9 +78,9 @@ public extension Collection where Element: GeoCoordinate {
 #endif
 
 public extension Collection where Element: GeoCoordinate {
-
     /// Helper for removing points from a collection if the are closer than a specified threshold.
-    /// - Parameter meters: The threshold predicate in meters for removing points. A point is removed if it is closer to its predecessor than this value.
+    /// - Parameter meters: The threshold predicate in meters for removing points. A point is removed if it is closer to its predecessor
+    /// than this value.
     /// - Returns: An array of `Coordinate` values, each having a minimum distance to their predecessors of least closerThan meters.
     ///
     /// Important: The elevation value of the returned `Coordinate` array is always zero.
@@ -94,7 +98,8 @@ public extension Collection where Element: GeoCoordinate {
 
 public extension Array where Element == Coordinate {
     /// Helper for simplifying points from a collection if the are closer than a specified threshold.
-    /// - Parameter threshold: The threshold predicate in for removing points. A point is removed if it is closer to its neighboring segment according to the [Ramer-Douglas-Peucker algorithm](https://en.wikipedia.org/wiki/Ramer–Douglas–Peucker_algorithm).
+    /// - Parameter threshold: The threshold predicate in for removing points. A point is removed if it is closer to its neighboring segment
+    /// according to the [Ramer-Douglas-Peucker algorithm](https://en.wikipedia.org/wiki/Ramer–Douglas–Peucker_algorithm).
     /// - Returns: An array of `Coordinate` values.
     func simplifyRDP(threshold epsilon: Double) -> [Coordinate] {
         simplify(tolerance: epsilon)
@@ -103,10 +108,10 @@ public extension Array where Element == Coordinate {
 
 public extension RandomAccessCollection where Element == Coordinate, Index == Int {
     func smoothedElevation(sampleCount: Int = 5) -> [Element] {
-        guard self.count > 1 else { return Array(self) }
-        let smoothingSize = (sampleCount / 2).clamped(to: .safe(lower: 2, upper: self.count / 2))
+        guard count > 1 else { return Array(self) }
+        let smoothingSize = (sampleCount / 2).clamped(to: .safe(lower: 2, upper: count / 2))
 
-        return self.indices.reduce(into: [Element]()) { result, idx in
+        return indices.reduce(into: [Element]()) { result, idx in
             let range = range(idx: idx, smoothingSize: smoothingSize, isLap: self.isLap)
             var updated = self[idx]
             updated.elevation = averageElevation(range: range)
@@ -114,7 +119,7 @@ public extension RandomAccessCollection where Element == Coordinate, Index == In
             result.append(updated)
         }
     }
-    
+
     /// Returns `true` if the distance between the first and the last is less than 50 meters. Returns `false` for empty collections.
     var isLap: Bool {
         guard let first, let last else { return false }
@@ -125,20 +130,20 @@ public extension RandomAccessCollection where Element == Coordinate, Index == In
         if isLap {
             idx - smoothingSize ... idx + smoothingSize
         } else {
-            Swift.max(self.startIndex, idx - smoothingSize)...Swift.min(idx + smoothingSize, self.endIndex-1)
+            Swift.max(startIndex, idx - smoothingSize) ... Swift.min(idx + smoothingSize, endIndex - 1)
         }
     }
 
     private func averageElevation(range: ClosedRange<Int>) -> Double {
-        if range.lowerBound >= self.startIndex && range.upperBound < self.endIndex {
+        if range.lowerBound >= startIndex && range.upperBound < endIndex {
             return self[range].map(\.elevation).reduce(0, +) / Double(range.count)
         }
         var average: Double = 0
         for idx in range {
-            if idx < self.startIndex {
-                average += self[(idx + self.count) % self.count].elevation
-            } else if idx >= self.endIndex {
-                average += self[idx % self.count].elevation
+            if idx < startIndex {
+                average += self[(idx + count) % count].elevation
+            } else if idx >= endIndex {
+                average += self[idx % count].elevation
             } else {
                 average += self[idx].elevation
             }
@@ -151,7 +156,7 @@ public extension [GradeSegment] {
     func flatten(maxDelta: Double) throws -> Self {
         guard !isEmpty else { return self }
         var result: [Element] = []
-        for idx in self.indices {
+        for idx in indices {
             var segment = self[idx]
             if let previous = result.last {
                 try segment.alignGrades(previous: previous, maxDelta: maxDelta)
@@ -187,8 +192,7 @@ extension GradeSegment {
     }
 }
 
-
-fileprivate extension Comparable {
+private extension Comparable {
     func clamped(to limits: ClosedRange<Self>) -> Self {
         min(max(self, limits.lowerBound), limits.upperBound)
     }

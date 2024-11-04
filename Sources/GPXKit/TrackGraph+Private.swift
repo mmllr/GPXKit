@@ -1,3 +1,7 @@
+//
+// GPXKit - MIT License - Copyright © 2024 Markus Müller. All rights reserved.
+//
+
 import Foundation
 
 extension TrackGraph {
@@ -67,7 +71,7 @@ extension Coordinate: Simplifiable {
 
 // MARK: - Private implementation -
 
-fileprivate extension Simplifiable {
+private extension Simplifiable {
     func squaredDistanceToSegment(_ p1: Self, _ p2: Self) -> Double {
         var x = p1.x
         var y = p1.y
@@ -105,7 +109,7 @@ extension Array where Element: Simplifiable {
         var maxSqDistance = sqTolerance
         var index = startIndex
 
-        for currentIndex: Self.Index in first+1..<last {
+        for currentIndex: Self.Index in first + 1 ..< last {
             let sqDistance = points[currentIndex].squaredDistanceToSegment(points[first], points[last])
             if sqDistance > maxSqDistance {
                 maxSqDistance = sqDistance

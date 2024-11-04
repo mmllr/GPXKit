@@ -1,3 +1,7 @@
+//
+// GPXKit - MIT License - Copyright © 2024 Markus Müller. All rights reserved.
+//
+
 import Foundation
 
 /// A value describing a single data point in a `GPXTrack`. A `TrackPoint` has the latitude, longitude and elevation
@@ -81,7 +85,7 @@ extension TrackPoint: DistanceCalculation {
 
 extension Collection where Element: GeoCoordinate, Element: DistanceCalculation, Element: HeightMappable {
     func trackSegments() -> [TrackSegment] {
-        let zipped = zip(self, self.dropFirst())
+        let zipped = zip(self, dropFirst())
         let distances = [0.0] + zipped.map {
             $0.calculateDistance(to: $1)
         }
@@ -96,7 +100,7 @@ extension Collection where Element: GeoCoordinate, Element: DistanceCalculation,
 
 extension Collection where Element: GeoCoordinate, Element: HeightMappable {
     func trackSegments() -> [TrackSegment] {
-        let zipped = zip(self, self.dropFirst())
+        let zipped = zip(self, dropFirst())
         let distances = [0.0] + zipped.map {
             $0.distance(to: $1)
         }

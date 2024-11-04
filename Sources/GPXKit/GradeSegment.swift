@@ -1,5 +1,5 @@
 //
-// Created by Markus Müller on 13.12.21.
+// GPXKit - MIT License - Copyright © 2024 Markus Müller. All rights reserved.
 //
 
 import Foundation
@@ -52,7 +52,7 @@ extension GradeSegment: Equatable {
 extension GradeSegment: Hashable {}
 
 extension ClosedRange<Double> {
-    static let allowedGrades: Self = (-0.30)...0.3
+    static let allowedGrades: Self = -0.30 ... 0.3
 }
 
 public extension GradeSegment {

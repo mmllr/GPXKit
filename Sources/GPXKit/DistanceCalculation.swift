@@ -1,10 +1,6 @@
-// MIT License
 //
-// Copyright © 2024 Markus Müller. All rights reserved.
+// GPXKit - MIT License - Copyright © 2024 Markus Müller. All rights reserved.
 //
-
-// swiftlint:disable identifier_name
-// swiftlint:disable function_body_length
 
 import Foundation
 

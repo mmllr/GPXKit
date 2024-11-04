@@ -1,6 +1,11 @@
+//
+// GPXKit - MIT License - Copyright © 2024 Markus Müller. All rights reserved.
+//
+
 import Foundation
 
-/// Value type describing a single Waypoint defined  within a `GPXTrack`. A `Waypoint` has a location consisting of latitude, longitude and some metadata,
+/// Value type describing a single Waypoint defined  within a `GPXTrack`. A `Waypoint` has a location consisting of latitude, longitude and
+/// some metadata,
 /// e.g. name and description.
 public struct Waypoint: Hashable, Sendable {
     /// The ``Coordinate`` (latitude, longitude and elevation in meters)

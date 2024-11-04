@@ -1,6 +1,5 @@
-// MIT License
 //
-// Copyright © 2024 Markus Müller. All rights reserved.
+// GPXKit - MIT License - Copyright © 2024 Markus Müller. All rights reserved.
 //
 
 import Foundation

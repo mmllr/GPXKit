@@ -1,3 +1,7 @@
+//
+// GPXKit - MIT License - Copyright © 2024 Markus Müller. All rights reserved.
+//
+
 import Foundation
 @testable import GPXKit
 #if canImport(FoundationXML)
@@ -19,205 +23,216 @@ extension TestGPXPoint {
 }
 
 let testXMLWithoutTime = """
-        <?xml version="1.0" encoding="UTF-8"?>
-        <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
-            <metadata>
-            </metadata>
-            <trk>
-                <name>Haus- und Seenrunde Ausdauer</name>
-                <type>1</type>
-                <trkseg>
-                    <trkpt lat="51.2760600" lon="12.3769500">
-                        <ele>114.2</ele>
-                    </trkpt>
-                    <trkpt lat="51.2760420" lon="12.3769760">
-                        <ele>114.0</ele>
-                    </trkpt>
-                </trkseg>
-            </trk>
-        </gpx>
-        """
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
+    <metadata>
+    </metadata>
+    <trk>
+        <name>Haus- und Seenrunde Ausdauer</name>
+        <type>1</type>
+        <trkseg>
+            <trkpt lat="51.2760600" lon="12.3769500">
+                <ele>114.2</ele>
+            </trkpt>
+            <trkpt lat="51.2760420" lon="12.3769760">
+                <ele>114.0</ele>
+            </trkpt>
+        </trkseg>
+    </trk>
+</gpx>
+"""
 
 let testXMLWithoutExtensions = """
-        <?xml version="1.0" encoding="UTF-8"?>
-        <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
-            <metadata>
-             <time>2020-03-18T12:39:47Z</time>
-            </metadata>
-            <trk>
-                <name>Haus- und Seenrunde Ausdauer</name>
-                <type>1</type>
-                <trkseg>
-                    <trkpt lat="51.2760600" lon="12.3769500">
-                        <ele>114.2</ele>
-                        <time>2020-07-03T13:20:50.000Z</time>
-                    </trkpt>
-                    <trkpt lat="51.2760420" lon="12.3769760">
-                        <ele>114.0</ele>
-                        <time>2020-03-18T12:45:48Z</time>
-                    </trkpt>
-                </trkseg>
-            </trk>
-        </gpx>
-        """
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
+    <metadata>
+     <time>2020-03-18T12:39:47Z</time>
+    </metadata>
+    <trk>
+        <name>Haus- und Seenrunde Ausdauer</name>
+        <type>1</type>
+        <trkseg>
+            <trkpt lat="51.2760600" lon="12.3769500">
+                <ele>114.2</ele>
+                <time>2020-07-03T13:20:50.000Z</time>
+            </trkpt>
+            <trkpt lat="51.2760420" lon="12.3769760">
+                <ele>114.0</ele>
+                <time>2020-03-18T12:45:48Z</time>
+            </trkpt>
+        </trkseg>
+    </trk>
+</gpx>
+"""
 
 let testXMLData = """
-        <?xml version="1.0" encoding="UTF-8"?>
-        <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
-            <metadata>
-             <time>2020-03-18T12:39:47Z</time>
-            </metadata>
-            <trk>
-                <name>Haus- und Seenrunde Ausdauer</name>
-                <desc>Track description</desc>
-                <type>1</type>
-                <trkseg>
-                    <trkpt lat="51.2760600" lon="12.3769500">
-                        <ele>114.2</ele>
-                        <time>2020-03-18T12:39:47Z</time>
-                        <extensions>
-                            <power>42</power>
-                            <gpxtpx:TrackPointExtension>
-                                <gpxtpx:atemp>21</gpxtpx:atemp>
-                                <gpxtpx:hr>97</gpxtpx:hr>
-                                <gpxtpx:cad>40</gpxtpx:cad>
-                                <gpxtpx:speed>1.23456</gpxtpx:speed>
-                            </gpxtpx:TrackPointExtension>
-                        </extensions>
-                    </trkpt>
-                    <trkpt lat="51.2760420" lon="12.3769760">
-                        <ele>114.0</ele>
-                        <time>2020-03-18T12:39:48Z</time>
-                        <extensions>
-                            <power>272</power>
-                            <gpxtpx:TrackPointExtension>
-                                <gpxtpx:atemp>20.5</gpxtpx:atemp>
-                                <gpxtpx:hr>87</gpxtpx:hr>
-                                <gpxtpx:cad>45</gpxtpx:cad>
-                                <gpxtpx:speed>0.12345</gpxtpx:speed>
-                            </gpxtpx:TrackPointExtension>
-                        </extensions>
-                    </trkpt>
-                </trkseg>
-            </trk>
-        </gpx>
-        """
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
+    <metadata>
+     <time>2020-03-18T12:39:47Z</time>
+    </metadata>
+    <trk>
+        <name>Haus- und Seenrunde Ausdauer</name>
+        <desc>Track description</desc>
+        <type>1</type>
+        <trkseg>
+            <trkpt lat="51.2760600" lon="12.3769500">
+                <ele>114.2</ele>
+                <time>2020-03-18T12:39:47Z</time>
+                <extensions>
+                    <power>42</power>
+                    <gpxtpx:TrackPointExtension>
+                        <gpxtpx:atemp>21</gpxtpx:atemp>
+                        <gpxtpx:hr>97</gpxtpx:hr>
+                        <gpxtpx:cad>40</gpxtpx:cad>
+                        <gpxtpx:speed>1.23456</gpxtpx:speed>
+                    </gpxtpx:TrackPointExtension>
+                </extensions>
+            </trkpt>
+            <trkpt lat="51.2760420" lon="12.3769760">
+                <ele>114.0</ele>
+                <time>2020-03-18T12:39:48Z</time>
+                <extensions>
+                    <power>272</power>
+                    <gpxtpx:TrackPointExtension>
+                        <gpxtpx:atemp>20.5</gpxtpx:atemp>
+                        <gpxtpx:hr>87</gpxtpx:hr>
+                        <gpxtpx:cad>45</gpxtpx:cad>
+                        <gpxtpx:speed>0.12345</gpxtpx:speed>
+                    </gpxtpx:TrackPointExtension>
+                </extensions>
+            </trkpt>
+        </trkseg>
+    </trk>
+</gpx>
+"""
 
 let namespacedTestXMLData = """
-        <?xml version="1.0" encoding="UTF-8"?>
-        <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:ns3="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
-            <metadata>
-             <time>2020-03-18T12:39:47Z</time>
-            </metadata>
-            <trk>
-                <name>Haus- und Seenrunde Ausdauer</name>
-                <desc>Track description</desc>
-                <type>1</type>
-                <trkseg>
-                    <trkpt lat="51.2760600" lon="12.3769500">
-                        <ele>114.2</ele>
-                        <time>2020-03-18T12:39:47Z</time>
-                        <extensions>
-                            <power>166</power>
-                            <ns3:TrackPointExtension>
-                                <ns3:atemp>22</ns3:atemp>
-                                <ns3:hr>90</ns3:hr>
-                                <ns3:cad>99</ns3:cad>
-                                <ns3:speed>1.23456</ns3:speed>
-                            </ns3:TrackPointExtension>
-                        </extensions>
-                    </trkpt>
-                    <trkpt lat="51.2760420" lon="12.3769760">
-                        <ele>114.0</ele>
-                        <time>2020-03-18T12:39:48Z</time>
-                        <extensions>
-                            <power>230</power>
-                            <ns3:TrackPointExtension>
-                                <ns3:atemp>21</ns3:atemp>
-                                <ns3:hr>92</ns3:hr>
-                                <ns3:cad>101</ns3:cad>
-                                <ns3:speed>0.123456</ns3:speed>
-                            </ns3:TrackPointExtension>
-                        </extensions>
-                    </trkpt>
-                </trkseg>
-            </trk>
-        </gpx>
-        """
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:ns3="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
+    <metadata>
+     <time>2020-03-18T12:39:47Z</time>
+    </metadata>
+    <trk>
+        <name>Haus- und Seenrunde Ausdauer</name>
+        <desc>Track description</desc>
+        <type>1</type>
+        <trkseg>
+            <trkpt lat="51.2760600" lon="12.3769500">
+                <ele>114.2</ele>
+                <time>2020-03-18T12:39:47Z</time>
+                <extensions>
+                    <power>166</power>
+                    <ns3:TrackPointExtension>
+                        <ns3:atemp>22</ns3:atemp>
+                        <ns3:hr>90</ns3:hr>
+                        <ns3:cad>99</ns3:cad>
+                        <ns3:speed>1.23456</ns3:speed>
+                    </ns3:TrackPointExtension>
+                </extensions>
+            </trkpt>
+            <trkpt lat="51.2760420" lon="12.3769760">
+                <ele>114.0</ele>
+                <time>2020-03-18T12:39:48Z</time>
+                <extensions>
+                    <power>230</power>
+                    <ns3:TrackPointExtension>
+                        <ns3:atemp>21</ns3:atemp>
+                        <ns3:hr>92</ns3:hr>
+                        <ns3:cad>101</ns3:cad>
+                        <ns3:speed>0.123456</ns3:speed>
+                    </ns3:TrackPointExtension>
+                </extensions>
+            </trkpt>
+        </trkseg>
+    </trk>
+</gpx>
+"""
 
-let testTrack = GPXTrack(date: expectedDate(for: "2020-03-18T12:39:47Z"),
-                         title: "Haus- und Seenrunde Ausdauer",
-                         trackPoints: [
-                            TrackPoint(coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 114.2),
-                                       date: expectedDate(for: "2020-07-03T13:20:50.000Z")),
-                            TrackPoint(coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
-                                       date: expectedDate(for: "2020-03-18T12:45:48Z"))
-                         ])
+let testTrack = GPXTrack(
+    date: expectedDate(for: "2020-03-18T12:39:47Z"),
+    title: "Haus- und Seenrunde Ausdauer",
+    trackPoints: [
+        TrackPoint(
+            coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 114.2),
+            date: expectedDate(for: "2020-07-03T13:20:50.000Z")
+        ),
+        TrackPoint(
+            coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
+            date: expectedDate(for: "2020-03-18T12:45:48Z")
+        )
+    ]
+)
 
-let testTrackWithoutTime = GPXTrack(date: nil,
-                                    title: "Test track without time",
-                                        description: "Description",
-                                    trackPoints: [
-                                        TrackPoint(coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 114.2),
-                                                   date: nil),
-                                        TrackPoint(coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
-                                                   date: nil)
-                                    ])
+let testTrackWithoutTime = GPXTrack(
+    date: nil,
+    title: "Test track without time",
+    description: "Description",
+    trackPoints: [
+        TrackPoint(
+            coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500, elevation: 114.2),
+            date: nil
+        ),
+        TrackPoint(
+            coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
+            date: nil
+        )
+    ]
+)
 
 let testXMLDataContainingWaypoint = """
-        <?xml version="1.0" encoding="UTF-8"?>
-        <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
-            <metadata>
-             <time>2020-03-18T12:39:47Z</time>
-            </metadata>
-            <wpt lat="51.2760600" lon="12.3769500">
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
+    <metadata>
+     <time>2020-03-18T12:39:47Z</time>
+    </metadata>
+    <wpt lat="51.2760600" lon="12.3769500">
+        <time>2020-03-18T12:39:47Z</time>
+        <name>Start</name>
+        <cmt>start comment</cmt>
+        <desc>This is the start</desc>
+    </wpt>
+    <wpt lat="51.2760420" lon="12.3769760">
+        <time>2020-03-18T12:39:48Z</time>
+        <name>Finish</name>
+        <cmt>finish comment</cmt>
+        <desc>This is the finish</desc>
+    </wpt>
+    <trk>
+        <name>Haus- und Seenrunde Ausdauer</name>
+        <desc>Track description</desc>
+        <type>1</type>
+        <trkseg>
+            <trkpt lat="51.2760600" lon="12.3769500">
+                <ele>114.2</ele>
                 <time>2020-03-18T12:39:47Z</time>
-                <name>Start</name>
-                <cmt>start comment</cmt>
-                <desc>This is the start</desc>
-            </wpt>
-            <wpt lat="51.2760420" lon="12.3769760">
+                <extensions>
+                    <power>42</power>
+                    <gpxtpx:TrackPointExtension>
+                        <gpxtpx:atemp>21</gpxtpx:atemp>
+                        <gpxtpx:hr>97</gpxtpx:hr>
+                        <gpxtpx:cad>40</gpxtpx:cad>
+                        <gpxtpx:speed>1.2345</gpxtpx:speed>
+                    </gpxtpx:TrackPointExtension>
+                </extensions>
+            </trkpt>
+            <trkpt lat="51.2760420" lon="12.3769760">
+                <ele>114.0</ele>
                 <time>2020-03-18T12:39:48Z</time>
-                <name>Finish</name>
-                <cmt>finish comment</cmt>
-                <desc>This is the finish</desc>
-            </wpt>
-            <trk>
-                <name>Haus- und Seenrunde Ausdauer</name>
-                <desc>Track description</desc>
-                <type>1</type>
-                <trkseg>
-                    <trkpt lat="51.2760600" lon="12.3769500">
-                        <ele>114.2</ele>
-                        <time>2020-03-18T12:39:47Z</time>
-                        <extensions>
-                            <power>42</power>
-                            <gpxtpx:TrackPointExtension>
-                                <gpxtpx:atemp>21</gpxtpx:atemp>
-                                <gpxtpx:hr>97</gpxtpx:hr>
-                                <gpxtpx:cad>40</gpxtpx:cad>
-                                <gpxtpx:speed>1.2345</gpxtpx:speed>
-                            </gpxtpx:TrackPointExtension>
-                        </extensions>
-                    </trkpt>
-                    <trkpt lat="51.2760420" lon="12.3769760">
-                        <ele>114.0</ele>
-                        <time>2020-03-18T12:39:48Z</time>
-                        <extensions>
-                            <power>272</power>
-                            <gpxtpx:TrackPointExtension>
-                                <gpxtpx:atemp>20</gpxtpx:atemp>
-                                <gpxtpx:hr>97</gpxtpx:hr>
-                                <gpxtpx:cad>40</gpxtpx:cad>
-                                <gpxtpx:speed>0.12345678</gpxtpx:speed>
-                            </gpxtpx:TrackPointExtension>
-                        </extensions>
-                    </trkpt>
-                </trkseg>
-            </trk>
-        </gpx>
-        """
-
+                <extensions>
+                    <power>272</power>
+                    <gpxtpx:TrackPointExtension>
+                        <gpxtpx:atemp>20</gpxtpx:atemp>
+                        <gpxtpx:hr>97</gpxtpx:hr>
+                        <gpxtpx:cad>40</gpxtpx:cad>
+                        <gpxtpx:speed>0.12345678</gpxtpx:speed>
+                    </gpxtpx:TrackPointExtension>
+                </extensions>
+            </trkpt>
+        </trkseg>
+    </trk>
+</gpx>
+"""
 
 let sampleGPX = """
 <?xml version="1.0" encoding="UTF-8"?>

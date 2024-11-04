@@ -1,3 +1,7 @@
+//
+// GPXKit - MIT License - Copyright © 2024 Markus Müller. All rights reserved.
+//
+
 import Foundation
 
 public enum ElevationSmoothing: Sendable, Hashable {
@@ -8,7 +12,8 @@ public enum ElevationSmoothing: Sendable, Hashable {
     case combined(smoothingSampleCount: Int, maxGradeDelta: Double)
 }
 
-/// A value describing a track of geo locations. It has the recorded ``TrackPoint``s, along with metadata of the track, such as recorded date, title, elevation gain, distance, height-map and bounds.
+/// A value describing a track of geo locations. It has the recorded ``TrackPoint``s, along with metadata of the track, such as recorded
+/// date, title, elevation gain, distance, height-map and bounds.
 public struct GPXTrack: Hashable, Sendable {
     public struct Segment: Hashable, Sendable {
         /// The range of indices of the ``TrackPoint/trackPoints``.
@@ -50,7 +55,15 @@ public struct GPXTrack: Hashable, Sendable {
     ///   - title: String describing the track.
     ///   - trackPoints: Array of ``TrackPoint``s describing the route.
     ///   - keywords: Array of `String`s with keywords. Default is an empty array (no keywords).
-    public init(date: Date? = nil, waypoints: [Waypoint]? = nil, title: String, description: String? = nil, trackPoints: [TrackPoint], keywords: [String] = [], segments: [Segment]? = nil) {
+    public init(
+        date: Date? = nil,
+        waypoints: [Waypoint]? = nil,
+        title: String,
+        description: String? = nil,
+        trackPoints: [TrackPoint],
+        keywords: [String] = [],
+        segments: [Segment]? = nil
+    ) {
         self.date = date
         self.waypoints = waypoints
         self.title = title
@@ -69,8 +82,18 @@ public struct GPXTrack: Hashable, Sendable {
     ///   - title: String describing the track.
     ///   - trackPoints: Array of ``TrackPoint``s describing the route.
     ///   - keywords: Array of `String`s with keywords. Default is an empty array (no keywords).
-    ///   - elevationSmoothing: The ``ElevationSmoothing`` in meters for the grade segments. Defaults to ``ElevationSmoothing/segmentation(_:)`` with 50 meters.
-    public init(date: Date? = nil, waypoints: [Waypoint]? = nil, title: String, description: String? = nil, trackPoints: [TrackPoint], keywords: [String] = [], elevationSmoothing: ElevationSmoothing = .segmentation(50), segments: [Segment]? = nil) throws {
+    ///   - elevationSmoothing: The ``ElevationSmoothing`` in meters for the grade segments. Defaults to
+    /// ``ElevationSmoothing/segmentation(_:)`` with 50 meters.
+    public init(
+        date: Date? = nil,
+        waypoints: [Waypoint]? = nil,
+        title: String,
+        description: String? = nil,
+        trackPoints: [TrackPoint],
+        keywords: [String] = [],
+        elevationSmoothing: ElevationSmoothing = .segmentation(50),
+        segments: [Segment]? = nil
+    ) throws {
         self.date = date
         self.waypoints = waypoints
         self.title = title
