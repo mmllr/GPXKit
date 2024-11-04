@@ -1,0 +1,20 @@
+--maxwidth 140
+--wraparguments before-first
+--wrapcollections before-first
+#--exclude "**/Package.swift"
+--indent 4
+--header "\nGPXKit - MIT License - Copyright © {year} Markus Müller. All rights reserved.\n"
+--binarygrouping none
+--commas inline
+--decimalgrouping none
+--hexgrouping none
+--hexliteralcase lowercase
+--ifdef no-indent
+--octalgrouping none
+--semicolons never
+--stripunusedargs closure-only
+--disable unusedArguments
+--disable preferKeyPath
+--disable hoistTry
+--funcattributes prev-line
+--typeattributes prev-line
