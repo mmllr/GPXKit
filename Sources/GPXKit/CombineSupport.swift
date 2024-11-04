@@ -32,7 +32,7 @@ public extension GPXFileParser {
     ///        /// handle parsing error
     ///    }
     /// ```
-    class func load(from url: URL) -> AnyPublisher<GPXTrack, GPXParserError> {
+    static func load(from url: URL) -> AnyPublisher<GPXTrack, GPXParserError> {
         guard let parser = GPXFileParser(url: url) else { return Fail(error: GPXParserError.invalidGPX).eraseToAnyPublisher() }
         return parser.publisher
     }
@@ -52,7 +52,7 @@ public extension GPXFileParser {
     ///        /// handle parsing error
     ///    }
     /// ```
-    class func load(from data: Data) -> AnyPublisher<GPXTrack, GPXParserError> {
+    static func load(from data: Data) -> AnyPublisher<GPXTrack, GPXParserError> {
         guard let parser = GPXFileParser(data: data) else { return Fail(error: GPXParserError.invalidGPX).eraseToAnyPublisher() }
         return parser.publisher
     }

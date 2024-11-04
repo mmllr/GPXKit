@@ -50,8 +50,8 @@ enum GPXAttributes: String {
     case longitude = "lon"
 }
 
-/// Class for importing a GPX xml to an ``GPXTrack`` value.
-public final class GPXFileParser {
+/// Struct for importing a GPX xml to an ``GPXTrack`` value.
+public struct GPXFileParser: Sendable {
     private let xml: String
 
     /// Initializer
@@ -371,7 +371,7 @@ public extension GPXFileParser {
     /// - Parameter url: The url containing the GPX file. See [GPX specification for
     /// details](https://www.topografix.com/gpx.asp).
     /// - Returns: An `GPXFileParser` instance or nil if the track cannot be parsed.
-    convenience init?(url: URL) {
+    init?(url: URL) {
         guard let xmlString = try? String(contentsOf: url) else { return nil }
         self.init(xmlString: xmlString)
     }
@@ -380,7 +380,7 @@ public extension GPXFileParser {
     /// - Parameter data: Data containing the GPX file as encoded xml string. See [GPX specification for
     /// details](https://www.topografix.com/gpx.asp).
     /// - Returns: An `GPXFileParser` instance or nil if the track cannot be parsed.
-    convenience init?(data: Data) {
+    init?(data: Data) {
         guard let xmlString = String(data: data, encoding: .utf8) else { return nil }
         self.init(xmlString: xmlString)
     }
