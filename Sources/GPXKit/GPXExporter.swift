@@ -8,7 +8,7 @@ import FoundationXML
 #endif
 
 /// A class for exporting a `GPXTrack` to an xml string.
-public final class GPXExporter {
+public struct GPXExporter: Sendable {
     private let track: GPXTrack
     private let exportDate: Bool
     private let creatorName: String
