@@ -36,7 +36,7 @@ struct GPXParserTests {
 
         expectNoDifference("", sut.title)
         expectNoDifference(nil, sut.description)
-        expectNoDifference(expectedDate(for: "2020-03-17T11:27:02Z"), sut.date)
+        #expect(expectedDate(for: "2020-03-17T11:27:02Z") == sut.date)
         expectNoDifference([], sut.trackPoints)
         expectNoDifference([], sut.graph.heightMap)
         expectNoDifference([], sut.graph.segments)
