@@ -1,3 +1,8 @@
+// MIT License
+//
+// Copyright © 2024 Markus Müller. All rights reserved.
+//
+
 import Foundation
 #if canImport(FoundationXML)
 import FoundationXML
@@ -25,6 +30,7 @@ class BasicXMLParser: NSObject, XMLParserDelegate {
     private var result: XMLNode? {
         return resultStack.first?.children.first
     }
+
     private var prefixes: Set<String> = []
 
     init(xml: String) {
@@ -46,9 +52,13 @@ class BasicXMLParser: NSObject, XMLParserDelegate {
         }
     }
 
-    // swiftlint:disable:next line_length
-    func parser(_: XMLParser, didStartElement elementName: String, namespaceURI _: String?, qualifiedName _: String?, attributes attributeDict: [String: String] = [:]) {
-
+    func parser(
+        _: XMLParser,
+        didStartElement elementName: String,
+        namespaceURI _: String?,
+        qualifiedName _: String?,
+        attributes attributeDict: [String: String] = [:]
+    ) {
         var name: String = elementName
         for pref in prefixes {
             if name.hasPrefix(pref) {
@@ -67,18 +77,22 @@ class BasicXMLParser: NSObject, XMLParserDelegate {
     }
 
     func parser(_: XMLParser, foundCharacters string: String) {
-		let contentSoFar = resultStack.last?.content ?? ""
-		resultStack[resultStack.count - 1].content = contentSoFar + string.trimmingCharacters(in: .whitespacesAndNewlines)
+        let contentSoFar = resultStack.last?.content ?? ""
+        resultStack[resultStack.count - 1].content = contentSoFar + string.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 
-    func parser(_ parser: XMLParser,
-                         parseErrorOccurred parseError: Error) {
+    func parser(
+        _ parser: XMLParser,
+        parseErrorOccurred parseError: any Error
+    ) {
         print(parseError.localizedDescription)
     }
 
-    func parser(_ parser: XMLParser,
-    didStartMappingPrefix prefix: String,
-                         toURI namespaceURI: String) {
+    func parser(
+        _ parser: XMLParser,
+        didStartMappingPrefix prefix: String,
+        toURI namespaceURI: String
+    ) {
         guard !prefix.isEmpty else { return }
         if namespaceURI == .trackPointExtensionURL {
             prefixes.insert(prefix)

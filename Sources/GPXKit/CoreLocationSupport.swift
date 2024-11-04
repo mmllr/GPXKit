@@ -1,3 +1,8 @@
+// MIT License
+//
+// Copyright © 2024 Markus Müller. All rights reserved.
+//
+
 import Foundation
 #if canImport(CoreLocation)
 
@@ -15,8 +20,8 @@ public extension TrackGraph {
 public extension CLLocationCoordinate2D {
     /// Convenience initializer for creation of a `CLLocationCoordinate2D` from a `GeoCoordinate`
     /// - Parameter coord: A type which conforms to the `GeoCoordinate` protocol.
-    init(_ coord: GeoCoordinate) {
-		self.init(latitude: coord.latitude, longitude: coord.longitude)
+    init(_ coord: any GeoCoordinate) {
+        self.init(latitude: coord.latitude, longitude: coord.longitude)
     }
 }
 

@@ -1,8 +1,6 @@
+// MIT License
 //
-//  File.swift
-//  
-//
-//  Created by Markus Müller on 07.12.23.
+// Copyright © 2024 Markus Müller. All rights reserved.
 //
 
 import Foundation

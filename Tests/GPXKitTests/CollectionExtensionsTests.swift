@@ -1,27 +1,38 @@
+// MIT License
+//
+// Copyright © 2024 Markus Müller. All rights reserved.
+//
+
 import CustomDump
 import Foundation
 import GPXKit
-import XCTest
+import Numerics
+import Testing
 
-final class ArrayExtensionsTests: XCTestCase {
+@Suite
+struct ArrayExtensionsTests {
+    @Test
     func testRemovingNearbyCoordinatesInEmptyCollection() {
         let coords: [Coordinate] = []
 
         expectNoDifference([], coords.removeIf(closerThan: 1))
     }
 
+    @Test
     func testRemovingNearbyCoordinatesWithOneElement() {
         let coords: [Coordinate] = [.leipzig]
 
         expectNoDifference([.leipzig], coords.removeIf(closerThan: 1))
     }
 
+    @Test
     func testRemovingNearbyCoordinatesWithTwoElement() {
         let coords: [Coordinate] = [.leipzig, .dehner]
 
         expectNoDifference([.leipzig, .dehner], coords.removeIf(closerThan: 1))
     }
 
+    @Test
     func testRemovingDuplicateCoordinates() {
         let start = Coordinate.leipzig
         let coords: [Coordinate] = [
@@ -30,13 +41,14 @@ final class ArrayExtensionsTests: XCTestCase {
             start.offset(east: 100),
             start.offset(north: 120),
             start.offset(north: 160),
-            .postPlatz,
+            .postPlatz
         ]
 
         let result = coords.removeIf(closerThan: 50)
         expectNoDifference([coords[0], coords[1], coords[3], .postPlatz], result)
     }
 
+    @Test
     func testSmoothingElevation() {
         let start = Coordinate.leipzig.offset(elevation: 200)
         let coords: [Coordinate] = stride(from: 0, to: 100, by: 1).map { idx in
@@ -51,50 +63,52 @@ final class ArrayExtensionsTests: XCTestCase {
 
         for (idx, coord) in coords.smoothedElevation(sampleCount: 50).enumerated() {
             assertGeoCoordinateEqual(coord, coords[idx])
-            XCTAssertEqual(avg, coord.elevation, accuracy: 15)
+            #expect(avg.isApproximatelyEqual(to: coord.elevation, absoluteTolerance: 15))
         }
     }
 
+    @Test
     func testFlatteningGradeSegments() throws {
         let grades: [GradeSegment] = try [
-            XCTUnwrap(.init(start: 0, end: 100, elevationAtStart: 50, elevationAtEnd: 60)),
-            XCTUnwrap(.init(start: 100, end: 200, elevationAtStart: 60, elevationAtEnd: 75)),
-            XCTUnwrap(GradeSegment(start: 200, end: 270, elevationAtStart: 75, elevationAtEnd: 82)),
+            #require(.init(start: 0, end: 100, elevationAtStart: 50, elevationAtEnd: 60)),
+            #require(.init(start: 100, end: 200, elevationAtStart: 60, elevationAtEnd: 75)),
+            #require(GradeSegment(start: 200, end: 270, elevationAtStart: 75, elevationAtEnd: 82))
         ]
 
-        XCTAssertEqual(grades[0].grade, 0.1, accuracy: 0.001)
-        XCTAssertEqual(grades[1].grade, 0.15, accuracy: 0.01)
-        XCTAssertEqual(grades[2].grade, 0.1, accuracy: 0.001)
+        #expect(grades[0].grade.isApproximatelyEqual(to: 0.1, absoluteTolerance: 0.001))
+        #expect(grades[1].grade.isApproximatelyEqual(to: 0.15, absoluteTolerance: 0.01))
+        #expect(grades[2].grade.isApproximatelyEqual(to: 0.1, absoluteTolerance: 0.001))
 
-        let second = try XCTUnwrap(grades[1].adjusted(grade: grades[0].grade + 0.01))
-        XCTAssertEqual(0.11, second.grade, accuracy: 0.001)
-        let third = try XCTUnwrap(GradeSegment(
+        let second = try #require(grades[1].adjusted(grade: grades[0].grade + 0.01))
+        #expect(0.11.isApproximatelyEqual(to: second.grade, absoluteTolerance: 0.001))
+        let third = try #require(GradeSegment(
             start: 200,
             end: 270,
             grade: second.grade - 0.01,
             elevationAtStart: second.elevationAtEnd
         ))
-        XCTAssertEqual(0.1, third.grade, accuracy: 0.001)
+        #expect(0.1.isApproximatelyEqual(to: third.grade, absoluteTolerance: 0.001))
 
         let expected: [GradeSegment] = [
             grades[0],
             second,
-            third,
+            third
         ]
-
-        let actual = try XCTUnwrap(grades.flatten(maxDelta: 0.01))
+        let actual = try #require(try grades.flatten(maxDelta: 0.01))
         expectNoDifference(expected, actual)
     }
 
+    @Test
     func testFlatteningGradeSegmentsWithVeryLargeGradeDifferencesDoesNotResultInNotANumber() throws {
         let track = try GPXFileParser(xmlString: .saCalobra).parse().get()
 
         let graph = TrackGraph(coords: .init(track.trackPoints.map(\.coordinate).prefix(50)))
-        let actual = try XCTUnwrap(graph.gradeSegments.flatten(maxDelta: 0.01))
+        let actual = try #require(try graph.gradeSegments.flatten(maxDelta: 0.01))
 
         expectNoDifference(0, actual.filter { $0.grade.isNaN }.count)
     }
 
+    @Test
     func testSmoothingElevationOnSmallCollections() {
         let start = Coordinate.leipzig.offset(elevation: 200)
         let end = start.offset(
@@ -103,12 +117,19 @@ final class ArrayExtensionsTests: XCTestCase {
             elevation: Double.random(in: 500 ... 550)
         )
 
-        expectNoDifference([], [Coordinate]().smoothedElevation(sampleCount: Int.random(in: 2...200)))
-        expectNoDifference([start], [start].smoothedElevation(sampleCount: Int.random(in: 5...200)))
+        expectNoDifference([], [Coordinate]().smoothedElevation(sampleCount: Int.random(in: 2 ... 200)))
+        expectNoDifference([start], [start].smoothedElevation(sampleCount: Int.random(in: 5 ... 200)))
 
         let coords: [Coordinate] = [start, end]
         let avg = coords.map(\.elevation).reduce(0, +) / Double(coords.count)
 
-        expectNoDifference([.init(latitude: start.latitude, longitude: start.longitude, elevation: avg), .init(latitude: end.latitude, longitude: end.longitude, elevation: avg)], coords.smoothedElevation(sampleCount: 50))
+        expectNoDifference(
+            [.init(latitude: start.latitude, longitude: start.longitude, elevation: avg), .init(
+                latitude: end.latitude,
+                longitude: end.longitude,
+                elevation: avg
+            )],
+            coords.smoothedElevation(sampleCount: 50)
+        )
     }
 }

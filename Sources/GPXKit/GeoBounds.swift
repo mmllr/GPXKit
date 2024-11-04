@@ -1,3 +1,8 @@
+// MIT License
+//
+// Copyright © 2024 Markus Müller. All rights reserved.
+//
+
 import Foundation
 
 /// A 2D-bounding box describing the area enclosing a track.
@@ -50,15 +55,15 @@ public extension GeoBounds {
     /// - Parameter rhs: The other `GeoBound` to test for intersection.
     /// - Returns: True if both bounds intersect, otherwise false.
     func intersects(_ rhs: GeoBounds) -> Bool {
-        return (minLatitude...maxLatitude).overlaps(rhs.minLatitude...rhs.maxLatitude) &&
-            (minLongitude...maxLongitude).overlaps(rhs.minLongitude...rhs.maxLongitude)
+        return (minLatitude ... maxLatitude).overlaps(rhs.minLatitude ... rhs.maxLatitude) &&
+            (minLongitude ... maxLongitude).overlaps(rhs.minLongitude ... rhs.maxLongitude)
     }
 
     /// Tests if a `GeoCoordinate` is within a `GeoBound`
     /// - Parameter coordinate: The `GeoCoordinate` to test for.
     /// - Returns: True if coordinate is within the bounds otherwise false.
-    func contains(_ coordinate: GeoCoordinate) -> Bool {
-        return (minLatitude...maxLatitude).contains(coordinate.latitude) &&
-            (minLongitude...maxLongitude).contains(coordinate.longitude)
+    func contains(_ coordinate: any GeoCoordinate) -> Bool {
+        return (minLatitude ... maxLatitude).contains(coordinate.latitude) &&
+            (minLongitude ... maxLongitude).contains(coordinate.longitude)
     }
 }

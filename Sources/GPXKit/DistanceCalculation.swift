@@ -1,3 +1,8 @@
+// MIT License
+//
+// Copyright © 2024 Markus Müller. All rights reserved.
+//
+
 // swiftlint:disable identifier_name
 // swiftlint:disable function_body_length
 
@@ -14,12 +19,12 @@ public enum ConvergenceError: Error, Sendable {
 }
 
 /// [WGS 84 ellipsoid](https://en.wikipedia.org/wiki/World_Geodetic_System) definition
-public let wgs84 = (a: 6_378_137.0, f: 1 / 298.257223563)
+public let wgs84 = (a: 6378137.0, f: 1 / 298.257223563)
 
 /// π (for convenience)
 private let pi = Double.pi
 
-extension GeoCoordinate {
+public extension GeoCoordinate {
     ///
     /// Compute the distance between two points on an ellipsoid.
     ///
@@ -39,21 +44,36 @@ extension GeoCoordinate {
     /// The ellipsoid parameters default to the WGS-84 parameters.
     /// [Details](https://www.movable-type.co.uk/scripts/latlong-vincenty.html).
     /// [Sample implementation in Swift](https://github.com/dastrobu/vincenty/blob/master/Sources/vincenty/vincenty.swift).
-    public func distanceVincenty(to: GeoCoordinate,
-                                 tol: Double = 1e-12,
-                                 maxIter: UInt = 200,
-                                 ellipsoid: (a: Double, f: Double) = wgs84) throws -> Double {
+    func distanceVincenty(
+        to: any GeoCoordinate,
+        tol: Double = 1e-12,
+        maxIter: UInt = 200,
+        ellipsoid: (a: Double, f: Double) = wgs84
+    ) throws -> Double {
         assert(tol > 0, "tol '\(tol)' ≤ 0")
 
         // validate lat and lon values
-        assert(latitude.degreesToRadians >= -pi / 2 && latitude.degreesToRadians <= pi / 2, "latitude '\(latitude.degreesToRadians)' outside [-π/2, π]")
-        assert(to.latitude.degreesToRadians >= -pi / 2 && to.latitude.degreesToRadians <= pi / 2, "to.latitude '\(to.latitude.degreesToRadians)' outside [-π/2, π]")
-        assert(longitude.degreesToRadians >= -pi && longitude.degreesToRadians <= pi, "longitude '\(to.longitude.degreesToRadians)' outside [-π, π]")
-        assert(to.longitude.degreesToRadians >= -pi && to.longitude.degreesToRadians <= pi, "to.longitude '\(to.longitude.degreesToRadians)' outside [-π, π]")
+        assert(
+            latitude.degreesToRadians >= -pi / 2 && latitude.degreesToRadians <= pi / 2,
+            "latitude '\(latitude.degreesToRadians)' outside [-π/2, π]"
+        )
+        assert(
+            to.latitude.degreesToRadians >= -pi / 2 && to.latitude.degreesToRadians <= pi / 2,
+            "to.latitude '\(to.latitude.degreesToRadians)' outside [-π/2, π]"
+        )
+        assert(
+            longitude.degreesToRadians >= -pi && longitude.degreesToRadians <= pi,
+            "longitude '\(to.longitude.degreesToRadians)' outside [-π, π]"
+        )
+        assert(
+            to.longitude.degreesToRadians >= -pi && to.longitude.degreesToRadians <= pi,
+            "to.longitude '\(to.longitude.degreesToRadians)' outside [-π, π]"
+        )
 
         // shortcut for zero distance
-        if self.latitude == to.latitude &&
-            self.longitude == to.longitude {
+        if latitude == to.latitude &&
+            longitude == to.longitude
+        {
             return 0.0
         }
 
@@ -73,9 +93,9 @@ extension GeoCoordinate {
 
         let l: Double = to.longitude.degreesToRadians - longitude.degreesToRadians
 
-        var lambda: Double = l, tmp: Double = 0.0
-        var q: Double = 0.0, p: Double = 0.0, sigma: Double = 0.0, sin_alpha: Double = 0.0, cos2_alpha: Double = 0.0
-        var c: Double = 0.0, sin_sigma: Double = 0.0, cos_sigma: Double = 0.0, cos_2sigma: Double = 0.0
+        var lambda: Double = l, tmp = 0.0
+        var q = 0.0, p = 0.0, sigma = 0.0, sin_alpha = 0.0, cos2_alpha = 0.0
+        var c = 0.0, sin_sigma = 0.0, cos_sigma = 0.0, cos_2sigma = 0.0
 
         for _ in 0 ..< maxIter {
             tmp = cos(lambda)
@@ -101,11 +121,17 @@ extension GeoCoordinate {
 
             c = F / 16.0 * cos2_alpha * (4 + F * (4 - 3 * cos2_alpha))
             tmp = lambda
-            lambda = (l + (1 - c) * F * sin_alpha
-                        * (sigma + c * sin_sigma
-                            * (cos_2sigma + c * cos_sigma
-                                * (-1 + 2 * cos_2sigma * cos_2sigma
-                                )))
+            lambda = (
+                l + (1 - c) * F * sin_alpha
+                    * (
+                        sigma + c * sin_sigma
+                            * (
+                                cos_2sigma + c * cos_sigma
+                                    * (
+                                        -1 + 2 * cos_2sigma * cos_2sigma
+                                    )
+                            )
+                    )
             )
 
             if fabs(lambda - tmp) < tol {
@@ -120,12 +146,18 @@ extension GeoCoordinate {
         let uu: Double = cos2_alpha * C
         let a: Double = 1 + uu / 16384 * (4096 + uu * (-768 + uu * (320 - 175 * uu)))
         let b: Double = uu / 1024 * (256 + uu * (-128 + uu * (74 - 47 * uu)))
-        let delta_sigma: Double = (b * sin_sigma
-                                    * (cos_2sigma + 1.0 / 4.0 * b
-                                        * (cos_sigma * (-1 + 2 * cos_2sigma * cos_2sigma)
-                                            - 1.0 / 6.0 * b * cos_2sigma
-                                            * (-3 + 4 * sin_sigma * sin_sigma)
-                                            * (-3 + 4 * cos_2sigma * cos_2sigma))))
+        let delta_sigma: Double = (
+            b * sin_sigma
+                * (
+                    cos_2sigma + 1.0 / 4.0 * b
+                        * (
+                            cos_sigma * (-1 + 2 * cos_2sigma * cos_2sigma)
+                                - 1.0 / 6.0 * b * cos_2sigma
+                                * (-3 + 4 * sin_sigma * sin_sigma)
+                                * (-3 + 4 * cos_2sigma * cos_2sigma)
+                        )
+                )
+        )
 
         return B * a * (sigma - delta_sigma)
     }
@@ -135,7 +167,7 @@ extension GeoCoordinate {
     /// - Returns: Distance in meters
     ///
     /// [Details](https://www.movable-type.co.uk/scripts/latlong.html)
-    func calculateHaversineDistance(to: GeoCoordinate) -> Double {
+    internal func calculateHaversineDistance(to: any GeoCoordinate) -> Double {
         let R = 6371e3 // metres
         let φ1 = latitude.degreesToRadians
         let φ2 = to.latitude.degreesToRadians
@@ -152,10 +184,11 @@ extension GeoCoordinate {
 
     /// Calculates the radius in meters around a coordinate for a latitude delta.
     ///
-    /// One degree of latitude is always approximately 111 kilometers (69 miles). So the radius can derived from the delta (the coordinates latitude minus latitudeDelta/2).
+    /// One degree of latitude is always approximately 111 kilometers (69 miles). So the radius can derived from the delta (the coordinates
+    /// latitude minus latitudeDelta/2).
     /// - Parameter latitudeDelta: The latitude delta.
     /// - Returns: The radius in meters.
-    public func radiusInMeters(latitudeDelta: Double) -> Double {
+    func radiusInMeters(latitudeDelta: Double) -> Double {
         let topCentralLat: Double = latitude - latitudeDelta / 2
         let topCentralLocation = Coordinate(latitude: topCentralLat, longitude: longitude, elevation: 0)
         return distance(to: topCentralLocation)
@@ -166,34 +199,33 @@ extension GeoCoordinate {
     /// [Details on Jan Philip Matuscheks website](http://janmatuschek.de/LatitudeLongitudeBoundingCoordinates#Latitude)
     /// - Parameter distanceInMeters: Distance in meters around the coordinate.
     /// - Returns: A `GeoBounds` value or nil if no bounds could be calculated (if distanceInMeters is below zero).
-    public func bounds(distanceInMeters: Double) -> GeoBounds? {
+    func bounds(distanceInMeters: Double) -> GeoBounds? {
         guard distanceInMeters >= 0.0 else { return nil }
 
         // angular distance is radians on a great circle
-        let earthRadius = 6_378_137.0 // meters
+        let earthRadius = 6378137.0 // meters
         let radDist = distanceInMeters / earthRadius
         let radLatitude = latitude.degreesToRadians
         let radLongitude = longitude.degreesToRadians
 
         let MinLatitude = -90.degreesToRadians // -PI/2
-        let MaxLatitude = 90.degreesToRadians  // PI/2
-        let MinLongitude = -180.degreesToRadians   // -PI
-        let MaxLongitude = 180.degreesToRadians    // PI
+        let MaxLatitude = 90.degreesToRadians // PI/2
+        let MinLongitude = -180.degreesToRadians // -PI
+        let MaxLongitude = 180.degreesToRadians // PI
 
         var minLat: Double = radLatitude - radDist
         var maxLat: Double = radLatitude + radDist
 
         var minLon: Double, maxLon: Double
 
-        if minLat > MinLatitude && maxLat < MaxLatitude {
+        if minLat > MinLatitude, maxLat < MaxLatitude {
             let deltaLon = asin(sin(radDist) / cos(radLatitude))
             minLon = radLongitude - deltaLon
 
             if minLon < MinLongitude { minLon += 2 * .pi }
             maxLon = radLongitude + deltaLon
             if maxLon > MaxLongitude { maxLon -= 2 * .pi }
-        }
-        else {
+        } else {
             minLat = max(minLat, MinLatitude)
             maxLat = min(maxLat, MaxLatitude)
             minLon = MinLongitude

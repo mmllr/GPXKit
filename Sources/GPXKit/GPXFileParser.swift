@@ -1,3 +1,7 @@
+//
+// GPXKit - MIT License - Copyright © 2024 Markus Müller. All rights reserved.
+//
+
 import Algorithms
 import Foundation
 #if canImport(FoundationXML)
@@ -12,12 +16,12 @@ public enum GPXParserError: Error, Equatable {
     case noTracksFound
     /// The provided xml could not be parsed. Contains the underlying NSError from the XMLParser along with the xml
     /// files line number where the error occurred.
-    case parseError(NSError, Int)
+    case parseError(_ code: Int, _ line: Int)
     /// The elevation smoothing failed. See ``ElevationSmoothing`` for details.
     case smoothingError
 }
 
-internal enum GPXTags: String {
+enum GPXTags: String {
     case gpx
     case metadata
     case waypoint = "wpt"
@@ -41,7 +45,7 @@ internal enum GPXTags: String {
     case speed
 }
 
-internal enum GPXAttributes: String {
+enum GPXAttributes: String {
     case latitude = "lat"
     case longitude = "lon"
 }
@@ -54,12 +58,13 @@ public final class GPXFileParser {
     /// - Parameter xmlString: The GPX xml string. See [GPX specification for
     /// details](https://www.topografix.com/gpx.asp).
     public init(xmlString: String) {
-        self.xml = xmlString
+        xml = xmlString
     }
 
     /// Parses the GPX xml.
     /// - Returns: A ``Result`` of the ``GPXTrack`` in the success or an ``GPXParserError`` in the failure case.
-    /// - Parameter elevationSmoothing: The ``ElevationSmoothing`` in meters for the grade segments. Defaults to ``ElevationSmoothing/none``.
+    /// - Parameter elevationSmoothing: The ``ElevationSmoothing`` in meters for the grade segments. Defaults to
+    /// ``ElevationSmoothing/none``.
     public func parse(elevationSmoothing: ElevationSmoothing = .none) -> Result<GPXTrack, GPXParserError> {
         let parser = BasicXMLParser(xml: xml)
         switch parser.parse() {
@@ -75,7 +80,7 @@ public final class GPXFileParser {
             case .noContent:
                 return .failure(.invalidGPX)
             case let .parseError(error, lineNumber):
-                return .failure(.parseError(error, lineNumber))
+                return .failure(.parseError(error.code, lineNumber))
             }
         }
     }
@@ -132,30 +137,33 @@ public final class GPXFileParser {
         var trackPoints = segmented.flatMap { $0 }
         let segments = segmented.reduce(into: [GPXTrack.Segment]()) { acc, segNode in
             guard let last = acc.last else {
-                acc.append(.init(range: 0..<segNode.count, distance: segNode.totalDistance))
+                acc.append(.init(range: 0 ..< segNode.count, distance: segNode.totalDistance))
                 return
             }
             let start = last.range.count
             acc.append(.init(range: start ..< start + segNode.count, distance: segNode.totalDistance))
         }
         checkForInvalidElevationAtStartAndEnd(trackPoints: &trackPoints)
-        return (correctElevationGaps(trackPoints: trackPoints)
-            .map {
-                .init(
-                    coordinate: .init(
-                        latitude: $0.latitude,
-                        longitude: $0.longitude,
-                        elevation: $0.coordinate.elevation == .greatestFiniteMagnitude ? 0 : $0.coordinate
-                            .elevation
-                    ),
-                    date: $0.date,
-                    power: $0.power,
-                    cadence: $0.cadence,
-                    heartrate: $0.heartrate,
-                    temperature: $0.temperature,
-                    speed: $0.speed
-                )
-            }, segments)
+        return (
+            correctElevationGaps(trackPoints: trackPoints)
+                .map {
+                    .init(
+                        coordinate: .init(
+                            latitude: $0.latitude,
+                            longitude: $0.longitude,
+                            elevation: $0.coordinate.elevation == .greatestFiniteMagnitude ? 0 : $0.coordinate
+                                .elevation
+                        ),
+                        date: $0.date,
+                        power: $0.power,
+                        cadence: $0.cadence,
+                        heartrate: $0.heartrate,
+                        temperature: $0.temperature,
+                        speed: $0.speed
+                    )
+                },
+            segments
+        )
     }
 
     private func parseRoute(_ routeNode: XMLNode?) -> ([TrackPoint], [GPXTrack.Segment]?) {
@@ -164,37 +172,40 @@ public final class GPXFileParser {
         }
         var trackPoints = node.childrenOfType(.routePoint).compactMap(TrackPoint.init)
         checkForInvalidElevationAtStartAndEnd(trackPoints: &trackPoints)
-        return (correctElevationGaps(trackPoints: trackPoints)
-            .map {
-                .init(
-                    coordinate: .init(
-                        latitude: $0.latitude,
-                        longitude: $0.longitude,
-                        elevation: $0.coordinate.elevation == .greatestFiniteMagnitude ? 0 : $0.coordinate
-                            .elevation
-                    ),
-                    date: $0.date,
-                    power: $0.power,
-                    cadence: $0.cadence,
-                    heartrate: $0.heartrate,
-                    temperature: $0.temperature,
-                    speed: $0.speed
-                )
-            }, nil)
+        return (
+            correctElevationGaps(trackPoints: trackPoints)
+                .map {
+                    .init(
+                        coordinate: .init(
+                            latitude: $0.latitude,
+                            longitude: $0.longitude,
+                            elevation: $0.coordinate.elevation == .greatestFiniteMagnitude ? 0 : $0.coordinate
+                                .elevation
+                        ),
+                        date: $0.date,
+                        power: $0.power,
+                        cadence: $0.cadence,
+                        heartrate: $0.heartrate,
+                        temperature: $0.temperature,
+                        speed: $0.speed
+                    )
+                },
+            nil
+        )
     }
 
     private func checkForInvalidElevationAtStartAndEnd(trackPoints: inout [TrackPoint]) {
         if
             trackPoints.first?.coordinate.elevation == .greatestFiniteMagnitude,
             let firstValidElevation = trackPoints.first(where: { $0.coordinate.elevation != .greatestFiniteMagnitude })?
-                .coordinate.elevation
+            .coordinate.elevation
         {
             trackPoints[0].coordinate.elevation = firstValidElevation
         }
         if
             trackPoints.last?.coordinate.elevation == .greatestFiniteMagnitude,
             let lastValidElevation = trackPoints.last(where: { $0.coordinate.elevation != .greatestFiniteMagnitude })?
-                .coordinate.elevation
+            .coordinate.elevation
         {
             trackPoints[trackPoints.count - 1].coordinate.elevation = lastValidElevation
         }
@@ -221,7 +232,7 @@ public final class GPXFileParser {
             return Grade(start: start.coordinate, grade: elevationDelta / dist)
         }
         var corrected: [[TrackPoint]] = zip(chunks.filter(\.0), grades).map { chunk, grade in
-            return chunk.1.map {
+            chunk.1.map {
                 TrackPoint(
                     coordinate: .init(
                         latitude: $0.latitude,
@@ -258,15 +269,15 @@ extension Waypoint {
             return nil
         }
         let elevation = waypointNode.childFor(.elevation)?.elevation ?? .zero
-        self.coordinate = Coordinate(
+        coordinate = Coordinate(
             latitude: lat,
             longitude: lon,
             elevation: elevation
         )
-        self.date = waypointNode.childFor(.time)?.date
-        self.name = waypointNode.childFor(.name)?.content
-        self.comment = waypointNode.childFor(.comment)?.content
-        self.description = waypointNode.childFor(.description)?.content
+        date = waypointNode.childFor(.time)?.date
+        name = waypointNode.childFor(.name)?.content
+        comment = waypointNode.childFor(.comment)?.content
+        description = waypointNode.childFor(.description)?.content
     }
 }
 
@@ -278,26 +289,26 @@ extension TrackPoint {
         else {
             return nil
         }
-        self.coordinate = Coordinate(
+        coordinate = Coordinate(
             latitude: lat,
             longitude: lon,
             elevation: trackNode.childFor(.elevation)?.elevation ?? .greatestFiniteMagnitude
         )
-        self.date = trackNode.childFor(.time)?.date
-        self.power = trackNode.childFor(.extensions)?.childFor(.power)?.power
-        self.cadence = trackNode.childFor(.extensions)?.childFor(.trackPointExtension)?.childFor(.cadence)
+        date = trackNode.childFor(.time)?.date
+        power = trackNode.childFor(.extensions)?.childFor(.power)?.power
+        cadence = trackNode.childFor(.extensions)?.childFor(.trackPointExtension)?.childFor(.cadence)
             .flatMap { UInt($0.content) }
-        self.heartrate = trackNode.childFor(.extensions)?.childFor(.trackPointExtension)?.childFor(.heartrate)
+        heartrate = trackNode.childFor(.extensions)?.childFor(.trackPointExtension)?.childFor(.heartrate)
             .flatMap { UInt($0.content) }
-        self.temperature = trackNode.childFor(.extensions)?.childFor(.trackPointExtension)?.childFor(.temperature)?
+        temperature = trackNode.childFor(.extensions)?.childFor(.trackPointExtension)?.childFor(.temperature)?
             .temperature
-        self.speed = trackNode.childFor(.extensions)?.childFor(.trackPointExtension)?.childFor(.speed)?.speed
+        speed = trackNode.childFor(.extensions)?.childFor(.trackPointExtension)?.childFor(.speed)?.speed
     }
 }
 
 extension Collection<TrackPoint> {
     var totalDistance: Double {
-        zip(self, self.dropFirst()).map {
+        zip(self, dropFirst()).map {
             $0.calculateDistance(to: $1)
         }.reduce(0, +)
     }

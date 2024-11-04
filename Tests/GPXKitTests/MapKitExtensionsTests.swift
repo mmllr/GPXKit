@@ -1,19 +1,26 @@
+// MIT License
+//
+// Copyright © 2024 Markus Müller. All rights reserved.
+//
+
 import Foundation
 import GPXKit
-import XCTest
+import Testing
 
 #if canImport(MapKit) && canImport(CoreLocation) && !os(watchOS)
-import MapKit
 import CoreLocation
+import MapKit
 
-final class CoordinateExtensionTests: XCTestCase {
+@Suite
+struct CoordinateExtensionTests {
+    @Test
     func testPolyLine() {
         let coordinates: [Coordinate] = [
             Coordinate(latitude: 51.2763320, longitude: 12.3767670, elevation: 82.2),
             Coordinate(latitude: 53.2763700, longitude: 11.3767550, elevation: 82.2),
             Coordinate(latitude: 54.2764100, longitude: 10.3767400, elevation: 82.2),
             Coordinate(latitude: 55.2764520, longitude: 9.3767260, elevation: 82.2),
-            Coordinate(latitude: 57.2765020, longitude: 8.3767050, elevation: 82.2),
+            Coordinate(latitude: 57.2765020, longitude: 8.3767050, elevation: 82.2)
         ]
 
         let polyline = coordinates.polyLine
@@ -23,6 +30,6 @@ final class CoordinateExtensionTests: XCTestCase {
     }
 }
 
-extension CLLocationCoordinate2D: GeoCoordinate { }
+extension CLLocationCoordinate2D: GeoCoordinate {}
 
 #endif

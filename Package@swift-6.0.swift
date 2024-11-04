@@ -1,10 +1,6 @@
-// swift-tools-version:5.10
+// swift-tools-version:6.0
 
 import PackageDescription
-
-let settings: [SwiftSetting] = [
-    .enableExperimentalFeature("StrictConcurrency")
-]
 
 let package = Package(
     name: "GPXKit",
@@ -23,6 +19,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "1.3.3"),
         .package(url: "https://github.com/apple/swift-algorithms", from: "1.2.0"),
+        .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.4.3"),
         .package(url: "https://github.com/apple/swift-numerics", from: "1.0.2")
     ],
     targets: [
@@ -30,8 +27,7 @@ let package = Package(
             name: "GPXKit",
             dependencies: [
                 .product(name: "Algorithms", package: "swift-algorithms")
-            ],
-            swiftSettings: settings
+            ]
         ),
         .testTarget(
             name: "GPXKitTests",
@@ -39,15 +35,15 @@ let package = Package(
                 "GPXKit",
                 .product(name: "CustomDump", package: "swift-custom-dump"),
                 .product(name: "Numerics", package: "swift-numerics")
-            ],
-            swiftSettings: settings
+            ]
         )
-    ]
+    ],
+    swiftLanguageModes: [.v6]
 )
 
-#if swift(>=5.6)
-// Add the documentation compiler plugin if possible
-package.dependencies.append(
-    .package(url: "https://github.com/apple/swift-docc-plugin", from: "1.4.3")
-)
-#endif
+for target in package.targets {
+    target.swiftSettings = target.swiftSettings ?? []
+    target.swiftSettings?.append(contentsOf: [
+        .enableUpcomingFeature("ExistentialAny")
+    ])
+}

@@ -1,25 +1,28 @@
-import XCTest
-import GPXKit
+//
+// GPXKit - MIT License - Copyright © 2024 Markus Müller. All rights reserved.
+//
+
 import CustomDump
+import GPXKit
+import Testing
 #if canImport(CoreLocation)
 import CoreLocation
 
 extension TrackGraphTests {
     // MARK: Tests
 
+    @available(macOS 10.12, iOS 8, *)
+    @Test
     func testCLCoordinates2D() throws {
-        guard #available(macOS 10.12, iOS 8, *) else {
-            throw XCTSkip("Required API is not available for this test.")
-        }
-        let coordinates: [CLLocationCoordinate2D] = [
+        let expected: [CLLocationCoordinate2D] = [
             CLLocationCoordinate2D(latitude: 51.2763320, longitude: 12.3767670),
             CLLocationCoordinate2D(latitude: 51.2763700, longitude: 12.3767550),
             CLLocationCoordinate2D(latitude: 51.2764100, longitude: 12.3767400),
             CLLocationCoordinate2D(latitude: 51.2764520, longitude: 12.3767260),
-            CLLocationCoordinate2D(latitude: 51.2765020, longitude: 12.3767050),
+            CLLocationCoordinate2D(latitude: 51.2765020, longitude: 12.3767050)
         ]
-
-        expectNoDifference(coordinates, sut.coreLocationCoordinates)
+        let sut = try TrackGraph(coords: coordinates, elevationSmoothing: .segmentation(50))
+        expectNoDifference(expected, sut.coreLocationCoordinates)
     }
 }
 

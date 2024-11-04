@@ -1,50 +1,52 @@
-import XCTest
+//
+// GPXKit - MIT License - Copyright © 2024 Markus Müller. All rights reserved.
+//
+
 import Foundation
 import GPXKit
+import Testing
 #if canImport(Combine)
 import Combine
 
-@available(iOS 13, macOS 10.15, watchOS 6, tvOS 13, *)
-final class CombineExtensionTests: XCTestCase {
+struct CombineExtensionTests {
+    @Test
+    @available(iOS 13, macOS 10.15, watchOS 6, tvOS 13, *)
+    func testLoadFromPublisher() async throws {
+        await confirmation("publisher") { conf in
+            let sut = GPXFileParser(xmlString: testXMLWithoutExtensions)
 
-    func testLoadFromPublisher() throws {
-        let sut = GPXFileParser(xmlString: testXMLWithoutExtensions)
-        let expectation = self.expectation(description: "publisher")
-
-        let cancellable = sut.publisher
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    break
-                case let .failure(error):
-                    XCTFail(error.localizedDescription)
+            let cancellable = sut.publisher
+                .sink { completion in
+                    switch completion {
+                    case .finished:
+                        break
+                    case let .failure(error):
+                        Issue.record(error)
+                    }
+                    conf()
+                } receiveValue: { track in
+                    assertTracksAreEqual(testTrack, track)
                 }
-                expectation.fulfill()
-            } receiveValue: { track in
-                self.assertTracksAreEqual(testTrack, track)
-            }
-
-        wait(for: [expectation], timeout: 10)
-        XCTAssertNotNil(cancellable)
+        }
     }
 
-    func testLoadFromDataFactoryMethod() throws {
-        let expectation = self.expectation(description: "publisher")
-        let cancellable = GPXFileParser.load(from: testXMLWithoutExtensions.data(using: .utf8)!)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    break
-                case let .failure(error):
-                    XCTFail(error.localizedDescription)
+    @Test
+    @available(iOS 13, macOS 10.15, watchOS 6, tvOS 13, *)
+    func testLoadFromDataFactoryMethod() async throws {
+        await confirmation("data factory method") { conf in
+            let cancellable = GPXFileParser.load(from: testXMLWithoutExtensions.data(using: .utf8)!)
+                .sink { completion in
+                    switch completion {
+                    case .finished:
+                        break
+                    case let .failure(error):
+                        Issue.record(error)
+                    }
+                    conf()
+                } receiveValue: { track in
+                    assertTracksAreEqual(testTrack, track)
                 }
-                expectation.fulfill()
-            } receiveValue: { track in
-                self.assertTracksAreEqual(testTrack, track)
-            }
-
-        wait(for: [expectation], timeout: 10)
-        XCTAssertNotNil(cancellable)
+        }
     }
 }
 

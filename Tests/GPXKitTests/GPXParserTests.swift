@@ -1,41 +1,31 @@
+//
+// GPXKit - MIT License - Copyright © 2024 Markus Müller. All rights reserved.
+//
+
 import CustomDump
+import Foundation
 import GPXKit
-import XCTest
+import Testing
 #if canImport(FoundationXML)
 import FoundationXML
 #endif
 
-class GPXParserTests: XCTestCase {
-    private var sut: GPXFileParser!
-    private var parseError: GPXParserError?
-    private var result: GPXTrack?
-
-    private func parseXML(_ xml: String) {
-        sut = GPXFileParser(xmlString: xml)
-        switch sut.parse() {
-        case let .success(track):
-            result = track
-        case let .failure(error):
-            parseError = error
-        }
+@Suite
+struct GPXParserTests {
+    func parseXML(_ xml: String) throws -> GPXTrack {
+        try GPXFileParser(xmlString: xml).parse().get()
     }
 
-    // MARK: Tests
-
+    @Test
     func testImportingAnEmptyGPXString() {
-        parseXML("")
-
-        XCTAssertNil(result)
-        if case let .parseError(error, line) = parseError {
-            expectNoDifference(0, line)
-            expectNoDifference(1, error.code)
-        } else {
-            XCTFail("Exepcted parse error, got \(String(describing: parseError))")
+        #expect(throws: GPXParserError.parseError(1, 0)) {
+            try GPXFileParser(xmlString: "").parse().get()
         }
     }
 
+    @Test
     func testParsingGPXFilesWithoutATrack() throws {
-        parseXML("""
+        let sut = try parseXML("""
         <?xml version="1.0" encoding="UTF-8"?>
         <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
         	<metadata>
@@ -44,7 +34,6 @@ class GPXParserTests: XCTestCase {
         </gpx>
         """)
 
-        let sut = try XCTUnwrap(result)
         expectNoDifference("", sut.title)
         expectNoDifference(nil, sut.description)
         expectNoDifference(expectedDate(for: "2020-03-17T11:27:02Z"), sut.date)
@@ -54,8 +43,9 @@ class GPXParserTests: XCTestCase {
         expectNoDifference([], sut.graph.climbs())
     }
 
-    func testParsingTrackTitlesAndDescription() {
-        parseXML(
+    @Test
+    func testParsingTrackTitlesAndDescription() throws {
+        let result = try parseXML(
             """
             <?xml version="1.0" encoding="UTF-8"?>
             <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
@@ -70,12 +60,13 @@ class GPXParserTests: XCTestCase {
             """
         )
 
-        expectNoDifference("Frühjahrsgeschlender ach wie schön!", result?.title)
-        expectNoDifference("Track description", result?.description)
+        expectNoDifference("Frühjahrsgeschlender ach wie schön!", result.title)
+        expectNoDifference("Track description", result.description)
     }
 
+    @Test
     func testParsingTrackSegmentsWithoutExtensions() throws {
-        parseXML(testXMLWithoutExtensions)
+        let result = try parseXML(testXMLWithoutExtensions)
 
         let expected = [
             TrackPoint(
@@ -85,18 +76,19 @@ class GPXParserTests: XCTestCase {
             TrackPoint(
                 coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
                 date: expectedDate(for: "2020-03-18T12:45:48Z")
-            ),
+            )
         ]
 
-        try assertTracksAreEqual(GPXTrack(
+        assertTracksAreEqual(GPXTrack(
             date: expectedDate(for: "2020-03-18T12:39:47Z"),
             title: "Haus- und Seenrunde Ausdauer",
             trackPoints: expected
-        ), XCTUnwrap(result))
+        ), result)
     }
 
+    @Test
     func testParsingTrackSegmentsWithDefaultExtensions() throws {
-        parseXML(testXMLData)
+        let result = try parseXML(testXMLData)
 
         let expected = [
             TrackPoint(
@@ -116,7 +108,7 @@ class GPXParserTests: XCTestCase {
                 heartrate: 87,
                 temperature: Measurement<UnitTemperature>(value: 20.5, unit: .celsius),
                 speed: Measurement(value: 0.12345, unit: .metersPerSecond)
-            ),
+            )
         ]
 
         try assertTracksAreEqual(GPXTrack(
@@ -124,11 +116,12 @@ class GPXParserTests: XCTestCase {
             title: "Haus- und Seenrunde Ausdauer",
             description: "Track description",
             trackPoints: expected
-        ), XCTUnwrap(result))
+        ), #require(result))
     }
 
+    @Test
     func testParsingTrackSegmentsWithNameSpacedExtensions() throws {
-        parseXML(namespacedTestXMLData)
+        let result = try parseXML(namespacedTestXMLData)
 
         let expected = [
             TrackPoint(
@@ -148,19 +141,20 @@ class GPXParserTests: XCTestCase {
                 heartrate: 92,
                 temperature: Measurement<UnitTemperature>(value: 21, unit: .celsius),
                 speed: Measurement<UnitSpeed>(value: 0.123456, unit: .metersPerSecond)
-            ),
+            )
         ]
 
-        try assertTracksAreEqual(GPXTrack(
+        assertTracksAreEqual(GPXTrack(
             date: expectedDate(for: "2020-03-18T12:39:47Z"),
             title: "Haus- und Seenrunde Ausdauer",
             description: "Track description",
             trackPoints: expected
-        ), XCTUnwrap(result))
+        ), result)
     }
 
+    @Test
     func testParsingTrackSegmentsWithoutTimeHaveANilDate() throws {
-        parseXML("""
+        let result = try parseXML("""
         <?xml version="1.0" encoding="UTF-8"?>
         <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
             <metadata>
@@ -188,18 +182,19 @@ class GPXParserTests: XCTestCase {
             TrackPoint(
                 coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
                 date: nil
-            ),
+            )
         ]
 
         try assertTracksAreEqual(GPXTrack(
             date: nil,
             title: "Haus- und Seenrunde Ausdauer",
             trackPoints: expected
-        ), XCTUnwrap(result))
+        ), #require(result))
     }
 
+    @Test
     func testParsingTrackWithoutElevation() throws {
-        parseXML("""
+        let result = try parseXML("""
         <?xml version="1.0" encoding="UTF-8"?>
         <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
             <metadata>
@@ -223,41 +218,44 @@ class GPXParserTests: XCTestCase {
             TrackPoint(
                 coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 0),
                 date: nil
-            ),
+            )
         ]
 
         try assertTracksAreEqual(GPXTrack(
             date: nil,
             title: "Haus- und Seenrunde Ausdauer",
             trackPoints: expected
-        ), XCTUnwrap(result))
+        ), result)
     }
 
+    @Test
     func testTrackPointsDateWithFraction() throws {
-        parseXML(sampleGPX)
+        let result = try parseXML(sampleGPX)
 
-        let date = try XCTUnwrap(result?.trackPoints.first?.date)
+        let date = try #require(result.trackPoints.first?.date)
 
-        expectNoDifference(1_351_121_380, date.timeIntervalSince1970)
+        expectNoDifference(1351121380, date.timeIntervalSince1970)
     }
 
+    @Test
     func testTrackLength() throws {
-        parseXML(sampleGPX)
+        let result = try parseXML(sampleGPX)
 
-        let distance = try XCTUnwrap(result?.graph.distance)
-        let elevation = try XCTUnwrap(result?.graph.elevationGain)
+        let distance = result.graph.distance
+        let elevation = result.graph.elevationGain
 
-        XCTAssertEqual(3100.5625, distance, accuracy: 10)
-        XCTAssertEqual(115.19, elevation, accuracy: 0.1)
+        #expect(distance.isApproximatelyEqual(to: 3100.5625, absoluteTolerance: 10))
+        #expect(elevation.isApproximatelyEqual(to: 115.19, absoluteTolerance: 0.1))
     }
 
+    @Test
     func testTracksWithoutElevationInTheGPXHaveAnElevationOfZero() throws {
-        parseXML(given(points: [.leipzig, .postPlatz, .dehner]))
+        let result = try parseXML(given(points: [.leipzig, .postPlatz, .dehner]))
 
-        let elevation = try XCTUnwrap(result?.graph.elevationGain)
-        expectNoDifference(0, elevation)
+        #expect(result.graph.elevationGain == 0)
     }
 
+    @Test
     func testItInterpolatesElevationGapsWithElevationAtStartEndEndOfTheTrack() throws {
         // 0m: 100, 250m: nil, 500m: 120
         let start = TestGPXPoint.leipzig.with { $0.elevation = 100 }
@@ -269,9 +267,9 @@ class GPXParserTests: XCTestCase {
             start.offset(east: 500).with { $0.elevation = 120 },
             start.offset(east: 600).with { $0.elevation = nil },
             start.offset(east: 700).with { $0.elevation = nil },
-            start.offset(east: 800).with { $0.elevation = 300 },
+            start.offset(east: 800).with { $0.elevation = 300 }
         ]
-        parseXML(given(points: points))
+        let result = try parseXML(given(points: points))
 
         let expected: [Coordinate] = [
             Coordinate(points[0]),
@@ -301,43 +299,43 @@ class GPXParserTests: XCTestCase {
                 end: points[7],
                 distanceFromStart: points[4].distance(to: points[6])
             ) }),
-            Coordinate(points[7]),
+            Coordinate(points[7])
         ]
 
-        let result = try XCTUnwrap(result).flatMap { $0.trackPoints.map(\.coordinate) }
-        expectNoDifference(expected, result)
+        expectNoDifference(expected, result.trackPoints.map(\.coordinate))
     }
 
+    @Test
     func testItTakesTheFirstElevationWhenTheTrackStartsWithNoElevation() throws {
         let start = TestGPXPoint.leipzig.with { $0.elevation = nil }
         let points: [TestGPXPoint] = [
             start,
             start.offset(east: 250).with { $0.elevation = nil },
             start.offset(east: 400).with { $0.elevation = nil },
-            start.offset(east: 500).with { $0.elevation = 120 },
+            start.offset(east: 500).with { $0.elevation = 120 }
         ]
-        parseXML(given(points: points))
+        let result = try parseXML(given(points: points))
 
         let expected: [Coordinate] = [
             Coordinate(points[0].with { $0.elevation = 120 }),
             Coordinate(points[1].with { $0.elevation = 120 }),
             Coordinate(points[2].with { $0.elevation = 120 }),
-            Coordinate(points[3]),
+            Coordinate(points[3])
         ]
 
-        let result = try XCTUnwrap(result).flatMap { $0.trackPoints.map(\.coordinate) }
-        expectNoDifference(expected, result)
+        expectNoDifference(expected, result.trackPoints.map(\.coordinate))
     }
 
+    @Test
     func testItTakesTheLastElevationWhenTheTrackEndsWithNoElevation() throws {
         let start = TestGPXPoint.leipzig.with { $0.elevation = 170 }
         let points: [TestGPXPoint] = [
             start,
             start.offset(east: 250).with { $0.elevation = nil },
             start.offset(east: 400),
-            start.offset(east: 500).with { $0.elevation = nil },
+            start.offset(east: 500).with { $0.elevation = nil }
         ]
-        parseXML(given(points: points))
+        let result = try parseXML(given(points: points))
 
         let expected: [Coordinate] = [
             Coordinate(points[0]),
@@ -347,22 +345,22 @@ class GPXParserTests: XCTestCase {
                 distanceFromStart: points[0].distance(to: points[1])
             ) }),
             Coordinate(points[2]),
-            Coordinate(points[3].with { $0.elevation = 170 }),
+            Coordinate(points[3].with { $0.elevation = 170 })
         ]
 
-        let result = try XCTUnwrap(result).flatMap { $0.trackPoints.map(\.coordinate) }
-        expectNoDifference(expected, result)
+        expectNoDifference(expected, result.trackPoints.map(\.coordinate))
     }
 
+    @Test
     func testEmptySegmentIsEmptyTrackPoints() throws {
-        parseXML(given(points: []))
+        let result = try parseXML(given(points: []))
 
-        let result = try XCTUnwrap(result)
         expectNoDifference([], result.trackPoints)
     }
 
+    @Test
     func testParsingKeywords() throws {
-        parseXML("""
+        let result = try parseXML("""
         <?xml version="1.0" encoding="UTF-8"?>
         <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
             <metadata>
@@ -383,20 +381,20 @@ class GPXParserTests: XCTestCase {
         </gpx>
         """)
 
-        let sut = try XCTUnwrap(self.result)
+        let sut = try #require(result)
         expectNoDifference(["one", "two", "three", "four"], sut.keywords)
     }
 
+    @Test
     func testParsingAFileWithoutWaypointDefinitionsHasEmptyWaypoints() throws {
-        parseXML(testXMLData)
-        let sut = try XCTUnwrap(self.result)
+        let sut = try parseXML(testXMLData)
 
-        XCTAssertNil(sut.waypoints)
+        #expect(sut.waypoints == nil)
     }
 
+    @Test
     func testParsingWaypointAttributes() throws {
-        parseXML(testXMLDataContainingWaypoint)
-        let sut = try XCTUnwrap(self.result)
+        let sut = try parseXML(testXMLDataContainingWaypoint)
 
         let waypointStart = Waypoint(
             coordinate: Coordinate(latitude: 51.2760600, longitude: 12.3769500),
@@ -417,8 +415,9 @@ class GPXParserTests: XCTestCase {
         expectNoDifference([waypointStart, waypointFinish], sut.waypoints)
     }
 
+    @Test
     func testParsingRouteFiles() throws {
-        parseXML("""
+        let sut = try parseXML("""
         <?xml version="1.0" encoding="UTF-8"?>
         <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
             <rte>
@@ -441,18 +440,19 @@ class GPXParserTests: XCTestCase {
             TrackPoint(
                 coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114),
                 date: nil
-            ),
+            )
         ]
 
         try assertTracksAreEqual(GPXTrack(
             date: nil,
             title: "Haus- und Seenrunde Ausdauer",
             trackPoints: expected
-        ), XCTUnwrap(result))
+        ), sut)
     }
 
+    @Test
     func testParsingTrackWithoutNameHaveAnEmptyName() throws {
-        parseXML("""
+        let result = try parseXML("""
         <?xml version="1.0" encoding="UTF-8"?>
         <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
             <metadata>
@@ -479,7 +479,7 @@ class GPXParserTests: XCTestCase {
             TrackPoint(
                 coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
                 date: nil
-            ),
+            )
         ]
 
         try assertTracksAreEqual(
@@ -488,10 +488,11 @@ class GPXParserTests: XCTestCase {
                 title: "",
                 trackPoints: expected
             ),
-            XCTUnwrap(result)
+            #require(result)
         )
     }
 
+    @Test
     func testParsingWaypointWithEmptyTrack() throws {
         let input = """
         <?xml version="1.0" encoding="UTF-8"?>
@@ -526,10 +527,11 @@ class GPXParserTests: XCTestCase {
         expectNoDifference(.zero, track.graph.elevationGain)
         expectNoDifference([
             Waypoint(coordinate: .init(latitude: 53.060632820504345, longitude: 5.6932974383264616, elevation: 8.4)),
-            Waypoint(coordinate: .init(latitude: 53.06485377614443, longitude: 5.702670398232679, elevation: 8.3)),
+            Waypoint(coordinate: .init(latitude: 53.06485377614443, longitude: 5.702670398232679, elevation: 8.3))
         ], track.waypoints)
     }
 
+    @Test
     func testParsingWaypointWithoutTrack() throws {
         let input = """
         <?xml version="1.0" encoding="UTF-8"?>
@@ -563,12 +565,13 @@ class GPXParserTests: XCTestCase {
         expectNoDifference(.zero, track.graph.elevationGain)
         expectNoDifference([
             Waypoint(coordinate: .init(latitude: 53.060632820504345, longitude: 5.6932974383264616, elevation: 8.4)),
-            Waypoint(coordinate: .init(latitude: 53.06485377614443, longitude: 5.702670398232679, elevation: 8.3)),
+            Waypoint(coordinate: .init(latitude: 53.06485377614443, longitude: 5.702670398232679, elevation: 8.3))
         ], track.waypoints)
     }
 
+    @Test
     func testParsingTrackWithMultipleSegments() throws {
-        parseXML("""
+        let result = try parseXML("""
         <?xml version="1.0" encoding="UTF-8"?>
         <gpx creator="StravaGPX"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1"
@@ -668,7 +671,7 @@ class GPXParserTests: XCTestCase {
             TrackPoint(
                 coordinate: Coordinate(latitude: 53.1869479, longitude: 13.1320822, elevation: 54.13999939),
                 date: expectedDate(for: "2023-05-20T10:35:23Z")
-            ),
+            )
         ]
 
         try assertTracksAreEqual(
@@ -678,14 +681,14 @@ class GPXParserTests: XCTestCase {
                 trackPoints: expected,
                 segments: [
                     .init(
-                        range: 0..<5, distance: expected[0..<5].expectedDistance()
-                        ),
+                        range: 0 ..< 5, distance: expected[0 ..< 5].expectedDistance()
+                    ),
                     .init(
-                        range: 5..<10, distance: expected[5..<10].expectedDistance()
+                        range: 5 ..< 10, distance: expected[5 ..< 10].expectedDistance()
                     )
                 ]
             ),
-            XCTUnwrap(result)
+            result
         )
     }
 }
