@@ -1,5 +1,5 @@
 //
-// GPXKit - MIT License - Copyright © 2024 Markus Müller. All rights reserved.
+// GPXKit - MIT License - Copyright © 2025 Markus Müller. All rights reserved.
 //
 
 import CustomDump
@@ -221,7 +221,7 @@ struct GPXParserTests {
             )
         ]
 
-        try assertTracksAreEqual(GPXTrack(
+        assertTracksAreEqual(GPXTrack(
             date: nil,
             title: "Haus- und Seenrunde Ausdauer",
             trackPoints: expected
@@ -443,7 +443,7 @@ struct GPXParserTests {
             )
         ]
 
-        try assertTracksAreEqual(GPXTrack(
+        assertTracksAreEqual(GPXTrack(
             date: nil,
             title: "Haus- und Seenrunde Ausdauer",
             trackPoints: expected
@@ -674,7 +674,7 @@ struct GPXParserTests {
             )
         ]
 
-        try assertTracksAreEqual(
+        assertTracksAreEqual(
             GPXTrack(
                 date: nil,
                 title: "",
