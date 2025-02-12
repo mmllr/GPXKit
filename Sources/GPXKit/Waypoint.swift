@@ -7,7 +7,7 @@ import Foundation
 /// Value type describing a single Waypoint defined  within a `GPXTrack`. A `Waypoint` has a location consisting of latitude, longitude and
 /// some metadata,
 /// e.g. name and description.
-public struct Waypoint: Hashable, Sendable {
+public struct Waypoint: Codable, Hashable, Sendable {
     /// The ``Coordinate`` (latitude, longitude and elevation in meters)
     public var coordinate: Coordinate
     /// Optional date for a given point.

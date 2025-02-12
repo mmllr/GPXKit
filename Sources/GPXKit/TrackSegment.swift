@@ -6,7 +6,7 @@ import Foundation
 
 /// Value type describing a logical segment in a `TrackGraph`. A `TrackGraph` consists of a collection of `TrackSegment`s. Each has a
 /// coordinate (latitude, longitude & elevation) and the distance (in meters) to its preceding segment point.
-public struct TrackSegment: Hashable, Sendable {
+public struct TrackSegment: Codable, Hashable, Sendable {
     /// The ``Coordinate`` (latitude, longitude and elevation)
     public var coordinate: Coordinate
 
