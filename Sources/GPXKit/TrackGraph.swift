@@ -5,7 +5,7 @@
 import Foundation
 
 /// A value describing a graph of a track. Contains metadata such as a `GPXTrack`s distance, elevation and a height-map.
-public struct TrackGraph: Hashable, Sendable {
+public struct TrackGraph: Codable, Hashable, Sendable {
     /// Array of ``TrackSegment`` values. The segments describe a tracks position along with its relative distance to its predecessor.
     public var segments: [TrackSegment]
     /// The overall distance of a track in meters.
