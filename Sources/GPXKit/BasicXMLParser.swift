@@ -1,5 +1,5 @@
 //
-// GPXKit - MIT License - Copyright © 2024 Markus Müller. All rights reserved.
+// GPXKit - MIT License - Copyright © 2025 Markus Müller. All rights reserved.
 //
 
 import Foundation
@@ -39,9 +39,7 @@ class BasicXMLParser: NSObject, XMLParserDelegate {
 
     func parse() -> Result<XMLNode, BasicXMLParserError> {
         parser.delegate = self
-        let parseResult = autoreleasepool {
-            self.parser.parse()
-        }
+        let parseResult = parser.parse()
         if parseResult {
             guard let result = result else { return .failure(.noContent) }
             return .success(result)
