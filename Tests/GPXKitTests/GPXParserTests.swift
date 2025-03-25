@@ -44,7 +44,7 @@ struct GPXParserTests {
     }
 
     @Test
-    func testParsingTrackTitlesAndDescription() throws {
+    func testParsingTrackTitlesTypeAndDescription() throws {
         let result = try parseXML(
             """
             <?xml version="1.0" encoding="UTF-8"?>
@@ -62,6 +62,7 @@ struct GPXParserTests {
 
         expectNoDifference("Frühjahrsgeschlender ach wie schön!", result.title)
         expectNoDifference("Track description", result.description)
+        expectNoDifference("1", result.type)
     }
 
     @Test
@@ -82,7 +83,8 @@ struct GPXParserTests {
         assertTracksAreEqual(GPXTrack(
             date: expectedDate(for: "2020-03-18T12:39:47Z"),
             title: "Haus- und Seenrunde Ausdauer",
-            trackPoints: expected
+            trackPoints: expected,
+            type: ""
         ), result)
     }
 
@@ -115,7 +117,8 @@ struct GPXParserTests {
             date: expectedDate(for: "2020-03-18T12:39:47Z"),
             title: "Haus- und Seenrunde Ausdauer",
             description: "Track description",
-            trackPoints: expected
+            trackPoints: expected,
+            type: "1"
         ), #require(result))
     }
 
@@ -148,7 +151,8 @@ struct GPXParserTests {
             date: expectedDate(for: "2020-03-18T12:39:47Z"),
             title: "Haus- und Seenrunde Ausdauer",
             description: "Track description",
-            trackPoints: expected
+            trackPoints: expected,
+            type: "1"
         ), result)
     }
 
@@ -161,7 +165,7 @@ struct GPXParserTests {
             </metadata>
             <trk>
                 <name>Haus- und Seenrunde Ausdauer</name>
-                <type>1</type>
+                <type>cycling</type>
                 <trkseg>
                     <trkpt lat="51.2760600" lon="12.3769500">
                         <ele>114.2</ele>
@@ -188,7 +192,7 @@ struct GPXParserTests {
         try assertTracksAreEqual(GPXTrack(
             date: nil,
             title: "Haus- und Seenrunde Ausdauer",
-            trackPoints: expected
+            trackPoints: expected, type: "cycling"
         ), #require(result))
     }
 
@@ -201,7 +205,7 @@ struct GPXParserTests {
             </metadata>
             <trk>
                 <name>Haus- und Seenrunde Ausdauer</name>
-                <type>1</type>
+                <type>running</type>
                 <trkseg>
                     <trkpt lat="51.2760600" lon="12.3769500"></trkpt>
                     <trkpt lat="51.2760420" lon="12.3769760"></trkpt>
@@ -224,7 +228,7 @@ struct GPXParserTests {
         assertTracksAreEqual(GPXTrack(
             date: nil,
             title: "Haus- und Seenrunde Ausdauer",
-            trackPoints: expected
+            trackPoints: expected, type: "running"
         ), result)
     }
 
@@ -446,7 +450,7 @@ struct GPXParserTests {
         assertTracksAreEqual(GPXTrack(
             date: nil,
             title: "Haus- und Seenrunde Ausdauer",
-            trackPoints: expected
+            trackPoints: expected, type: nil
         ), sut)
     }
 
@@ -486,7 +490,7 @@ struct GPXParserTests {
             GPXTrack(
                 date: nil,
                 title: "",
-                trackPoints: expected
+                trackPoints: expected, type: "1"
             ),
             #require(result)
         )
@@ -686,7 +690,8 @@ struct GPXParserTests {
                     .init(
                         range: 5 ..< 10, distance: expected[5 ..< 10].expectedDistance()
                     )
-                ]
+                ],
+                type: "1"
             ),
             result
         )

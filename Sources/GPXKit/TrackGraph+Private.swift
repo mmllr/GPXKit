@@ -1,5 +1,5 @@
 //
-// GPXKit - MIT License - Copyright © 2024 Markus Müller. All rights reserved.
+// GPXKit - MIT License - Copyright © 2025 Markus Müller. All rights reserved.
 //
 
 import Foundation
@@ -134,10 +134,10 @@ extension Array where Element: Simplifiable {
         }
 
         let last = (points.count - 1)
-        var simplied = [points.first!]
-        simplifyDPStep(points, first: 0, last: last, sqTolerance: sqTolerance, simplified: &simplied)
-        simplied.append(points.last!)
+        var simplified = [points.first!]
+        simplifyDPStep(points, first: 0, last: last, sqTolerance: sqTolerance, simplified: &simplified)
+        simplified.append(points.last!)
 
-        return simplied
+        return simplified
     }
 }

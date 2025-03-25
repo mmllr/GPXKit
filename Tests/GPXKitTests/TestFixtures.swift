@@ -161,7 +161,7 @@ let testTrack = GPXTrack(
             coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
             date: expectedDate(for: "2020-03-18T12:45:48Z")
         )
-    ]
+    ], type: "running"
 )
 
 let testTrackWithoutTime = GPXTrack(
@@ -177,7 +177,8 @@ let testTrackWithoutTime = GPXTrack(
             coordinate: Coordinate(latitude: 51.2760420, longitude: 12.3769760, elevation: 114.0),
             date: nil
         )
-    ]
+    ],
+    type: "cycling"
 )
 
 let testXMLDataContainingWaypoint = """

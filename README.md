@@ -19,13 +19,14 @@ A library for parsing and exporting GPX files with no dependencies besides Found
 - [x] Grade segmentation
 - [x] Support for Garmin trackpoint extensions
 - [x] Support for multiple track segements
+- [x] Support for track types
 
 ## Installation
 
 To use the `GPXKit` library in a SwiftPM project, add the following line to the dependencies in your `Package.swift` file:
 
 ```swift
-.package(url: "https://github.com/mmllr/GPXKit", from: "2.3.1")
+.package(url: "https://github.com/mmllr/GPXKit", from: "2.4.0")
 ```
 
 ## Usage examples

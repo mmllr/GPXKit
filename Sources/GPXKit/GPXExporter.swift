@@ -1,5 +1,5 @@
 //
-// GPXKit - MIT License - Copyright © 2024 Markus Müller. All rights reserved.
+// GPXKit - MIT License - Copyright © 2025 Markus Müller. All rights reserved.
 //
 
 import Foundation
@@ -42,6 +42,7 @@ public struct GPXExporter: Sendable {
                 GPXTags.track.embed([
                     GPXTags.name.embed(track.title),
                     track.description.flatMap { GPXTags.description.embed($0) } ?? "",
+                    track.type.flatMap { GPXTags.type.embed($0) } ?? "",
                     trackXML
                 ].joined(separator: "\n"))
             ].joined(separator: "\n")

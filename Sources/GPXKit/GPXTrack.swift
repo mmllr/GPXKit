@@ -1,5 +1,5 @@
 //
-// GPXKit - MIT License - Copyright © 2024 Markus Müller. All rights reserved.
+// GPXKit - MIT License - Copyright © 2025 Markus Müller. All rights reserved.
 //
 
 import Foundation
@@ -44,9 +44,10 @@ public struct GPXTrack: Hashable, Sendable {
     public var bounds: GeoBounds
     /// Keywords describing a gpx track
     public var keywords: [String]
-
     /// The ``Segment`` of the track. Contains at least one segment
     public var segments: [Segment]
+    /// The type of the gpx track. Defaults to nil.
+    public var type: String?
 
     /// Initializes a GPXTrack.
     /// - Parameters:
@@ -55,6 +56,8 @@ public struct GPXTrack: Hashable, Sendable {
     ///   - title: String describing the track.
     ///   - trackPoints: Array of ``TrackPoint``s describing the route.
     ///   - keywords: Array of `String`s with keywords. Default is an empty array (no keywords).
+    ///   - segments: Array of ``Segment`` values. Defaults to nil.
+    ///   - type: The type of the gpx track. Defaults to nil.
     public init(
         date: Date? = nil,
         waypoints: [Waypoint]? = nil,
@@ -62,7 +65,8 @@ public struct GPXTrack: Hashable, Sendable {
         description: String? = nil,
         trackPoints: [TrackPoint],
         keywords: [String] = [],
-        segments: [Segment]? = nil
+        segments: [Segment]? = nil,
+        type: String? = nil
     ) {
         self.date = date
         self.waypoints = waypoints
@@ -73,6 +77,7 @@ public struct GPXTrack: Hashable, Sendable {
         bounds = trackPoints.bounds()
         self.keywords = keywords
         self.segments = segments ?? [.init(range: trackPoints.indices, distance: graph.distance)]
+        self.type = type
     }
 
     /// Initializes a GPXTrack. You don't need to construct this value by yourself, as it is done by GXPKits track parsing logic.
@@ -82,8 +87,9 @@ public struct GPXTrack: Hashable, Sendable {
     ///   - title: String describing the track.
     ///   - trackPoints: Array of ``TrackPoint``s describing the route.
     ///   - keywords: Array of `String`s with keywords. Default is an empty array (no keywords).
-    ///   - elevationSmoothing: The ``ElevationSmoothing`` in meters for the grade segments. Defaults to
-    /// ``ElevationSmoothing/segmentation(_:)`` with 50 meters.
+    ///   - elevationSmoothing: The ``ElevationSmoothing`` in meters for the grade segments. Defaults to ``ElevationSmoothing/segmentation(_:)`` with 50 meters.
+    ///   - segments: Array of ``Segment`` values. Defaults to nil.
+    ///   - type: The type of the gpx track. Defaults to nil.
     public init(
         date: Date? = nil,
         waypoints: [Waypoint]? = nil,
@@ -92,7 +98,8 @@ public struct GPXTrack: Hashable, Sendable {
         trackPoints: [TrackPoint],
         keywords: [String] = [],
         elevationSmoothing: ElevationSmoothing = .segmentation(50),
-        segments: [Segment]? = nil
+        segments: [Segment]? = nil,
+        type: String? = nil
     ) throws {
         self.date = date
         self.waypoints = waypoints
@@ -103,5 +110,6 @@ public struct GPXTrack: Hashable, Sendable {
         bounds = trackPoints.bounds()
         self.keywords = keywords
         self.segments = segments ?? [Segment(range: trackPoints.indices, distance: graph.distance)]
+        self.type = type
     }
 }

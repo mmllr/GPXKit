@@ -1,5 +1,5 @@
 //
-// GPXKit - MIT License - Copyright © 2024 Markus Müller. All rights reserved.
+// GPXKit - MIT License - Copyright © 2025 Markus Müller. All rights reserved.
 //
 
 import Foundation
@@ -42,7 +42,7 @@ struct GPXExporterTests {
     @Test
     func testExportingAnEmptyTrackWithDateAndTitleResultsInAnEmptyGPXFile() throws {
         let date = Date()
-        let track = GPXTrack(date: date, title: "Track title", description: "Track description", trackPoints: [])
+        let track = GPXTrack(date: date, title: "Track title", description: "Track description", trackPoints: [], type: "cycling")
         let sut = GPXExporter(track: track)
 
         let expectedContent: GPXKit.XMLNode = XMLNode(
@@ -54,7 +54,8 @@ struct GPXExporterTests {
                 ]),
                 XMLNode(name: GPXTags.track.rawValue, children: [
                     XMLNode(name: GPXTags.name.rawValue, content: track.title),
-                    XMLNode(name: GPXTags.description.rawValue, content: "Track description")
+                    XMLNode(name: GPXTags.description.rawValue, content: "Track description"),
+                    XMLNode(name: GPXTags.type.rawValue, content: "cycling")
                 ])
             ]
         )
@@ -67,7 +68,7 @@ struct GPXExporterTests {
     @Test
     func testItWillNotExportANilDescription() throws {
         let date = Date()
-        let track = GPXTrack(date: date, title: "Track title", description: nil, trackPoints: [])
+        let track = GPXTrack(date: date, title: "Track title", description: nil, trackPoints: [], type: nil)
         let sut = GPXExporter(track: track)
 
         let expectedContent: GPXKit.XMLNode = XMLNode(
@@ -95,7 +96,8 @@ struct GPXExporterTests {
             title: "Track title",
             description: "Description",
             trackPoints: [],
-            keywords: ["one", "two"]
+            keywords: ["one", "two"],
+            type: "custom"
         )
         let sut = GPXExporter(track: track, creatorName: "Custom creator name")
 
@@ -108,7 +110,8 @@ struct GPXExporterTests {
                 ]),
                 XMLNode(name: GPXTags.track.rawValue, children: [
                     XMLNode(name: GPXTags.name.rawValue, content: track.title),
-                    XMLNode(name: GPXTags.description.rawValue, content: "Description")
+                    XMLNode(name: GPXTags.description.rawValue, content: "Description"),
+                    XMLNode(name: GPXTags.type.rawValue, content: "custom")
                 ])
             ]
         )
@@ -119,14 +122,15 @@ struct GPXExporterTests {
     }
 
     @Test
-    func testExportingANonEmptyTrackWithDates() throws {
+    func testExportingANonEmptyTrackWithDatesAndType() throws {
         let date = Date()
         let track = GPXTrack(
             date: date,
             title: "Track title",
             description: "Non empty track",
             trackPoints: givenTrackPoints(10),
-            keywords: ["keyword1", "keyword2", "keyword3"]
+            keywords: ["keyword1", "keyword2", "keyword3"],
+            type: "cycling"
         )
         let sut = GPXExporter(track: track)
 
@@ -143,6 +147,7 @@ struct GPXExporterTests {
                 XMLNode(name: GPXTags.track.rawValue, children: [
                     XMLNode(name: GPXTags.name.rawValue, content: track.title),
                     XMLNode(name: GPXTags.description.rawValue, content: "Non empty track"),
+                    XMLNode(name: GPXTags.type.rawValue, content: "cycling"),
                     XMLNode(
                         name: GPXTags.trackSegment.rawValue,
                         children: track.trackPoints.map {
@@ -175,7 +180,8 @@ struct GPXExporterTests {
                 TrackPoint(coordinate: .random, date: Date()),
                 TrackPoint(coordinate: .random, date: Date()),
                 TrackPoint(coordinate: .random, date: Date())
-            ]
+            ],
+            type: "running"
         )
         let sut = GPXExporter(track: track, shouldExportDate: false)
         let expectedContent: GPXKit.XMLNode = XMLNode(
@@ -185,6 +191,7 @@ struct GPXExporterTests {
                 XMLNode(name: GPXTags.metadata.rawValue),
                 XMLNode(name: GPXTags.track.rawValue, children: [
                     XMLNode(name: GPXTags.name.rawValue, content: track.title),
+                    XMLNode(name: GPXTags.type.rawValue, content: "running"),
                     XMLNode(
                         name: GPXTags.trackSegment.rawValue,
                         children: track.trackPoints.map {
@@ -202,7 +209,7 @@ struct GPXExporterTests {
 
     @Test
     func testItWillNotExportNilWaypoints() throws {
-        let track = GPXTrack(date: Date(), waypoints: nil, title: "Track title", trackPoints: [])
+        let track = GPXTrack(date: Date(), waypoints: nil, title: "Track title", trackPoints: [], type: nil)
         let sut = GPXExporter(track: track, shouldExportDate: false)
         let expectedContent: GPXKit.XMLNode = XMLNode(
             name: GPXTags.gpx.rawValue,
@@ -231,7 +238,7 @@ struct GPXExporterTests {
                 description: "Kreisel description"
             )
         ]
-        let track = GPXTrack(date: Date(), waypoints: waypoints, title: "Track title", trackPoints: [])
+        let track = GPXTrack(date: Date(), waypoints: waypoints, title: "Track title", trackPoints: [], type: "track type")
         let sut = GPXExporter(track: track, shouldExportDate: false)
         let expectedContent: GPXKit.XMLNode = XMLNode(
             name: GPXTags.gpx.rawValue,
@@ -255,7 +262,8 @@ struct GPXExporterTests {
                     XMLNode(name: GPXTags.description.rawValue, content: "Kreisel description")
                 ]),
                 XMLNode(name: GPXTags.track.rawValue, children: [
-                    XMLNode(name: GPXTags.name.rawValue, content: track.title)
+                    XMLNode(name: GPXTags.name.rawValue, content: track.title),
+                    XMLNode(name: GPXTags.type.rawValue, content: "track type")
                 ])
             ]
         )
@@ -321,7 +329,8 @@ struct GPXExporterTests {
             segments: [
                 .init(range: 0 ..< 5, distance: points[0 ..< 5].expectedDistance()),
                 .init(range: 5 ..< 10, distance: points[5 ..< 10].expectedDistance())
-            ]
+            ],
+            type: "rowing"
         )
         let sut = GPXExporter(track: track)
 
@@ -338,6 +347,7 @@ struct GPXExporterTests {
                 XMLNode(name: GPXTags.track.rawValue, children: [
                     XMLNode(name: GPXTags.name.rawValue, content: track.title),
                     XMLNode(name: GPXTags.description.rawValue, content: "Non empty track"),
+                    XMLNode(name: GPXTags.type.rawValue, content: "rowing"),
                     XMLNode(
                         name: GPXTags.trackSegment.rawValue,
                         children: points[0 ..< 5].map {
@@ -353,6 +363,31 @@ struct GPXExporterTests {
                 ])
             ]
         )
+
+        assertNodesAreEqual(expectedContent, result)
+    }
+
+    @Test
+    func testItWillNotExportAnNonexistingTrackType() throws {
+        let date = Date()
+        let track = GPXTrack(date: date, title: "Track title", description: "Track description", trackPoints: [], type: nil)
+        let sut = GPXExporter(track: track)
+
+        let expectedContent: GPXKit.XMLNode = XMLNode(
+            name: GPXTags.gpx.rawValue,
+            attributes: expectedHeaderAttributes(),
+            children: [
+                XMLNode(name: GPXTags.metadata.rawValue, children: [
+                    XMLNode(name: GPXTags.time.rawValue, content: expectedString(for: date))
+                ]),
+                XMLNode(name: GPXTags.track.rawValue, children: [
+                    XMLNode(name: GPXTags.name.rawValue, content: track.title),
+                    XMLNode(name: GPXTags.description.rawValue, content: "Track description")
+                ])
+            ]
+        )
+
+        let result = try parseResult(sut.xmlString)
 
         assertNodesAreEqual(expectedContent, result)
     }

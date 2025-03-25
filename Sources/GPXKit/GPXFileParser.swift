@@ -1,5 +1,5 @@
 //
-// GPXKit - MIT License - Copyright © 2024 Markus Müller. All rights reserved.
+// GPXKit - MIT License - Copyright © 2025 Markus Müller. All rights reserved.
 //
 
 import Algorithms
@@ -43,6 +43,7 @@ enum GPXTags: String {
     case heartrate = "hr"
     case cadence = "cad"
     case speed
+    case type
 }
 
 enum GPXAttributes: String {
@@ -94,7 +95,8 @@ public struct GPXFileParser: Sendable {
                 description: nil,
                 trackPoints: [],
                 keywords: parseKeywords(node: node),
-                elevationSmoothing: elevationSmoothing
+                elevationSmoothing: elevationSmoothing,
+                type: nil
             )
         }
         let title = trackNode.childFor(.name)?.content ?? ""
@@ -108,7 +110,8 @@ public struct GPXFileParser: Sendable {
             trackPoints: trackPoints,
             keywords: parseKeywords(node: node),
             elevationSmoothing: elevationSmoothing,
-            segments: segments
+            segments: segments,
+            type: trackNode.childFor(.type)?.content
         )
     }
 

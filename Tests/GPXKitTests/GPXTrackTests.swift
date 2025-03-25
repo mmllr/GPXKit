@@ -9,7 +9,7 @@ import Testing
 
 struct GPXTrackTests {
     private func givenTrack(with coordinates: [Coordinate]) -> GPXTrack {
-        GPXTrack(title: "Track", trackPoints: coordinates.map { TrackPoint(coordinate: $0) })
+        GPXTrack(title: "Track", trackPoints: coordinates.map { TrackPoint(coordinate: $0) }, type: nil)
     }
 
     // MARK: - Tests -
@@ -68,7 +68,7 @@ struct GPXTrackTests {
             second,
             third,
             fourth
-        ].map { TrackPoint(coordinate: $0) }, elevationSmoothing: .segmentation(50))
+        ].map { TrackPoint(coordinate: $0) }, elevationSmoothing: .segmentation(50), type: nil)
 
         let expected: [GradeSegment] = try [
             #require(.init(start: 0, end: 100, elevationAtStart: 100, elevationAtEnd: 109.98)),
@@ -90,7 +90,7 @@ struct GPXTrackTests {
             .init(coordinate: .dehner.offset(distance: 50, grade: 0), date: start.addingTimeInterval(4), speed: 1.mps)
         ]
 
-        let sut = GPXTrack(title: "Track", trackPoints: points)
+        let sut = GPXTrack(title: "Track", trackPoints: points, type: nil)
 
         expectNoDifference(4, sut.graph.distance)
         expectNoDifference([
