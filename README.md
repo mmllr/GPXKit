@@ -1,6 +1,6 @@
 # GPXKit
 
-A library for parsing and exporting GPX files with no dependencies besides Foundation.
+A library for parsing and exporting GPX files depending on Foundation and [Swift Algorithms](https://github.com/apple/swift-algorithms) only.
 
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fmmllr%2FGPXKit%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/mmllr/GPXKit)  
 [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fmmllr%2FGPXKit%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/mmllr/GPXKit)
