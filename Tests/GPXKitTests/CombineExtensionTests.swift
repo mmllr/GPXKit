@@ -1,5 +1,5 @@
 //
-// GPXKit - MIT License - Copyright © 2024 Markus Müller. All rights reserved.
+// GPXKit - MIT License - Copyright © 2025 Markus Müller. All rights reserved.
 //
 
 import Foundation
@@ -8,6 +8,7 @@ import Testing
 #if canImport(Combine)
 import Combine
 
+@Suite
 struct CombineExtensionTests {
     @Test
     @available(iOS 13, macOS 10.15, watchOS 6, tvOS 13, *)
