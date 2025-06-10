@@ -113,13 +113,13 @@ struct GPXParserTests {
             )
         ]
 
-        try assertTracksAreEqual(GPXTrack(
+        assertTracksAreEqual(GPXTrack(
             date: expectedDate(for: "2020-03-18T12:39:47Z"),
             title: "Haus- und Seenrunde Ausdauer",
             description: "Track description",
             trackPoints: expected,
             type: "1"
-        ), #require(result))
+        ), result)
     }
 
     @Test
@@ -189,11 +189,11 @@ struct GPXParserTests {
             )
         ]
 
-        try assertTracksAreEqual(GPXTrack(
+        assertTracksAreEqual(GPXTrack(
             date: nil,
             title: "Haus- und Seenrunde Ausdauer",
             trackPoints: expected, type: "cycling"
-        ), #require(result))
+        ), result)
     }
 
     @Test
@@ -385,7 +385,7 @@ struct GPXParserTests {
         </gpx>
         """)
 
-        let sut = try #require(result)
+        let sut = result
         expectNoDifference(["one", "two", "three", "four"], sut.keywords)
     }
 
@@ -486,14 +486,7 @@ struct GPXParserTests {
             )
         ]
 
-        try assertTracksAreEqual(
-            GPXTrack(
-                date: nil,
-                title: "",
-                trackPoints: expected, type: "1"
-            ),
-            #require(result)
-        )
+        assertTracksAreEqual( GPXTrack(date: nil, title: "", trackPoints: expected, type: "1" ), result)
     }
 
     @Test

@@ -93,7 +93,7 @@ struct ArrayExtensionsTests {
             second,
             third
         ]
-        let actual = try #require(try grades.flatten(maxDelta: 0.01))
+        let actual = try grades.flatten(maxDelta: 0.01)
         expectNoDifference(expected, actual)
     }
 
@@ -102,7 +102,7 @@ struct ArrayExtensionsTests {
         let track = try GPXFileParser(xmlString: .saCalobra).parse().get()
 
         let graph = TrackGraph(coords: .init(track.trackPoints.map(\.coordinate).prefix(50)))
-        let actual = try #require(try graph.gradeSegments.flatten(maxDelta: 0.01))
+        let actual = try graph.gradeSegments.flatten(maxDelta: 0.01)
 
         expectNoDifference(0, actual.filter { $0.grade.isNaN }.count)
     }
