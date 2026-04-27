@@ -1,5 +1,5 @@
 //
-// GPXKit - MIT License - Copyright © 2025 Markus Müller. All rights reserved.
+// GPXKit - MIT License - Copyright © 2026 Markus Müller. All rights reserved.
 //
 
 import CustomDump
@@ -17,14 +17,14 @@ struct GPXParserTests {
     }
 
     @Test
-    func testImportingAnEmptyGPXString() {
-        #expect(throws: GPXParserError.parseError(1, 0)) {
+    func importingAnEmptyGPXString() {
+        #expect(throws: GPXParserError.self) {
             try GPXFileParser(xmlString: "").parse().get()
         }
     }
 
     @Test
-    func testParsingGPXFilesWithoutATrack() throws {
+    func parsingGPXFilesWithoutATrack() throws {
         let sut = try parseXML("""
         <?xml version="1.0" encoding="UTF-8"?>
         <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
@@ -44,7 +44,7 @@ struct GPXParserTests {
     }
 
     @Test
-    func testParsingTrackTitlesTypeAndDescription() throws {
+    func parsingTrackTitlesTypeAndDescription() throws {
         let result = try parseXML(
             """
             <?xml version="1.0" encoding="UTF-8"?>
@@ -66,7 +66,7 @@ struct GPXParserTests {
     }
 
     @Test
-    func testParsingTrackSegmentsWithoutExtensions() throws {
+    func parsingTrackSegmentsWithoutExtensions() throws {
         let result = try parseXML(testXMLWithoutExtensions)
 
         let expected = [
@@ -89,7 +89,7 @@ struct GPXParserTests {
     }
 
     @Test
-    func testParsingTrackSegmentsWithDefaultExtensions() throws {
+    func parsingTrackSegmentsWithDefaultExtensions() throws {
         let result = try parseXML(testXMLData)
 
         let expected = [
@@ -123,7 +123,7 @@ struct GPXParserTests {
     }
 
     @Test
-    func testParsingTrackSegmentsWithNameSpacedExtensions() throws {
+    func parsingTrackSegmentsWithNameSpacedExtensions() throws {
         let result = try parseXML(namespacedTestXMLData)
 
         let expected = [
@@ -157,7 +157,7 @@ struct GPXParserTests {
     }
 
     @Test
-    func testParsingTrackSegmentsWithoutTimeHaveANilDate() throws {
+    func parsingTrackSegmentsWithoutTimeHaveANilDate() throws {
         let result = try parseXML("""
         <?xml version="1.0" encoding="UTF-8"?>
         <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
@@ -197,7 +197,7 @@ struct GPXParserTests {
     }
 
     @Test
-    func testParsingTrackWithoutElevation() throws {
+    func parsingTrackWithoutElevation() throws {
         let result = try parseXML("""
         <?xml version="1.0" encoding="UTF-8"?>
         <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
@@ -233,7 +233,7 @@ struct GPXParserTests {
     }
 
     @Test
-    func testTrackPointsDateWithFraction() throws {
+    func trackPointsDateWithFraction() throws {
         let result = try parseXML(sampleGPX)
 
         let date = try #require(result.trackPoints.first?.date)
@@ -242,7 +242,7 @@ struct GPXParserTests {
     }
 
     @Test
-    func testTrackLength() throws {
+    func trackLength() throws {
         let result = try parseXML(sampleGPX)
 
         let distance = result.graph.distance
@@ -253,14 +253,14 @@ struct GPXParserTests {
     }
 
     @Test
-    func testTracksWithoutElevationInTheGPXHaveAnElevationOfZero() throws {
+    func tracksWithoutElevationInTheGPXHaveAnElevationOfZero() throws {
         let result = try parseXML(given(points: [.leipzig, .postPlatz, .dehner]))
 
         #expect(result.graph.elevationGain == 0)
     }
 
     @Test
-    func testItInterpolatesElevationGapsWithElevationAtStartEndEndOfTheTrack() throws {
+    func itInterpolatesElevationGapsWithElevationAtStartEndEndOfTheTrack() throws {
         // 0m: 100, 250m: nil, 500m: 120
         let start = TestGPXPoint.leipzig.with { $0.elevation = 100 }
         let points: [TestGPXPoint] = [
@@ -310,7 +310,7 @@ struct GPXParserTests {
     }
 
     @Test
-    func testItTakesTheFirstElevationWhenTheTrackStartsWithNoElevation() throws {
+    func itTakesTheFirstElevationWhenTheTrackStartsWithNoElevation() throws {
         let start = TestGPXPoint.leipzig.with { $0.elevation = nil }
         let points: [TestGPXPoint] = [
             start,
@@ -331,7 +331,7 @@ struct GPXParserTests {
     }
 
     @Test
-    func testItTakesTheLastElevationWhenTheTrackEndsWithNoElevation() throws {
+    func itTakesTheLastElevationWhenTheTrackEndsWithNoElevation() throws {
         let start = TestGPXPoint.leipzig.with { $0.elevation = 170 }
         let points: [TestGPXPoint] = [
             start,
@@ -356,14 +356,14 @@ struct GPXParserTests {
     }
 
     @Test
-    func testEmptySegmentIsEmptyTrackPoints() throws {
+    func emptySegmentIsEmptyTrackPoints() throws {
         let result = try parseXML(given(points: []))
 
         expectNoDifference([], result.trackPoints)
     }
 
     @Test
-    func testParsingKeywords() throws {
+    func parsingKeywords() throws {
         let result = try parseXML("""
         <?xml version="1.0" encoding="UTF-8"?>
         <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
@@ -390,14 +390,14 @@ struct GPXParserTests {
     }
 
     @Test
-    func testParsingAFileWithoutWaypointDefinitionsHasEmptyWaypoints() throws {
+    func parsingAFileWithoutWaypointDefinitionsHasEmptyWaypoints() throws {
         let sut = try parseXML(testXMLData)
 
         #expect(sut.waypoints == nil)
     }
 
     @Test
-    func testParsingWaypointAttributes() throws {
+    func parsingWaypointAttributes() throws {
         let sut = try parseXML(testXMLDataContainingWaypoint)
 
         let waypointStart = Waypoint(
@@ -420,7 +420,7 @@ struct GPXParserTests {
     }
 
     @Test
-    func testParsingRouteFiles() throws {
+    func parsingRouteFiles() throws {
         let sut = try parseXML("""
         <?xml version="1.0" encoding="UTF-8"?>
         <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
@@ -455,7 +455,7 @@ struct GPXParserTests {
     }
 
     @Test
-    func testParsingTrackWithoutNameHaveAnEmptyName() throws {
+    func parsingTrackWithoutNameHaveAnEmptyName() throws {
         let result = try parseXML("""
         <?xml version="1.0" encoding="UTF-8"?>
         <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3">
@@ -486,11 +486,11 @@ struct GPXParserTests {
             )
         ]
 
-        assertTracksAreEqual( GPXTrack(date: nil, title: "", trackPoints: expected, type: "1" ), result)
+        assertTracksAreEqual(GPXTrack(date: nil, title: "", trackPoints: expected, type: "1"), result)
     }
 
     @Test
-    func testParsingWaypointWithEmptyTrack() throws {
+    func parsingWaypointWithEmptyTrack() throws {
         let input = """
         <?xml version="1.0" encoding="UTF-8"?>
         <gpx xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.topografix.com/GPX/1/1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd http://www.topografix.com/GPX/gpx_style/0/2 http://www.topografix.com/GPX/gpx_style/0/2/gpx_style.xsd" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:gpx_style="http://www.topografix.com/GPX/gpx_style/0/2" version="1.1" creator="gpxgenerator.com">
@@ -529,7 +529,7 @@ struct GPXParserTests {
     }
 
     @Test
-    func testParsingWaypointWithoutTrack() throws {
+    func parsingWaypointWithoutTrack() throws {
         let input = """
         <?xml version="1.0" encoding="UTF-8"?>
         <gpx xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.topografix.com/GPX/1/1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd http://www.garmin.com/xmlschemas/TrackPointExtension/v1 http://www.garmin.com/xmlschemas/TrackPointExtensionv1.xsd http://www.topografix.com/GPX/gpx_style/0/2 http://www.topografix.com/GPX/gpx_style/0/2/gpx_style.xsd" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" xmlns:gpx_style="http://www.topografix.com/GPX/gpx_style/0/2" version="1.1" creator="gpxgenerator.com">
@@ -567,7 +567,7 @@ struct GPXParserTests {
     }
 
     @Test
-    func testParsingTrackWithMultipleSegments() throws {
+    func parsingTrackWithMultipleSegments() throws {
         let result = try parseXML("""
         <?xml version="1.0" encoding="UTF-8"?>
         <gpx creator="StravaGPX"
